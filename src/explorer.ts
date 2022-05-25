@@ -45,6 +45,20 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
 	}
 
+	async openConfigFile(): Promise<void> {
+		const osc_config_path = getConfigFile()
+
+		if (typeof osc_config_path == 'undefined') {
+			fs.mkdirSync(path.dirname(OSC_CONFIG_PATH[0]), { recursive: true });
+			fs.writeFileSync(OSC_CONFIG_PATH[0], "")
+		}
+
+		vscode.workspace.openTextDocument(vscode.Uri.file(OSC_CONFIG_PATH[0]).with({ scheme: 'file' })).then(doc => {
+			vscode.window.showTextDocument(doc);
+		  });
+
+	}
+
 }
 
 export function getConfigFile(): string | undefined {

@@ -24,6 +24,11 @@
         "command": "profile.refreshEntry",
         "title": "Refresh",
         "icon": "$(refresh)"
+      },
+      {
+        "command": "profile.configure",
+        "title": "Configure",
+        "icon": "$(gear)"
       }
     ],
     "viewsContainers": {
@@ -47,6 +52,11 @@
       "view/title": [
         {
           "command": "profile.refreshEntry",
+          "when": "view == profile",
+          "group": "navigation"
+        },
+        {
+          "command": "profile.configure",
           "when": "view == profile",
           "group": "navigation"
         }

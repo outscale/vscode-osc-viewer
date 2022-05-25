@@ -25,6 +25,8 @@ export function activate(context: vscode.ExtensionContext) {
 	const profileProvider = new OscExplorer()
 	vscode.window.registerTreeDataProvider('profile', profileProvider);
 	vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
+	vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
+
 
 	
 }
