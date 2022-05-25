@@ -1,7 +1,7 @@
 import * as osc from "outscale-api";
 import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
-import { Profile } from "./node";
+import { Profile } from "./flat/node";
 
 global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;

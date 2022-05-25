@@ -3,11 +3,11 @@ import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import * as osc from "outscale-api";
 import { ResourceNode } from './node.resources';
-import {getConfig} from './cloud';
+import {getConfig} from '../cloud';
 
 export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "VPC");
+		super(profile, "Nets");
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -1,7 +1,5 @@
 import * as vscode from 'vscode';
-import * as fs from 'fs';
 import { ExplorerNode, ExplorerProfileNode, Profile } from './node';
-import { FolderNode } from './node.folder';
 import { VmsFolderNode } from './node.folder.vms';
 import { VpcFolderNode } from './node.folder.vpc';
 import { SecurityGroupsFolderNode } from './node.folder.securitygroups';
