@@ -29,6 +29,11 @@
         "command": "profile.configure",
         "title": "Configure",
         "icon": "$(gear)"
+      },
+      {
+        "command": "profile.addEntry",
+        "title": "Add",
+        "icon": "$(gist-new)"
       }
     ],
     "viewsContainers": {
@@ -57,6 +62,11 @@
         },
         {
           "command": "profile.configure",
+          "when": "view == profile",
+          "group": "navigation"
+        },
+        {
+          "command": "profile.addEntry",
           "when": "view == profile",
           "group": "navigation"
         }
