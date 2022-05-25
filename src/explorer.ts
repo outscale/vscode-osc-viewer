@@ -5,7 +5,7 @@ import { ProfileNode } from './node.profile';
 import { env } from 'process';
 import path = require('path');
 
-const OSC_CONFIG_PATH = [ process.env.HOME + "/.osc/config.json"]
+const OSC_CONFIG_PATH = [ process.env.HOME + "/.osc/config.json"];
 
 export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
@@ -23,12 +23,12 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
 	getChildren(element?: ExplorerNode): Thenable<ExplorerNode[]> {
 		if (element) {
-			return element.getChildren()
+			return element.getChildren();
 		} else {
-			const osc_config_path = getConfigFile()
-			if (typeof osc_config_path == 'undefined') {
+			const oscConfigPath = getConfigFile();
+			if (typeof oscConfigPath === 'undefined') {
 				vscode.window.showErrorMessage('No config file found');
-				return Promise.resolve([])
+				return Promise.resolve([]);
 			}
 
 			const toExplorerNode = (profileName: string, definition: any): ProfileNode => {
@@ -36,21 +36,21 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 			};
 
 			// Found a config file
-			const configJson = JSON.parse(fs.readFileSync(osc_config_path, 'utf-8'))
+			const configJson = JSON.parse(fs.readFileSync(oscConfigPath, 'utf-8'));
 
-			const ExplorerNodes = Object.keys(configJson).map(dep => toExplorerNode(dep, configJson[dep]))
+			const explorerNodes = Object.keys(configJson).map(dep => toExplorerNode(dep, configJson[dep]));
 
-			return Promise.resolve(ExplorerNodes)
+			return Promise.resolve(explorerNodes);
 		}
 
 	}
 
 	async openConfigFile(): Promise<void> {
-		const osc_config_path = getConfigFile()
+		const oscConfigPath = getConfigFile();
 
-		if (typeof osc_config_path == 'undefined') {
+		if (typeof oscConfigPath === 'undefined') {
 			fs.mkdirSync(path.dirname(OSC_CONFIG_PATH[0]), { recursive: true });
-			fs.writeFileSync(OSC_CONFIG_PATH[0], "")
+			fs.writeFileSync(OSC_CONFIG_PATH[0], "");
 		}
 
 		vscode.workspace.openTextDocument(vscode.Uri.file(OSC_CONFIG_PATH[0]).with({ scheme: 'file' })).then(doc => {
@@ -62,16 +62,16 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 }
 
 export function getConfigFile(): string | undefined {
-	for (const osc_config_path of OSC_CONFIG_PATH) {
+	for (const oscConfigPath of OSC_CONFIG_PATH) {
 
-		if (!pathExists(osc_config_path)) {
-			continue
+		if (!pathExists(oscConfigPath)) {
+			continue;
 		}
 
-		return osc_config_path
+		return oscConfigPath;
 	}
 
-	return undefined
+	return undefined;
 }
 
 export function pathExists(p: string): boolean {

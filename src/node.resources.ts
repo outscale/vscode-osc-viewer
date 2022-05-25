@@ -12,13 +12,13 @@ export class ResourceNode implements ExplorerResourceNode {
 
 	getTreeItem(): vscode.TreeItem {
 		const treeItem = new vscode.TreeItem(this.resourceId, vscode.TreeItemCollapsibleState.None);
-		treeItem.description = this.resourceName
-		treeItem.iconPath= new vscode.ThemeIcon("dash")
+		treeItem.description = this.resourceName;
+		treeItem.iconPath= new vscode.ThemeIcon("dash");
         return treeItem;
 	}
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return Promise.resolve([])
+		return Promise.resolve([]);
 	}
 
 

@@ -3,8 +3,8 @@ import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
 import { Profile } from "./node";
 
-global.Headers = fetch.Headers
-global.crypto = crypto.webcrypto
+global.Headers = fetch.Headers;
+global.crypto = crypto.webcrypto;
 
 export function getConfig(profile: Profile): osc.Configuration {
     return new osc.Configuration({

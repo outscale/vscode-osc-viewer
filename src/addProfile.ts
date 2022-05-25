@@ -53,7 +53,7 @@ export async function multiStepInput() {
 			totalSteps: 4,
 			value: '',
 			prompt: 'Enter your Access Key',
-			validate: () => {return Promise.resolve(undefined)},
+			validate: () => {return Promise.resolve(undefined);},
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputSecretKey(input, state);
@@ -66,7 +66,7 @@ export async function multiStepInput() {
 			totalSteps: 4,
 			value: '',
 			prompt: 'Enter your Secret Key',
-			validate: () => {return Promise.resolve(undefined)},
+			validate: () => {return Promise.resolve(undefined);},
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputRegion(input, state);
@@ -79,7 +79,7 @@ export async function multiStepInput() {
 			totalSteps: 4,
 			value: '',
 			prompt: 'Enter your Region',
-			validate: () => {return Promise.resolve(undefined)},
+			validate: () => {return Promise.resolve(undefined);},
 			shouldResume: shouldResume
 		});
 	}
@@ -92,42 +92,45 @@ export async function multiStepInput() {
 	}
 
 	async function validateNameIsUnique(name: string) {
-        const osc_config_path = getConfigFile()
-        if (typeof osc_config_path == 'undefined') {
+        const oscConfigPath = getConfigFile();
+        if (typeof oscConfigPath === 'undefined') {
             vscode.window.showErrorMessage('No config file found');
-            return undefined
+            return undefined;
         }
 
         // Found a config file
-        const configJson = JSON.parse(fs.readFileSync(osc_config_path, 'utf-8'))
+        const configJson = JSON.parse(fs.readFileSync(oscConfigPath, 'utf-8'));
 
-        const found = Object.keys(configJson).find(key => key == name)
-		return typeof found == 'string' ? 'Name not unique' : undefined;
+        const found = Object.keys(configJson).find(key => key === name);
+		return typeof found === 'string' ? 'Name not unique' : undefined;
 	}
 
     function writeProfile(state: Partial<State>) {
-        const osc_config_path = getConfigFile()
-        if (typeof osc_config_path == 'undefined') {
+        const oscConfigPath = getConfigFile();
+        if (typeof oscConfigPath === 'undefined') {
             vscode.window.showErrorMessage('No config file found');
-            return undefined
+            return undefined;
         }
 
         // Found a config file
-        let configJson = JSON.parse(fs.readFileSync(osc_config_path, 'utf-8'))
+        let configJson = JSON.parse(fs.readFileSync(oscConfigPath, 'utf-8'));
 
-        if (typeof state.name == 'undefined') {
-            return undefined
+        if (typeof state.name === 'undefined') {
+            return undefined;
         }
         configJson[state.name]= {
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             "access_key": state.accessKey,
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             "secret_key": state.secretKey,
             "host": "outscale.com",
             "https": true,
             "method": "POST",
+            // eslint-disable-next-line @typescript-eslint/naming-convention
             "region_name": state.region
-        }
+        };
 
-        fs.writeFileSync(osc_config_path, JSON.stringify(configJson, null, 4), 'utf-8')
+        fs.writeFileSync(oscConfigPath, JSON.stringify(configJson, null, 4), 'utf-8');
 
 
     }
@@ -136,7 +139,7 @@ export async function multiStepInput() {
 	window.showInformationMessage(`Creating Application Service '${state.name}'`);
 
     // Store value
-    writeProfile(state)
+    writeProfile(state);
 
 }
 

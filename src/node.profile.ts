@@ -24,7 +24,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
 			new KeypairsFolderNode(this.profile)
-		])
+		]);
 		
     }
 

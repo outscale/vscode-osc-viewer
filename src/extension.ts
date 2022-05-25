@@ -2,7 +2,7 @@
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
 import { multiStepInput } from './addProfile';
-import {OscExplorer} from "./explorer"
+import {OscExplorer} from "./explorer";
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -23,7 +23,7 @@ export function activate(context: vscode.ExtensionContext) {
 
 
 	// Samples of `window.registerTreeDataProvider`
-	const profileProvider = new OscExplorer()
+	const profileProvider = new OscExplorer();
 	vscode.window.registerTreeDataProvider('profile', profileProvider);
 	vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
 	vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
