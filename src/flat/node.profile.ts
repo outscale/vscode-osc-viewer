@@ -13,6 +13,7 @@ export class ProfileNode implements ExplorerProfileNode {
 
 	getTreeItem(): vscode.TreeItem {
 		const treeItem = new vscode.TreeItem(this.profile.name, vscode.TreeItemCollapsibleState.Collapsed);
+		treeItem.iconPath = new vscode.ThemeIcon("account");
         return treeItem;
 	}
 
