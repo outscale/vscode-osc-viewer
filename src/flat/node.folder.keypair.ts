@@ -1,9 +1,8 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
-import * as osc from "outscale-api";
 import { ResourceNode } from './node.resources';
-import { getConfig } from '../cloud/cloud';
+import { getKeypairs } from '../cloud/keypair';
 
 export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -11,7 +10,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return this.getKeypair().then(result => {
+		return getKeypairs(this.profile).then(result => {
 			if (typeof result === "string") {
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
@@ -27,30 +26,4 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
 		});
 		
     }
-
-
-    private async getKeypair(): Promise<Array<osc.Keypair> | string> {
-        let config = getConfig(this.profile);
-        let readParameters : osc.ReadKeypairsOperationRequest = {
-            readKeypairsRequest: {}
-        };
-    
-        let api = new osc.KeypairApi(config);
-        return api.readKeypairs(readParameters)
-        .then((res: osc.ReadKeypairsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
-            if (res.keypairs === undefined || res.keypairs.length === 0) {
-                return "Listing suceeded but it seems you have no Keypairs";
-            }
-            return res.keypairs;
-        }, (err_: any) => {
-            return "Error, bad credential or region?" + err_;
-        });
-    }
-
-
-
-
 }
