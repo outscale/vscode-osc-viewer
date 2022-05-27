@@ -43,7 +43,7 @@ export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
                 return res;
             }
             if (res.nets === undefined || res.nets.length === 0) {
-                return "Listing suceeded but it seems you have no vm";
+                return "Listing suceeded but it seems you have no VPC";
             }
             return res.nets;
         }, (err_: any) => {

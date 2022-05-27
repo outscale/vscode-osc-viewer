@@ -42,7 +42,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
                 return res;
             }
             if (res.keypairs === undefined || res.keypairs.length === 0) {
-                return "Listing suceeded but it seems you have no vm";
+                return "Listing suceeded but it seems you have no Keypairs";
             }
             return res.keypairs;
         }, (err_: any) => {

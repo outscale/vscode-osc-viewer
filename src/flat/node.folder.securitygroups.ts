@@ -42,7 +42,7 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
                 return res;
             }
             if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-                return "Listing suceeded but it seems you have no vm";
+                return "Listing suceeded but it seems you have no Security Group";
             }
             return res.securityGroups;
         }, (err_: any) => {
