@@ -41,6 +41,7 @@ export function activate(context: vscode.ExtensionContext) {
 		const uri = vscode.Uri.parse('osc:/' + resource.profile.name + "/" +  resource.resourceType + "/" + resource.resourceId);
 		const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
 		await vscode.window.showTextDocument(doc);
+		await vscode.languages.setTextDocumentLanguage(doc, "json");
 	}));
 
 
