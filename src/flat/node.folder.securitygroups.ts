@@ -20,7 +20,7 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
                 if (typeof sg.securityGroupId === 'undefined' || typeof sg.securityGroupName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId));
+                resources.push(new ResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId, "securitygroups"));
 			}
 			return Promise.resolve(resources);
 		});

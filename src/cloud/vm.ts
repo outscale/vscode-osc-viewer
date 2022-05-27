@@ -23,6 +23,31 @@ export function getVms(profile: Profile): Promise<Array<osc.Vm> | string> {
     });
 }
 
+export function getVm(profile: Profile, vmId: string): Promise<osc.Vm | string> {
+    let config = getConfig(profile);
+    let readParameters : osc.ReadVmsOperationRequest = {
+        readVmsRequest: {
+            filters: {
+                vmIds: [vmId]
+            }
+        }
+    };
+
+    let api = new osc.VmApi(config);
+    return api.readVms(readParameters)
+    .then((res: osc.ReadVmsResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        if (res.vms === undefined || res.vms.length === 0) {
+            return "Listing suceeded but it seems you have no vm";
+        }
+        return res.vms[0];
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}
+
 export function getVmName(vm: osc.Vm): string {
     if (typeof vm.tags === "undefined") {
         return "";

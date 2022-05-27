@@ -20,7 +20,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
                 if (typeof keypair.keypairName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", keypair.keypairName));
+                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs"));
 			}
 			return Promise.resolve(resources);
 		});

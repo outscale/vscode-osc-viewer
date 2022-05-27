@@ -20,7 +20,7 @@ export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 				if (typeof net.netId === 'undefined') {
 					continue;
 				}
-				resources.push(new ResourceNode(this.profile, "", net.netId?.toString()));
+				resources.push(new ResourceNode(this.profile, "", net.netId?.toString(), "vpc"));
 			}
 			return Promise.resolve(resources);
 		});

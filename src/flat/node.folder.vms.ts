@@ -22,7 +22,7 @@ export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, getVmName(vm), vm.vmId?.toString()));
+                resources.push(new ResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), "vms"));
             }
             return Promise.resolve(resources);
         });

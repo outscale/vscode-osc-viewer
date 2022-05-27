@@ -12,6 +12,7 @@ export interface ExplorerProfileNode extends ExplorerNodeBase {
 export interface ExplorerResourceNode extends ExplorerProfileNode {
     readonly resourceName: string;
     readonly resourceId: string;
+    readonly resourceType: ResourceNodeType;
 }
 
 export interface ExplorerFolderNode extends ExplorerProfileNode {
@@ -23,6 +24,11 @@ export type ExplorerNode =
     ExplorerFolderNode |
     ExplorerResourceNode;
 
+export type ResourceNodeType= 
+    "vms" |
+    "vpc" |
+    "securitygroups" |
+    "keypairs";
 export class NodeImpl {
 }
 

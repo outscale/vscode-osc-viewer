@@ -11,7 +11,9 @@
   ],
   "activationEvents": [
     "onCommand:osc-viewer.helloWorld",
-    "onView:profile"
+    "onView:profile",
+    "onCommand:osc-viewer.configure",
+    "onCommand:osc.showResource"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -34,6 +36,10 @@
         "command": "profile.addEntry",
         "title": "Add",
         "icon": "$(gist-new)"
+      },
+      {
+        "command": "osc.showResource",
+        "title": "Get"
       }
     ],
     "viewsContainers": {
