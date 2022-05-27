@@ -3,7 +3,7 @@ import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import * as osc from "outscale-api";
 import { ResourceNode } from './node.resources';
-import { getConfig } from '../cloud';
+import { getConfig } from '../cloud/cloud';
 
 
 export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {

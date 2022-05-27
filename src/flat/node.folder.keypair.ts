@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../node';
+import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import * as osc from "outscale-api";
-import { ResourceNode } from '../node.resources';
-import { getConfig } from '../cloud';
+import { ResourceNode } from './node.resources';
+import { getConfig } from '../cloud/cloud';
 
 export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
