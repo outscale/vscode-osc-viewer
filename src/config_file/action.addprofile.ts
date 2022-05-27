@@ -1,7 +1,9 @@
 import { MultiStepInput} from './multistep';
 import { readConfigFile, writeConfigFile } from './utils';
-import { window } from 'vscode';
+import { QuickPickItem, window } from 'vscode';
 import * as fs from 'fs';
+import { getRegions } from '../cloud/region';
+
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
  * 
@@ -68,15 +70,29 @@ import * as fs from 'fs';
 	}
 
     async function inputRegion(input: MultiStepInput, state: Partial<State>) {
-		state.region = await input.showInputBox({
+		let regionGroups : QuickPickItem[]= [];
+		
+		await getRegions().then( result => {
+			if (typeof result === "string") {
+				return undefined;
+			}
+			for (const region of result) {
+				if (typeof region.regionName === "undefined") {
+					continue;
+				}
+				regionGroups.push({label: region.regionName});
+			}
+		});
+
+		const pick = await input.showQuickPick({
 			title,
 			step: 4,
 			totalSteps: 4,
-			value: '',
-			prompt: 'Enter your Region',
-			validate: () => {return Promise.resolve(undefined);},
+			placeholder: 'Pick a region',
+			items: regionGroups,
 			shouldResume: shouldResume
 		});
+		state.region = pick.label;
 	}
 
 	function shouldResume() {
