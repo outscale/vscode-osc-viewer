@@ -50,7 +50,7 @@ import { getRegions } from '../cloud/region';
 			totalSteps: 4,
 			value: '',
 			prompt: 'Enter your Access Key',
-			validate: () => {return Promise.resolve(undefined);},
+			validate: valideIsNotNull,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputSecretKey(input, state);
@@ -59,11 +59,11 @@ import { getRegions } from '../cloud/region';
     async function inputSecretKey(input: MultiStepInput, state: Partial<State>) {
 		state.secretKey = await input.showInputBox({
 			title,
-			step: 2,
+			step: 3,
 			totalSteps: 4,
 			value: '',
 			prompt: 'Enter your Secret Key',
-			validate: () => {return Promise.resolve(undefined);},
+			validate: valideIsNotNull,
 			shouldResume: shouldResume
 		});
 		return (input: MultiStepInput) => inputRegion(input, state);
@@ -110,7 +110,11 @@ import { getRegions } from '../cloud/region';
         }
 
         const found = Object.keys(oscConfObject).find(key => key === name);
-		return typeof found === 'string' ? 'Name not unique' : undefined;
+		return typeof found === 'string' ? 'The name is not unique' : undefined;
+	}
+
+	async function valideIsNotNull(params: string) {
+		return params.length === 0 ? 'Cannot be empty': undefined;
 	}
 
     function writeProfile(state: Partial<State>) {

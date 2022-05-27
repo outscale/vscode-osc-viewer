@@ -37,9 +37,10 @@ export function readConfigFile(): any {
 }
 
 export function writeConfigFile(data: any): void {
-    const oscConfigPath = getConfigFile();
+    let oscConfigPath = getConfigFile();
     if (typeof oscConfigPath === 'undefined') {
-        return ;
+        createConfigFile();
+        oscConfigPath = getDefaultConfigFilePath();
     }
 
     fs.writeFileSync(oscConfigPath, JSON.stringify(data, null, 4), 'utf-8');
