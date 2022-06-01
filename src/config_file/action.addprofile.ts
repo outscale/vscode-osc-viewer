@@ -3,6 +3,8 @@ import { readConfigFile, writeConfigFile } from './utils';
 import { QuickPickItem, window } from 'vscode';
 import * as fs from 'fs';
 import { getRegions } from '../cloud/region';
+import { getAccounts } from '../cloud/account';
+import { Profile } from '../flat/node';
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
@@ -146,7 +148,19 @@ import { getRegions } from '../cloud/region';
     }
 
 	const state = await collectInputs();
-	window.showInformationMessage(`Creating Application Service '${state.name}'`);
+	
+	// Validate the account
+	const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region)).then((result) => {
+		if (typeof result === "string") {
+			window.showErrorMessage(`The account '${state.name}' is invalid. Please retry !`);
+			return false;
+		}
+		return true;
+	});
+
+	if (!profileIsValid) {
+		return undefined;
+	}
 
     // Store value
     writeProfile(state);
