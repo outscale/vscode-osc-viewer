@@ -47,7 +47,7 @@
         {
           "id": "package-explorer",
           "title": "3DS Outscale",
-          "icon": "outscale.png"
+          "icon": "resources/outscale.png"
         }
       ]
     },
