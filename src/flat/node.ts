@@ -13,6 +13,8 @@ export interface ExplorerResourceNode extends ExplorerProfileNode {
     readonly resourceName: string;
     readonly resourceId: string;
     readonly resourceType: ResourceNodeType;
+    deleteResource(): Promise<string | undefined>
+    getIconPath(): vscode.ThemeIcon;
 }
 
 export interface ExplorerFolderNode extends ExplorerProfileNode {

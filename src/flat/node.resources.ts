@@ -9,16 +9,29 @@ export class ResourceNode implements ExplorerResourceNode {
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType) {
     }
 
+	getIconPath(): vscode.ThemeIcon {
+		return new vscode.ThemeIcon("dash");
+	}
+
+	getContextValue(): string {
+		return "resourcenode";
+	}
+	
+	deleteResource(): Promise<string | undefined> {
+		throw new Error('Method not implemented.');
+	}
+
 
 	getTreeItem(): vscode.TreeItem {
 		const treeItem = new vscode.TreeItem(this.resourceId, vscode.TreeItemCollapsibleState.None);
 		treeItem.description = this.resourceName;
-		treeItem.iconPath= new vscode.ThemeIcon("dash");
+		treeItem.iconPath= this.getIconPath();
 		treeItem.command= {
 			"title": "Get",
 			"command": "osc.showResource",
 			"arguments": [this]
 		};
+		treeItem.contextValue = this.getContextValue();
         return treeItem;
 	}
 

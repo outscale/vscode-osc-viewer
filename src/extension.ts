@@ -4,6 +4,8 @@ import * as vscode from 'vscode';
 import { multiStepInput } from './config_file/action.addprofile';
 import {OscExplorer} from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
+import { ResourceNode } from './flat/node.resources';
+import { VmResourceNode } from './flat/node.resources.vms';
 import { OscVirtualFileSystemProvider } from './osc_virtual_filesystem/oscvirtualfs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -43,6 +45,33 @@ export function activate(context: vscode.ExtensionContext) {
 		await vscode.window.showTextDocument(doc);
 		await vscode.languages.setTextDocumentLanguage(doc, "json");
 	}));
+
+	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode) => {
+		const res = await arg.deleteResource();
+		if (typeof res === "undefined") {
+			vscode.window.showInformationMessage(`Deletion of ${arg.resourceName} succeeded`);
+		} else {
+			vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
+		}
+	});
+
+	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode) => {
+		const res = await arg.stopResource();
+		if (typeof res === "undefined") {
+			vscode.window.showInformationMessage(`Stop of ${arg.resourceName} succeeded`);
+		} else {
+			vscode.window.showErrorMessage(`Error while stopping ${arg.resourceName}: ${res}`);
+		}
+	});
+
+	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode) => {
+		const res = await arg.startResource();
+		if (typeof res === "undefined") {
+			vscode.window.showInformationMessage(`Start of ${arg.resourceName} succeeded`);
+		} else {
+			vscode.window.showErrorMessage(`Error while starting ${arg.resourceName}: ${res}`);
+		}
+	});
 
 
 	

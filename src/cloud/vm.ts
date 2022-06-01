@@ -60,3 +60,72 @@ export function getVmName(vm: osc.Vm): string {
     }
     return "";
 }
+
+export function deleteVm(profile: Profile, vmId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteVmsOperationRequest = {
+        deleteVmsRequest: {
+            vmIds: [vmId]
+        }
+    };
+    console.log("Test");
+
+    let api = new osc.VmApi(config);
+    return api.deleteVms(deleteParameters)
+    .then((res: osc.DeleteVmsResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        console.log(res);
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+    
+}
+
+export function startVm(profile: Profile, vmId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let startParameters : osc.StartVmsOperationRequest = {
+        startVmsRequest: {
+            vmIds: [vmId]
+        }
+    };
+    console.log("Test");
+
+    let api = new osc.VmApi(config);
+    return api.startVms(startParameters)
+    .then((res: osc.StartVmsResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        console.log(res);
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+    
+}
+
+export function stopVm(profile: Profile, vmId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let stopParameters : osc.StopVmsOperationRequest = {
+        stopVmsRequest: {
+            vmIds: [vmId]
+        }
+    };
+    console.log("Test");
+
+    let api = new osc.VmApi(config);
+    return api.stopVms(stopParameters)
+    .then((res: osc.StopVmsResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        console.log(res);
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+    
+}

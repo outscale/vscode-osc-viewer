@@ -13,7 +13,10 @@
     "onCommand:osc-viewer.helloWorld",
     "onView:profile",
     "onCommand:osc-viewer.configure",
-    "onCommand:osc.showResource"
+    "onCommand:osc.showResource",
+    "onCommand:osc.deleteResource",
+    "onCommand:osc.startVm",
+    "onCommand:osc.stopVm"
   ],
   "main": "./out/extension.js",
   "contributes": {
@@ -40,6 +43,18 @@
       {
         "command": "osc.showResource",
         "title": "Get"
+      },
+      {
+        "command": "osc.deleteResource",
+        "title": "Delete"
+      },
+      {
+        "command": "osc.stopVm",
+        "title": "Stop"
+      },
+      {
+        "command": "osc.startVm",
+        "title": "Start"
       }
     ],
     "viewsContainers": {
@@ -75,6 +90,23 @@
           "command": "profile.addEntry",
           "when": "view == profile",
           "group": "navigation"
+        }
+      ],
+      "view/item/context": [
+        {
+          "command": "osc.deleteResource",
+          "when": "view == profile && viewItem =~ /^resourcenode$|^vmresourcenode$/",
+          "group": "0@3"
+        },
+        {
+          "command": "osc.startVm",
+          "when": "view == profile && viewItem == vmresourcenode",
+          "group": "0@1"
+        },
+        {
+          "command": "osc.stopVm",
+          "when": "view == profile && viewItem == vmresourcenode",
+          "group": "0@2"
         }
       ]
     }
