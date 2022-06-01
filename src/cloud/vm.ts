@@ -54,7 +54,7 @@ export function getVmName(vm: osc.Vm): string {
     }
 
     for (const tag of vm.tags) {
-        if (tag.key === "name") {
+        if (tag.key === "name" || tag.key === "Name") {
             return tag.value;
         }
     }
