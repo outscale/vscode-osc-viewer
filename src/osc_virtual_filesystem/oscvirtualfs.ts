@@ -25,8 +25,8 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
     stat(_uri: Uri): FileStat {
         return {
             type: FileType.File,
-            ctime: 0,
-            mtime: 0,
+            ctime: Date.now(),
+            mtime: Date.now(),
             permissions: FilePermission.Readonly,
             size: 65536  // These files don't seem to matter for us
         };
