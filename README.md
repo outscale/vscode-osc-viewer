@@ -8,6 +8,8 @@ This extension provides a vscode integrated viewer of cloud resources. It relies
   - Nets
   - Security Groups
   - Keypairs
+  - Load balancers
+  - Volumes
 - Start, Stop and Deletion of Vms (right click)
 - Display raw cloud resource when clicking on it 
 - Display icon state according to the status
