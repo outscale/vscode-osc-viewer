@@ -1,10 +1,11 @@
-import { KeypairToJSON, LoadBalancerToJSON, NetToJSON, SecurityGroupToJSON, VmToJSON } from "outscale-api";
+import { KeypairToJSON, LoadBalancerToJSON, NetToJSON, SecurityGroupToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import * as querystring from "querystring";
 import { Disposable, Event, EventEmitter, FileChangeEvent, FilePermission, FileStat, FileSystemProvider, FileType, Uri } from "vscode";
 import { getKeypair } from "../cloud/keypair";
 import { getLoadBalancer } from "../cloud/loadbalancer";
 import { getSecurityGroup, getSecurityGroups } from "../cloud/securitygroups";
 import { getVm } from "../cloud/vm";
+import { getVolume } from "../cloud/volume";
 import { getNet } from "../cloud/vpc";
 import { readConfigFile } from "../config_file/utils";
 import { Profile } from "../flat/node";
@@ -94,6 +95,12 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
                     throw new Error(keypair);
                 }
                 return enc.encode(JSON.stringify(KeypairToJSON(keypair), null, 4));
+            case "volumes":
+                const volume = await getVolume(profile, resourceId);
+                if (typeof volume === "string") {
+                    throw new Error(volume);
+                }
+                return enc.encode(JSON.stringify(VolumeToJSON(volume), null, 4));
             case "loadbalancers":
                 const lb = await getLoadBalancer(profile, resourceId);
                 if (typeof lb === "string") {

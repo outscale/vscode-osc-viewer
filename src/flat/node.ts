@@ -32,6 +32,7 @@ export type ResourceNodeType=
     "vpc" |
     "securitygroups" |
     "keypairs" |
+    "volumes" |
     "loadbalancers";
 export class NodeImpl {
 }
