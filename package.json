@@ -2,7 +2,7 @@
   "name": "osc-viewer",
   "displayName": "osc-viewer",
   "description": "Viewer of the resource in the 3DS Outscale Cloud",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "publisher": "outscale",
   "preview": true,
   "repository": {
@@ -10,7 +10,7 @@
     "url": "github.com/outscale-dev/vscode-osc-viewer"
   },
   "engines": {
-    "vscode": "^1.67.0"
+    "vscode": "^1.70.0"
   },
   "categories": [
     "Other"
@@ -133,7 +133,10 @@
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "test-compile": "tsc -p ./",
-    "package": "vsce package"
+    "package": "vsce package",
+    "compile": "tsc -p ./",
+    "lint": "eslint . --ext .ts,.tsx",
+    "watch": "tsc -watch -p ./"
   },
   "devDependencies": {
     "@types/glob": "^7.2.0",
