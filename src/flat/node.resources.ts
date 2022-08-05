@@ -9,6 +9,10 @@ export class ResourceNode implements ExplorerResourceNode {
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType) {
     }
 
+	getResourceId(): Promise<string | undefined> {
+		return Promise.resolve(this.resourceId);
+	}
+
 	getIconPath(): vscode.ThemeIcon {
 		return new vscode.ThemeIcon("dash");
 	}

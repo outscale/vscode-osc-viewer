@@ -1,6 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
+import { write } from './components/clipboard';
 import { multiStepInput } from './config_file/action.addprofile';
 import {OscExplorer} from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
@@ -53,6 +54,14 @@ export function activate(context: vscode.ExtensionContext) {
 		} else {
 			vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
 		}
+	});
+
+	vscode.commands.registerCommand('osc.copyResourceId', async (arg: ResourceNode) => {
+		const res = await arg.getResourceId();
+		if (typeof res === 'string') {
+			await write(res);
+		}
+		
 	});
 
 	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode) => {
