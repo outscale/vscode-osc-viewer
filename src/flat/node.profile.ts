@@ -4,6 +4,7 @@ import { VmsFolderNode } from './node.folder.vms';
 import { VpcFolderNode } from './node.folder.vpc';
 import { SecurityGroupsFolderNode } from './node.folder.securitygroups';
 import { KeypairsFolderNode } from './node.folder.keypair';
+import { LoadBalancerFolderNode } from './node.folder.loadbalancer';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -22,7 +23,8 @@ export class ProfileNode implements ExplorerProfileNode {
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
-			new KeypairsFolderNode(this.profile)
+			new KeypairsFolderNode(this.profile),
+			new LoadBalancerFolderNode(this.profile)
 		]);
 		
     }

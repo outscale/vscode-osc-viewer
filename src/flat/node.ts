@@ -31,7 +31,8 @@ export type ResourceNodeType=
     "vms" |
     "vpc" |
     "securitygroups" |
-    "keypairs";
+    "keypairs" |
+    "loadbalancers";
 export class NodeImpl {
 }
 
