@@ -4,6 +4,9 @@ All notable changes to the "osc-viewer" extension will be documented in this fil
 
 Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
 
+## [v0.0.3]
+- Handle `region` and `region_name` in config file
+
 ## [v0.0.2]
 - Add new resources: Loadbalancers and Volumes
 - Add copy resource id to clipboard
