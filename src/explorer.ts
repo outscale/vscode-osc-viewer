@@ -23,7 +23,12 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 			return element.getChildren();
 		} else {
 			const toExplorerNode = (profileName: string, definition: any): ProfileNode => {
-				return new ProfileNode(new Profile(profileName, definition.access_key, definition.secret_key, definition.region_name));
+				if ('region_name' in definition) {
+					return new ProfileNode(new Profile(profileName, definition.access_key, definition.secret_key, definition.region_name));
+				} else {
+					return new ProfileNode(new Profile(profileName, definition.access_key, definition.secret_key, definition.region));
+				}
+
 			};
 
 			const oscConfigObject= readConfigFile();

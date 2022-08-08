@@ -58,7 +58,12 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
         if (typeof profileData === "undefined") {
             throw new Error("malformed uri");
         }
-        const profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region_name);
+        var profile ;
+        if ('region_name' in profileData) {
+            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region_name);
+        } else {
+            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region);
+        }
 
         // Retrieve the resource Type
         const resourceType = pathSplit[2];

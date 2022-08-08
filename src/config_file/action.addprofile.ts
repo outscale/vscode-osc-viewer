@@ -139,7 +139,7 @@ import { Profile } from '../flat/node';
             "https": true,
             "method": "POST",
             // eslint-disable-next-line @typescript-eslint/naming-convention
-            "region_name": state.region
+            "region": state.region
         };
 
         writeConfigFile(configJson);
