@@ -42,6 +42,8 @@ export class Profile {
 		public readonly name: string,
 		public readonly accessKey: string,
 		public readonly secretKey: string,
-        public readonly region: string
+        public readonly region: string,
+        public readonly host: string,
+        public readonly https: boolean
 	) {	}
 }

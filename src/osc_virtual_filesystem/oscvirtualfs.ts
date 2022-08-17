@@ -60,9 +60,9 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
         }
         var profile ;
         if ('region_name' in profileData) {
-            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region_name);
+            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region_name, profileData.host, profileData.https);
         } else {
-            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region);
+            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region, profileData.host, profileData.https);
         }
 
         // Retrieve the resource Type
