@@ -22,6 +22,8 @@ import { Profile } from '../flat/node';
 		accessKey: string;
 		secretKey: string;
 		region: string;
+		host: string;
+		https: boolean;
 	}
 
 	async function collectInputs() {
@@ -31,12 +33,13 @@ import { Profile } from '../flat/node';
 	}
 
 	const title = 'Add a profile';
+	const steps = 6;
 
 	async function inputProfileName(input: MultiStepInput, state: Partial<State>) {
 		state.name = await input.showInputBox({
 			title,
 			step: 1,
-			totalSteps: 4,
+			totalSteps: steps,
 			value: '',
 			prompt: 'Choose a unique name for the profile',
 			validate: validateNameIsUnique,
@@ -49,7 +52,7 @@ import { Profile } from '../flat/node';
 		state.accessKey = await input.showInputBox({
 			title,
 			step: 2,
-			totalSteps: 4,
+			totalSteps: steps,
 			value: '',
 			prompt: 'Enter your Access Key',
 			validate: valideIsNotNull,
@@ -62,7 +65,7 @@ import { Profile } from '../flat/node';
 		state.secretKey = await input.showInputBox({
 			title,
 			step: 3,
-			totalSteps: 4,
+			totalSteps: steps,
 			value: '',
 			prompt: 'Enter your Secret Key',
 			validate: valideIsNotNull,
@@ -89,12 +92,40 @@ import { Profile } from '../flat/node';
 		const pick = await input.showQuickPick({
 			title,
 			step: 4,
-			totalSteps: 4,
+			totalSteps: steps,
 			placeholder: 'Pick a region',
 			items: regionGroups,
 			shouldResume: shouldResume
 		});
 		state.region = pick.label;
+
+		return (input: MultiStepInput) => inputHost(input, state);
+	}
+
+	async function inputHost(input: MultiStepInput, state: Partial<State>) {
+		state.host = await input.showInputBox({
+			title,
+			step: 5,
+			totalSteps: steps,
+			value: 'outscale.com',
+			prompt: 'Enter the host',
+			validate: valideIsNotNull,
+			shouldResume: shouldResume
+		});
+
+		return (input: MultiStepInput) => inputHttps(input, state);
+	}
+
+	async function inputHttps(input: MultiStepInput, state: Partial<State>) {
+		const pick = await input.showQuickPick({
+			title,
+			step: 6,
+			totalSteps: steps,
+			placeholder: 'Pick a region',
+			items: [{label: 'yes'}, {label: 'no'}],
+			shouldResume: shouldResume
+		});
+		state.https = (pick.label === 'yes') ? true: false;
 	}
 
 	function shouldResume() {
@@ -135,8 +166,8 @@ import { Profile } from '../flat/node';
             "access_key": state.accessKey,
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "secret_key": state.secretKey,
-            "host": "outscale.com",
-            "https": true,
+            "host": state.host,
+            "https": state.https,
             "method": "POST",
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "region": state.region
@@ -150,7 +181,7 @@ import { Profile } from '../flat/node';
 	const state = await collectInputs();
 	
 	// Validate the account
-	const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region)).then((result) => {
+	const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region, state.host, state.https)).then((result) => {
 		if (typeof result === "string") {
 			window.showErrorMessage(`The account '${state.name}' is invalid. Please retry !`);
 			return false;
