@@ -23,6 +23,7 @@
     "onCommand:osc.deleteResource",
     "onCommand:osc.copyResourceId",
     "onCommand:osc.startVm",
+    "onCommand:osc.showConsoleLogs",
     "onCommand:osc.stopVm"
   ],
   "main": "./out/main.js",
@@ -66,6 +67,16 @@
       {
         "command": "osc.copyResourceId",
         "title": "Copy Resource Id"
+      },
+      {
+        "command": "osc.showConsoleLogs",
+        "title": "Show Console Logs"
+      },
+      {
+        "command": "osc.refreshConsoleLogs",
+        "title": "Refresh Console Logs",
+        "icon": "$(refresh)"
+      }
       }
     ],
     "viewsContainers": {
@@ -103,26 +114,38 @@
           "group": "navigation"
         }
       ],
+      "editor/title": [
+        {
+          "command": "osc.refreshConsoleLogs",
+          "group": "navigation",
+          "when": "resourceScheme == osc-logs"
+        },
+      ],
       "view/item/context": [
         {
           "command": "osc.deleteResource",
           "when": "view == profile && viewItem =~ /^resourcenode$|^vmresourcenode$/",
-          "group": "0@3"
+          "group": "oscinteract@3"
         },
         {
           "command": "osc.copyResourceId",
           "when": "view == profile && viewItem =~ /^resourcenode$|^vmresourcenode$/",
-          "group": "0@3"
+          "group": "oscget@1"
         },
         {
           "command": "osc.startVm",
           "when": "view == profile && viewItem == vmresourcenode",
-          "group": "0@1"
+          "group": "oscinteract@1"
         },
         {
           "command": "osc.stopVm",
           "when": "view == profile && viewItem == vmresourcenode",
-          "group": "0@2"
+          "group": "oscinteract@2"
+        },
+        {
+          "command": "osc.showConsoleLogs",
+          "when": "view == profile && viewItem == vmresourcenode",
+          "group": "oscget@2"
         }
       ]
     }

@@ -8,6 +8,7 @@ import { ExplorerResourceNode } from './flat/node';
 import { ResourceNode } from './flat/node.resources';
 import { VmResourceNode } from './flat/node.resources.vms';
 import { OscVirtualFileSystemProvider } from './osc_virtual_filesystem/oscvirtualfs';
+import { LogsProvider } from './utils/logs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -82,6 +83,21 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
+	vscode.commands.registerCommand('osc.showConsoleLogs', async (arg: VmResourceNode) => {
+		const uri = vscode.Uri.parse('osc-logs:/' + arg.profile.name + "/" + arg.resourceId);
+		const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+		await vscode.window.showTextDocument(doc, { preview: false });
+	});
+
+	const mySchemeLogs = 'osc-logs';
+
+	const logsProvider = new LogsProvider();
+	context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(mySchemeLogs, logsProvider));
+
+	vscode.commands.registerCommand('osc.refreshConsoleLogs', async (arg: any) => {
+		logsProvider.onDidChangeEmitter.fire(arg);
+		vscode.window.showInformationMessage(`Refreshed`);
+	});
 
 	
 }

@@ -126,3 +126,21 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
     });
     
 }
+
+export async function getLogs(profile: Profile, vmId: string): Promise<string> {
+    let config = getConfig(profile);
+    let stopParameters : osc.ReadConsoleOutputOperationRequest = {
+        readConsoleOutputRequest: {
+            vmId: vmId
+        }
+    };
+
+    let api = new osc.VmApi(config);
+    return api.readConsoleOutput(stopParameters)
+            .then((res: osc.ReadConsoleOutputResponse) => {
+                if (typeof res.consoleOutput === "undefined") {
+                    return "fail";
+                }
+                return res.consoleOutput;
+            });
+}
