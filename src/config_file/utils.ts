@@ -1,5 +1,6 @@
 import * as fs from 'fs';
 import path = require('path');
+import { Profile } from '../flat/node';
 
 const OSC_CONFIG_PATH = [process.env.HOME + "/.osc/config.json"];
 
@@ -55,3 +56,27 @@ export function createConfigFile() {
     fs.mkdirSync(path.dirname(defaultConfifgPath), { recursive: true });
     fs.writeFileSync(defaultConfifgPath, "");
 }
+
+export function getProfile(profileName: string): Profile {
+    const oscConfigFile = readConfigFile();
+    if (typeof oscConfigFile === 'undefined') {
+        throw new Error("malformed uri");
+    }
+    const profileData = oscConfigFile[profileName];
+    if (typeof profileData === "undefined") {
+        throw new Error("malformed uri");
+    }
+    var profile = jsonToProfile(profileName, profileData);
+
+    return profile;
+}
+
+export function jsonToProfile(profileName: string, profileJson: any): Profile {
+    var profile;
+    if ('region_name' in profileJson) {
+        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region_name, profileJson.host, profileJson.https);
+    } else {
+        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region, profileJson.host, profileJson.https);
+    }
+    return profile;
+} 

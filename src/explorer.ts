@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, Profile } from './flat/node';
 import { ProfileNode } from './flat/node.profile';
-import { createConfigFile, getConfigFile, getDefaultConfigFilePath, readConfigFile } from './config_file/utils';
+import { createConfigFile, getConfigFile, getDefaultConfigFilePath, jsonToProfile, readConfigFile } from './config_file/utils';
 
 
 export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
@@ -23,12 +23,7 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 			return element.getChildren();
 		} else {
 			const toExplorerNode = (profileName: string, definition: any): ProfileNode => {
-				if ('region_name' in definition) {
-					return new ProfileNode(new Profile(profileName, definition.access_key, definition.secret_key, definition.region_name, definition.host, definition.https));
-				} else {
-					return new ProfileNode(new Profile(profileName, definition.access_key, definition.secret_key, definition.region, definition.host, definition.https));
-				}
-
+				return new ProfileNode(jsonToProfile(profileName, definition));
 			};
 
 			const oscConfigObject= readConfigFile();

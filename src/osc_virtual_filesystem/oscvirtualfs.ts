@@ -1,13 +1,12 @@
 import { KeypairToJSON, LoadBalancerToJSON, NetToJSON, SecurityGroupToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
-import * as querystring from "querystring";
 import { Disposable, Event, EventEmitter, FileChangeEvent, FilePermission, FileStat, FileSystemProvider, FileType, Uri } from "vscode";
 import { getKeypair } from "../cloud/keypair";
 import { getLoadBalancer } from "../cloud/loadbalancer";
-import { getSecurityGroup, getSecurityGroups } from "../cloud/securitygroups";
+import { getSecurityGroup } from "../cloud/securitygroups";
 import { getVm } from "../cloud/vm";
 import { getVolume } from "../cloud/volume";
 import { getNet } from "../cloud/vpc";
-import { readConfigFile } from "../config_file/utils";
+import { getProfile } from "../config_file/utils";
 import { Profile } from "../flat/node";
 
 
@@ -50,20 +49,7 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
 
         // Retrieve Profile
         const uriProfile = pathSplit[1];
-        const oscConfigFile = readConfigFile();
-        if (typeof oscConfigFile === 'undefined') {
-            throw new Error("malformed uri");
-        }
-        const profileData = oscConfigFile[uriProfile];
-        if (typeof profileData === "undefined") {
-            throw new Error("malformed uri");
-        }
-        var profile ;
-        if ('region_name' in profileData) {
-            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region_name, profileData.host, profileData.https);
-        } else {
-            profile = new Profile(uriProfile, profileData.access_key, profileData.secret_key, profileData.region, profileData.host, profileData.https);
-        }
+        let profile = getProfile(uriProfile);
 
         // Retrieve the resource Type
         const resourceType = pathSplit[2];
