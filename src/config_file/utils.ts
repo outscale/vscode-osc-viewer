@@ -73,10 +73,20 @@ export function getProfile(profileName: string): Profile {
 
 export function jsonToProfile(profileName: string, profileJson: any): Profile {
     var profile;
+    var host = "outscale.com";
+    var https = true;
+    if ('host' in profileJson) {
+        host = profileJson["host"];
+    }
+
+    if ('https' in profileJson) {
+        https = profileJson["https"];
+    }
+
     if ('region_name' in profileJson) {
-        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region_name, profileJson.host, profileJson.https);
+        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region_name, host, https);
     } else {
-        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region, profileJson.host, profileJson.https);
+        profile = new Profile(profileName, profileJson.access_key, profileJson.secret_key, profileJson.region, host, https);
     }
     return profile;
 } 
