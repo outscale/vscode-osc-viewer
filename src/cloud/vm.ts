@@ -68,7 +68,6 @@ export function deleteVm(profile: Profile, vmId: string): Promise<string | undef
             vmIds: [vmId]
         }
     };
-    console.log("Test");
 
     let api = new osc.VmApi(config);
     return api.deleteVms(deleteParameters)
@@ -91,7 +90,6 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
             vmIds: [vmId]
         }
     };
-    console.log("Test");
 
     let api = new osc.VmApi(config);
     return api.startVms(startParameters)
@@ -114,7 +112,6 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
             vmIds: [vmId]
         }
     };
-    console.log("Test");
 
     let api = new osc.VmApi(config);
     return api.stopVms(stopParameters)
