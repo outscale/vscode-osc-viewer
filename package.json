@@ -2,7 +2,7 @@
   "name": "osc-viewer",
   "displayName": "osc-viewer",
   "description": "Viewer of the resource in the 3DS Outscale Cloud",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "publisher": "outscale",
   "preview": true,
   "repository": {
@@ -92,7 +92,6 @@
         "title": "Refresh Console Logs",
         "icon": "$(refresh)"
       }
-      }
     ],
     "viewsContainers": {
       "activitybar": [
@@ -134,7 +133,7 @@
           "command": "osc.refreshConsoleLogs",
           "group": "navigation",
           "when": "resourceScheme == osc-logs"
-        },
+        }
       ],
       "view/item/context": [
         {

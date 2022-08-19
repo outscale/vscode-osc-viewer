@@ -75,7 +75,6 @@ export function deleteVm(profile: Profile, vmId: string): Promise<string | undef
         if (typeof res === "string") {
             return res;
         }
-        console.log(res);
         return undefined;
     }, (err_: any) => {
         return "Error, bad credential or region?" + err_;
