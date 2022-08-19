@@ -3,7 +3,7 @@
 import * as vscode from 'vscode';
 import { write } from './components/clipboard';
 import { multiStepInput } from './config_file/action.addprofile';
-import {OscExplorer} from "./explorer";
+import { OscExplorer } from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
 import { ResourceNode } from './flat/node.resources';
 import { VmResourceNode } from './flat/node.resources.vms';
@@ -12,7 +12,7 @@ import { LogsProvider } from './utils/logs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
-	
+
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "osc-viewer" is now active!');
@@ -42,19 +42,21 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// register a command that opens a cowsay-document
 	context.subscriptions.push(vscode.commands.registerCommand('osc.showResource', async (resource: ExplorerResourceNode) => {
-		const uri = vscode.Uri.parse('osc:/' + resource.profile.name + "/" +  resource.resourceType + "/" + resource.resourceId);
+		const uri = vscode.Uri.parse('osc:/' + resource.profile.name + "/" + resource.resourceType + "/" + resource.resourceId);
 		const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
 		await vscode.window.showTextDocument(doc);
 		await vscode.languages.setTextDocumentLanguage(doc, "json");
 	}));
 
 	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode) => {
-		const res = await arg.deleteResource();
-		if (typeof res === "undefined") {
-			vscode.window.showInformationMessage(`Deletion of ${arg.resourceName} succeeded`);
-		} else {
-			vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
-		}
+		showYesOrNoWindow("Do you want delete the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+			const res = await arg.deleteResource();
+			if (typeof res === "undefined") {
+				vscode.window.showInformationMessage(`Deletion of ${arg.resourceName} succeeded`);
+			} else {
+				vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
+			}
+		});
 	});
 
 	vscode.commands.registerCommand('osc.copyResourceId', async (arg: ResourceNode) => {
@@ -62,25 +64,28 @@ export function activate(context: vscode.ExtensionContext) {
 		if (typeof res === 'string') {
 			await write(res);
 		}
-		
 	});
 
 	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode) => {
-		const res = await arg.stopResource();
-		if (typeof res === "undefined") {
-			vscode.window.showInformationMessage(`Stop of ${arg.resourceName} succeeded`);
-		} else {
-			vscode.window.showErrorMessage(`Error while stopping ${arg.resourceName}: ${res}`);
-		}
+		showYesOrNoWindow("Do you want stop the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+			const res = await arg.stopResource();
+			if (typeof res === "undefined") {
+				vscode.window.showInformationMessage(`Stop of ${arg.resourceName} succeeded`);
+			} else {
+				vscode.window.showErrorMessage(`Error while stopping ${arg.resourceName}: ${res}`);
+			}
+		});
 	});
 
 	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode) => {
-		const res = await arg.startResource();
-		if (typeof res === "undefined") {
-			vscode.window.showInformationMessage(`Start of ${arg.resourceName} succeeded`);
-		} else {
-			vscode.window.showErrorMessage(`Error while starting ${arg.resourceName}: ${res}`);
-		}
+		showYesOrNoWindow("Do you want start the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+			const res = await arg.startResource();
+			if (typeof res === "undefined") {
+				vscode.window.showInformationMessage(`Start of ${arg.resourceName} succeeded`);
+			} else {
+				vscode.window.showErrorMessage(`Error while starting ${arg.resourceName}: ${res}`);
+			}
+		});
 	});
 
 	vscode.commands.registerCommand('osc.showConsoleLogs', async (arg: VmResourceNode) => {
@@ -99,7 +104,16 @@ export function activate(context: vscode.ExtensionContext) {
 		vscode.window.showInformationMessage(`Refreshed`);
 	});
 
-	
+
 }
 // this method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() { }
+
+function showYesOrNoWindow(question: string, cb: () => void) {
+	vscode.window.showInformationMessage(question, "Yes", "No")
+		.then(async (answer) => {
+			if (answer === "Yes") {
+				cb();
+			}
+		});
+}
