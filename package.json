@@ -28,6 +28,21 @@
   ],
   "main": "./out/main.js",
   "contributes": {
+    "configuration": {
+      "title": "3DS Outscale",
+      "properties": {
+        "osc-viewer.refreshConsoleLogs.interval": {
+          "type": "integer",
+          "default": "5",
+          "description": "Interval in seconds to refresh console logs."
+        },
+        "osc-viewer.refreshConsoleLogs.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "Automatic refresh of console logs."
+        }
+      }
+    },
     "commands": [
       {
         "command": "osc-viewer.helloWorld",
@@ -180,6 +195,6 @@
   "dependencies": {
     "cross-fetch": "^3.1.5",
     "outscale-api": "^0.2.2",
-    "querystring": "^0.2.1"
+    "rxjs": "^7.5.6"
   }
 }

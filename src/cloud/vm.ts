@@ -127,7 +127,7 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
     
 }
 
-export async function getLogs(profile: Profile, vmId: string): Promise<string> {
+export async function getLogs(profile: Profile, vmId: string): Promise<string | undefined> {
     let config = getConfig(profile);
     let stopParameters : osc.ReadConsoleOutputOperationRequest = {
         readConsoleOutputRequest: {
@@ -137,9 +137,14 @@ export async function getLogs(profile: Profile, vmId: string): Promise<string> {
 
     let api = new osc.VmApi(config);
     return api.readConsoleOutput(stopParameters)
-            .then((res: osc.ReadConsoleOutputResponse) => {
+            .then((res: osc.ReadConsoleOutputResponse | string) => {
+                if (typeof res === "string") {
+                    console.log(res);
+                    return undefined;
+                }
+                
                 if (typeof res.consoleOutput === "undefined") {
-                    return "fail";
+                    return undefined;
                 }
                 return res.consoleOutput;
             });
