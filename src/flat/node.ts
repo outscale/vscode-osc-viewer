@@ -36,7 +36,8 @@ export type ResourceNodeType=
     "loadbalancers" |
     "eips" |
     "omis" |
-    "snapshots";
+    "snapshots"|
+    "routetables";
 export class NodeImpl {
 }
 

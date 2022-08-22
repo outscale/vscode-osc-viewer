@@ -9,6 +9,7 @@ import { LoadBalancerFolderNode } from './node.folder.loadbalancer';
 import { ExternalIPsFolderNode } from './node.folder.eips';
 import { OMIsFolderNode } from './node.folder.omis';
 import { SnapshotsFolderNode } from './node.folder.snapshots';
+import { RouteTablesFolderNode } from './node.folder.routetables';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -32,7 +33,8 @@ export class ProfileNode implements ExplorerProfileNode {
 			new LoadBalancerFolderNode(this.profile),
 			new ExternalIPsFolderNode(this.profile),
 			new OMIsFolderNode(this.profile),
-			new SnapshotsFolderNode(this.profile)
+			new SnapshotsFolderNode(this.profile),
+			new RouteTablesFolderNode(this.profile)
 		]);
 		
     }
