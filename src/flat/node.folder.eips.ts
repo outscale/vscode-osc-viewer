@@ -3,6 +3,7 @@ import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
 import { getExternalIPs } from '../cloud/eips';
+import { PublicIpResourceNode } from './node.resources.eip';
 
 export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -20,7 +21,7 @@ export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderN
 				if (typeof publicIp.publicIp === 'undefined' || typeof publicIp.publicIpId === 'undefined') {
 					continue;
 				}
-                resources.push(new ResourceNode(this.profile, publicIp.publicIp, publicIp.publicIpId, "eips"));
+                resources.push(new PublicIpResourceNode(this.profile, publicIp.publicIp, publicIp.publicIpId, (typeof publicIp.linkPublicIpId === "undefined" || publicIp.linkPublicIpId.length === 0) ? "unlink": "link"));
 			}
 			return Promise.resolve(resources);
 		});
