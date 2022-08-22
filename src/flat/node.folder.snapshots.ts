@@ -2,7 +2,6 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getExternalIPs } from '../cloud/eips';
 import { getSnapshots } from '../cloud/snapshots';
 
 export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNode {
@@ -18,10 +17,10 @@ export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNod
 			}
 			let resources = [];
 			for (const snapshot of result) {
-				if (typeof snapshot.snapshotId === 'undefined') {
+				if (typeof snapshot.snapshotId === 'undefined' || typeof snapshot.description === 'undefined') {
 					continue;
 				}
-                resources.push(new ResourceNode(this.profile, "", snapshot.snapshotId, "snapshots"));
+                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots"));
 			}
 			return Promise.resolve(resources);
 		});
