@@ -68,6 +68,11 @@
         "title": "Get"
       },
       {
+        "command": "osc.refreshResourceData",
+        "title": "Refresh Resource Data",
+        "icon": "$(refresh)"
+      },
+      {
         "command": "osc.deleteResource",
         "title": "Delete"
       },
@@ -133,6 +138,11 @@
           "command": "osc.refreshConsoleLogs",
           "group": "navigation",
           "when": "resourceScheme == osc-logs"
+        },
+        {
+          "command": "osc.refreshResourceData",
+          "group": "navigation",
+          "when": "resourceScheme == osc"
         }
       ],
       "view/item/context": [

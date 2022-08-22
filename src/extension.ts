@@ -7,7 +7,7 @@ import { OscExplorer } from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
 import { ResourceNode } from './flat/node.resources';
 import { VmResourceNode } from './flat/node.resources.vms';
-import { OscVirtualFileSystemProvider } from './osc_virtual_filesystem/oscvirtualfs';
+import { OscVirtualContentProvider } from './osc_virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './utils/logs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -38,7 +38,13 @@ export function activate(context: vscode.ExtensionContext) {
 
 	// register a content provider for the cowsay-scheme
 	const myScheme = 'osc';
-	context.subscriptions.push(vscode.workspace.registerFileSystemProvider(myScheme, new OscVirtualFileSystemProvider(), {}));
+	const oscProvider = new OscVirtualContentProvider();
+	context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(myScheme, oscProvider));
+
+	vscode.commands.registerCommand('osc.refreshResourceData', async (arg: any) => {
+		oscProvider.onDidChangeEmitter.fire(arg);
+		vscode.window.showInformationMessage(`Refreshed`);
+	});
 
 	// register a command that opens a cowsay-document
 	context.subscriptions.push(vscode.commands.registerCommand('osc.showResource', async (resource: ExplorerResourceNode) => {
@@ -47,6 +53,7 @@ export function activate(context: vscode.ExtensionContext) {
 		await vscode.window.showTextDocument(doc);
 		await vscode.languages.setTextDocumentLanguage(doc, "json");
 	}));
+	
 
 	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode) => {
 		showYesOrNoWindow("Do you want delete the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
