@@ -33,7 +33,8 @@ export type ResourceNodeType=
     "securitygroups" |
     "keypairs" |
     "volumes" |
-    "loadbalancers";
+    "loadbalancers"|
+    "eips";
 export class NodeImpl {
 }
 
