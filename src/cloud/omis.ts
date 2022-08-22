@@ -4,10 +4,12 @@ import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
 
 
-export function getOMIs(profile: Profile): Promise<Array<osc.Image> | string> {
+export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<Array<osc.Image> | string> {
     let config = getConfig(profile);
     let readParameters : osc.ReadImagesOperationRequest = {
-        readImagesRequest: {}
+        readImagesRequest: {
+            filters: filters
+        }
     };
 
     let api = new osc.ImageApi(config);
