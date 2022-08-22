@@ -7,8 +7,8 @@ import { OscExplorer } from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
 import { ResourceNode } from './flat/node.resources';
 import { VmResourceNode } from './flat/node.resources.vms';
-import { OscVirtualContentProvider } from './osc_virtual_filesystem/oscvirtualfs';
-import { LogsProvider } from './utils/logs';
+import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
+import { LogsProvider } from './virtual_filesystem/logs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -31,6 +31,9 @@ export function activate(context: vscode.ExtensionContext) {
 	// Samples of `window.registerTreeDataProvider`
 	const profileProvider = new OscExplorer();
 	vscode.window.registerTreeDataProvider('profile', profileProvider);
+	vscode.window.createTreeView('profile', {
+		treeDataProvider: profileProvider,
+	  });
 	vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
 	vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
 	vscode.commands.registerCommand('profile.addEntry', () => multiStepInput());
