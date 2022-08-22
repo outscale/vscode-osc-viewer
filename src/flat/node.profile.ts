@@ -7,6 +7,7 @@ import { KeypairsFolderNode } from './node.folder.keypair';
 import { VolumeFolderNode } from './node.folder.volume';
 import { LoadBalancerFolderNode } from './node.folder.loadbalancer';
 import { ExternalIPsFolderNode } from './node.folder.eips';
+import { OMIsFolderNode } from './node.folder.omis';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -28,7 +29,8 @@ export class ProfileNode implements ExplorerProfileNode {
 			new KeypairsFolderNode(this.profile),
 			new VolumeFolderNode(this.profile),
 			new LoadBalancerFolderNode(this.profile),
-			new ExternalIPsFolderNode(this.profile)
+			new ExternalIPsFolderNode(this.profile),
+			new OMIsFolderNode(this.profile)
 		]);
 		
     }

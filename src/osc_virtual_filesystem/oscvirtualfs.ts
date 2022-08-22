@@ -1,8 +1,9 @@
-import { KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, SecurityGroupToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, SecurityGroupToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { Disposable, Event, EventEmitter, FileChangeEvent, FilePermission, FileStat, FileSystemProvider, FileType, Uri } from "vscode";
 import { getExternalIP } from "../cloud/eips";
 import { getKeypair } from "../cloud/keypair";
 import { getLoadBalancer } from "../cloud/loadbalancer";
+import { getOMI } from "../cloud/omis";
 import { getSecurityGroup } from "../cloud/securitygroups";
 import { getVm } from "../cloud/vm";
 import { getVolume } from "../cloud/volume";
@@ -105,6 +106,12 @@ export class OscVirtualFileSystemProvider implements FileSystemProvider {
                     throw new Error(eip);
                 }
                 return enc.encode(JSON.stringify(PublicIpToJSON(eip), null, 4));
+            case "omis":
+                const omi = await getOMI(profile, resourceId);
+                if (typeof omi === "string") {
+                    throw new Error(omi);
+                }
+                return enc.encode(JSON.stringify(ImageToJSON(omi), null, 4));
             default:
                 break;
         }
