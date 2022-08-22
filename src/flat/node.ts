@@ -35,7 +35,8 @@ export type ResourceNodeType=
     "volumes" |
     "loadbalancers" |
     "eips" |
-    "omis";
+    "omis" |
+    "snapshots";
 export class NodeImpl {
 }
 
