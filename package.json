@@ -138,12 +138,12 @@
       "view/item/context": [
         {
           "command": "osc.deleteResource",
-          "when": "view == profile && viewItem =~ /^resourcenode$|^vmresourcenode$/",
+          "when": "view == profile && viewItem =~ /resourcenode$/",
           "group": "oscinteract@3"
         },
         {
           "command": "osc.copyResourceId",
-          "when": "view == profile && viewItem =~ /^resourcenode$|^vmresourcenode$/",
+          "when": "view == profile && viewItem =~ /resourcenode$/",
           "group": "oscget@1"
         },
         {
