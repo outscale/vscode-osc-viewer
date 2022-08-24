@@ -24,7 +24,9 @@
     "onCommand:osc.copyResourceId",
     "onCommand:osc.startVm",
     "onCommand:osc.showConsoleLogs",
-    "onCommand:osc.stopVm"
+    "onCommand:osc.stopVm",
+    "onFileSystem:osc",
+    "onFileSystem:osc-logs"
   ],
   "main": "./out/main.js",
   "contributes": {
