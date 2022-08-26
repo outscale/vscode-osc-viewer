@@ -10,6 +10,7 @@ import { ExternalIPsFolderNode } from './node.folder.eips';
 import { OMIsFolderNode } from './node.folder.omis';
 import { SnapshotsFolderNode } from './node.folder.snapshots';
 import { RouteTablesFolderNode } from './node.folder.routetables';
+import { getAccount } from '../cloud/account';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -20,6 +21,7 @@ export class ProfileNode implements ExplorerProfileNode {
 	getTreeItem(): vscode.TreeItem {
 		const treeItem = new vscode.TreeItem(this.profile.name, vscode.TreeItemCollapsibleState.Collapsed);
 		treeItem.iconPath = new vscode.ThemeIcon("account");
+		treeItem.contextValue = this.getContextValue();
         return treeItem;
 	}
 
@@ -39,7 +41,28 @@ export class ProfileNode implements ExplorerProfileNode {
 		
     }
 
+	getContextValue(): string {
+		return "profilenode";
+	}
 
+	async getAccountId(): Promise<string> {
+		if (this.profile.accountId.length !== 0) {
+			return this.profile.accountId;
+		}
+		const res = await getAccount(this.profile, "");
+		if (typeof res === "string") {
+			vscode.window.showInformationMessage(res);
+			return Promise.resolve("");
+		}
+
+		if (typeof res.accountId === 'undefined') {
+			return Promise.resolve("");
+		}
+
+		this.profile.accountId = res.accountId;
+
+		return Promise.resolve(this.profile.accountId);
+	}
 
 
 }

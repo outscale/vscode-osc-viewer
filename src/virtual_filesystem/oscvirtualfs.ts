@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccountToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/eips";
 import { getKeypair } from "../cloud/keypair";
 import { getLoadBalancer } from "../cloud/loadbalancer";
@@ -13,6 +13,7 @@ import { getVolume } from "../cloud/volume";
 import { getNet } from "../cloud/vpc";
 import { getProfile } from "../config_file/utils";
 import { Profile } from "../flat/node";
+import { getAccount } from '../cloud/account';
 
 
 class ResourceEncoding {
@@ -23,6 +24,7 @@ class ResourceEncoding {
 }
 
 const resourceMap = new Map([
+    ["profile", new ResourceEncoding(getAccount, AccountToJSON)],
     ["vms", new ResourceEncoding(getVm, VmToJSON)],
     ["vpc", new ResourceEncoding(getNet, NetToJSON)],
     ["securitygroups", new ResourceEncoding(getSecurityGroup, SecurityGroupToJSON)],

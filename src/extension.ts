@@ -9,6 +9,7 @@ import { ResourceNode } from './flat/node.resources';
 import { VmResourceNode } from './flat/node.resources.vms';
 import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './virtual_filesystem/logs';
+import { ProfileNode } from './flat/node.profile';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -112,6 +113,20 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.commands.registerCommand('osc.refreshConsoleLogs', async (arg: any) => {
 		logsProvider.onDidChangeEmitter.fire(arg);
 		vscode.window.showInformationMessage(`Refreshed`);
+	});
+
+	vscode.commands.registerCommand('osc.showAccountInfo', async (arg: ProfileNode) => {
+		const uri = vscode.Uri.parse('osc:/' + arg.profile.name + "/profile/" + arg.profile.name);
+		const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+		await vscode.window.showTextDocument(doc);
+		await vscode.languages.setTextDocumentLanguage(doc, "json");
+	});
+
+	vscode.commands.registerCommand('osc.copyAccountId', async (arg: ProfileNode) => {
+		const res = await arg.getAccountId();
+		if (typeof res === 'string') {
+			await write(res);
+		}
 	});
 
 

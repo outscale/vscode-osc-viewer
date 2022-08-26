@@ -42,6 +42,7 @@ export class NodeImpl {
 }
 
 export class Profile {
+    accountId: string;
     constructor(
 		public readonly name: string,
 		public readonly accessKey: string,
@@ -49,5 +50,13 @@ export class Profile {
         public readonly region: string,
         public readonly host: string,
         public readonly https: boolean
-	) {	}
+	) {	
+        this.name = name;
+        this.accessKey = accessKey;
+        this.secretKey = secretKey;
+        this.region = region;
+        this.host = host;
+        this.https = https;
+        this.accountId = "";
+    }
 }
