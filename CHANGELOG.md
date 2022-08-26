@@ -1,9 +1,27 @@
 # Change Log
+## [v0.3.0]
+### Features
+ - Add new resources (PublicIp, OMI, Snapshots, Routetables)
+ - Support dynamic icon for PublicIps and Volumes
+ - Add actions on accounts (show account info and copy AccountId)
+ - Support manual content refresh on resources
 
-All notable changes to the "osc-viewer" extension will be documented in this file.
+## [v0.2.1]
+### Bugfixes
+- Fix profile default values
+## [v0.2.0]
+### Features
+ - Add Console logs (manual and automatic reload)
+ - Add confirmation step when starting/stopping and deleting resources
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
+## [v0.1.0]
+### Features
+ - Add steps in profile creation for protocol and host
 
+### Bugfixes
+ - When focusing out from the profile creation menu, it will not disappear
+## [v0.0.4]
+- Support https and hosts field in config file
 ## [v0.0.3]
 - Handle `region` and `region_name` in config file
 

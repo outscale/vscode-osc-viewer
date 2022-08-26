@@ -10,13 +10,18 @@ This extension provides a vscode integrated viewer of cloud resources. It relies
   - Keypairs
   - Load balancers
   - Volumes
+  - Public Ip
+  - OMI
+  - Snapshots
+  - Route Tables
 - Start, Stop and Deletion of Vms (right click)
-- Display raw cloud resource when clicking on it 
-- Display icon state according to the status
+- Display raw cloud resource when clicking on it and manual refresh
+- Display icon state according to the status of Vms, Volumes and Public Ip
+- Display account information
+- Display console output
 
 ## What is next ?
-- Add more resources based on what is necessary
-- Display console output
+- Network view
 - Ask what you want :) 
 
 
