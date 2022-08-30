@@ -220,7 +220,7 @@
     "glob": "^8.0.1",
     "mocha": "^9.2.2",
     "outscale-api": "^0.2.2",
-    "typescript": "^4.6.4",
+    "typescript": "^4.8.2",
     "vsce": "^2.8.0"
   },
   "dependencies": {
