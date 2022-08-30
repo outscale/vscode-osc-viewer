@@ -1,6 +1,9 @@
 # 3DS Outscale Viewer
 This extension provides a vscode integrated viewer of cloud resources. It relies on widely use configuration file (~/.osc/config.json or ~/.osc_sdk/config.json).
 
+## Installation
+Open this extension in the  [Visual Studio Marketplace]https://marketplace.visualstudio.com/items?itemName=outscale.osc-viewer
+
 ## What is it available ?
 - Add account into the `config.json`
 - Listing of this resources for all accounts
@@ -24,6 +27,8 @@ This extension provides a vscode integrated viewer of cloud resources. It relies
 - Network view
 - Ask what you want :) 
 
+## Development
+See [Developpment process](./docs/development.md)
 
 ## License
 
