@@ -1,0 +1,28 @@
+name: Help
+description: You're pretty sure it's not a bug but you can't figure out why it's not working
+title: "[Help]: "
+labels: ["help wanted"]
+body:
+  - type: input
+    id: plugin_version
+    attributes:
+      label: Plugin version
+      description: Which version of the plugin are you using ?
+      placeholder: vX.Y.Z
+    validations:
+      required: true
+  - type: input
+    id: vscode_version
+    attributes:
+      label: VSCode version
+      description: Which version of vscode are you using ?
+      placeholder: vX.Y.Z
+    validations:
+      required: true
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: What are you attempting to do, what error messages are you getting?
+    validations:
+      required: true
