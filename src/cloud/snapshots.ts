@@ -49,3 +49,23 @@ export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.S
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteSnapshot(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteSnapshotOperationRequest = {
+        deleteSnapshotRequest: {
+            snapshotId: resourceId
+        }
+    };
+
+    let api = new osc.SnapshotApi(config);
+    return api.deleteSnapshot(deleteParameters)
+    .then((res: osc.DeleteSnapshotResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

@@ -49,3 +49,23 @@ export function getRouteTable(profile: Profile, routeTableId: string): Promise<o
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteRouteTable(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteRouteTableOperationRequest = {
+        deleteRouteTableRequest: {
+            routeTableId: resourceId
+        }
+    };
+
+    let api = new osc.RouteTableApi(config);
+    return api.deleteRouteTable(deleteParameters)
+    .then((res: osc.DeleteRouteTableResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

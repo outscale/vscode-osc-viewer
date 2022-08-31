@@ -1,4 +1,5 @@
 import { ThemeIcon } from 'vscode';
+import { deleteExternalIP } from '../cloud/eips';
 import { Profile } from './node';
 import { ResourceNode } from './node.resources';
 
@@ -6,7 +7,7 @@ import { ResourceNode } from './node.resources';
 export class PublicIpResourceNode extends ResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState:string) {
-		super(profile, resourceName, resourceId, "eips");
+		super(profile, resourceName, resourceId, "eips", deleteExternalIP);
     }
 
 	getContextValue(): string {

@@ -49,3 +49,23 @@ export function getLoadBalancer(profile: Profile, loadBalancerName: string): Pro
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteLoadBalancer(profile: Profile, loadBalancerName: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteLoadBalancerOperationRequest = {
+        deleteLoadBalancerRequest: {
+            loadBalancerName: loadBalancerName
+        }
+    };
+
+    let api = new osc.LoadBalancerApi(config);
+    return api.deleteLoadBalancer(deleteParameters)
+    .then((res: osc.DeleteLoadBalancerResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

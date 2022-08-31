@@ -13,6 +13,7 @@ export interface ExplorerResourceNode extends ExplorerProfileNode {
     readonly resourceName: string;
     readonly resourceId: string;
     readonly resourceType: ResourceNodeType;
+    readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string| undefined> ;
     deleteResource(): Promise<string | undefined>
     getResourceId(): Promise<string | undefined>
     getIconPath(): vscode.ThemeIcon;

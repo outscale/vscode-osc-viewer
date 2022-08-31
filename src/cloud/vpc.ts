@@ -49,3 +49,23 @@ export function getNet(profile: Profile, netId: string): Promise<osc.Net | strin
             return "Error, bad credential or region?" + err_;
         });
 }
+
+export function deleteNet(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteNetOperationRequest = {
+        deleteNetRequest: {
+            netId: resourceId
+        }
+    };
+
+    let api = new osc.NetApi(config);
+    return api.deleteNet(deleteParameters)
+    .then((res: osc.DeleteNetResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

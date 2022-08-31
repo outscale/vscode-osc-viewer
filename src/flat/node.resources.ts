@@ -6,7 +6,7 @@ import { ExplorerNode, ExplorerResourceNode, Profile, ResourceNodeType } from '.
 export class ResourceNode implements ExplorerResourceNode {
 
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType) {
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType, readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string| undefined> ) {
     }
 
 	getResourceId(): Promise<string | undefined> {
@@ -22,7 +22,7 @@ export class ResourceNode implements ExplorerResourceNode {
 	}
 	
 	deleteResource(): Promise<string | undefined> {
-		throw new Error('Method not implemented.');
+		return this.deleteFunc(this.profile, this.resourceId);
 	}
 
 

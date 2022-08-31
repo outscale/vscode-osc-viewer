@@ -51,3 +51,23 @@ export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | str
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteOMI(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteImageOperationRequest = {
+        deleteImageRequest: {
+            imageId: resourceId
+        }
+    };
+
+    let api = new osc.ImageApi(config);
+    return api.deleteImage(deleteParameters)
+    .then((res: osc.DeleteImageResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

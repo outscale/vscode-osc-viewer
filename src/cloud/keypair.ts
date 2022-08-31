@@ -49,3 +49,23 @@ export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Key
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteKeypair(profile: Profile, keypairId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteKeypairOperationRequest = {
+        deleteKeypairRequest: {
+            keypairName: keypairId
+        }
+    };
+
+    let api = new osc.KeypairApi(config);
+    return api.deleteKeypair(deleteParameters)
+    .then((res: osc.DeleteKeypairResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

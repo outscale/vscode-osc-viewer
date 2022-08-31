@@ -49,3 +49,23 @@ export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.Se
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteSecurityGroup(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteSecurityGroupOperationRequest = {
+        deleteSecurityGroupRequest: {
+            securityGroupId: resourceId
+        }
+    };
+
+    let api = new osc.SecurityGroupApi(config);
+    return api.deleteSecurityGroup(deleteParameters)
+    .then((res: osc.DeleteSecurityGroupResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return err_;
+    });
+}

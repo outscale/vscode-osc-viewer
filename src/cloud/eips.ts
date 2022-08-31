@@ -49,3 +49,23 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteExternalIP(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeletePublicIpOperationRequest = {
+        deletePublicIpRequest: {
+            publicIpId: resourceId
+        }
+    };
+
+    let api = new osc.PublicIpApi(config);
+    return api.deletePublicIp(deleteParameters)
+    .then((res: osc.DeleteImageResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}

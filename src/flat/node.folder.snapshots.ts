@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getSnapshots } from '../cloud/snapshots';
+import { deleteSnapshot, getSnapshots } from '../cloud/snapshots';
 
 export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -20,7 +20,7 @@ export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNod
 				if (typeof snapshot.snapshotId === 'undefined' || typeof snapshot.description === 'undefined') {
 					continue;
 				}
-                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots"));
+                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots", deleteSnapshot));
 			}
 			return Promise.resolve(resources);
 		});

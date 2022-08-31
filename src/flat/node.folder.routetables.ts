@@ -3,7 +3,7 @@ import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
 import { getExternalIPs } from '../cloud/eips';
-import { getRouteTables } from '../cloud/routetables';
+import { deleteRouteTable, getRouteTables } from '../cloud/routetables';
 
 export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -21,7 +21,7 @@ export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderN
 				if (typeof routeTable.routeTableId === 'undefined') {
 					continue;
 				}
-                resources.push(new ResourceNode(this.profile, "", routeTable.routeTableId, "routetables"));
+                resources.push(new ResourceNode(this.profile, "", routeTable.routeTableId, "routetables", deleteRouteTable));
 			}
 			return Promise.resolve(resources);
 		});

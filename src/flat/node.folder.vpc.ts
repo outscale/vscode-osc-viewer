@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getNets } from '../cloud/vpc';
+import { deleteNet, getNets } from '../cloud/vpc';
 
 export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 	constructor(readonly profile: Profile) {
@@ -20,7 +20,7 @@ export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 				if (typeof net.netId === 'undefined') {
 					continue;
 				}
-				resources.push(new ResourceNode(this.profile, "", net.netId?.toString(), "vpc"));
+				resources.push(new ResourceNode(this.profile, "", net.netId?.toString(), "vpc", deleteNet));
 			}
 			return Promise.resolve(resources);
 		});

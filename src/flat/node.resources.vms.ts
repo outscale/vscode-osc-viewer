@@ -7,12 +7,8 @@ import { ResourceNode } from './node.resources';
 export class VmResourceNode extends ResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState:string) {
-		super(profile, resourceName, resourceId, "vms");
+		super(profile, resourceName, resourceId, "vms", deleteVm);
     }
-
-	deleteResource(): Promise<string | undefined> {
-		return deleteVm(this.profile, this.resourceId);
-	}
 
 	startResource(): Promise<string | undefined> {
 		return startVm(this.profile, this.resourceId);

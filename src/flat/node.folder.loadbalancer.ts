@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getLoadBalancers } from '../cloud/loadbalancer';
+import { deleteLoadBalancer, getLoadBalancers } from '../cloud/loadbalancer';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
@@ -20,7 +20,7 @@ export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolder
                 if (typeof lb.loadBalancerName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers"));
+                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer));
 			}
 			return Promise.resolve(resources);
 		});

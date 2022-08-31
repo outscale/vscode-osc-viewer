@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getKeypairs } from '../cloud/keypair';
+import { deleteKeypair, getKeypairs } from '../cloud/keypair';
 
 export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -20,7 +20,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
                 if (typeof keypair.keypairName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs"));
+                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair));
 			}
 			return Promise.resolve(resources);
 		});

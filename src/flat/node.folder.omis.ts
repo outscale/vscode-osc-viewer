@@ -3,7 +3,7 @@ import * as osc from "outscale-api";
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getOMIs } from '../cloud/omis';
+import { deleteOMI, getOMIs } from '../cloud/omis';
 import { getAccounts } from '../cloud/account';
 
 export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
@@ -31,7 +31,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 					if (typeof image.imageId === 'undefined' || typeof image.imageName === 'undefined') {
 						continue;
 					}
-					resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis"));
+					resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI));
 				}
 				return Promise.resolve(resources);
 			});

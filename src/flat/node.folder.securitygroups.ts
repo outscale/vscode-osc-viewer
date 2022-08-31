@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
 import { ResourceNode } from './node.resources';
-import { getSecurityGroups } from '../cloud/securitygroups';
+import { deleteSecurityGroup, getSecurityGroups } from '../cloud/securitygroups';
 
 export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
@@ -20,7 +20,7 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
                 if (typeof sg.securityGroupId === 'undefined' || typeof sg.securityGroupName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId, "securitygroups"));
+                resources.push(new ResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId, "securitygroups", deleteSecurityGroup));
 			}
 			return Promise.resolve(resources);
 		});

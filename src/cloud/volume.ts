@@ -49,3 +49,23 @@ export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volum
         return "Error, bad credential or region?" + err_;
     });
 }
+
+export function deleteVolume(profile: Profile, resourceId: string): Promise<string | undefined> {
+    let config = getConfig(profile);
+    let deleteParameters : osc.DeleteVolumeOperationRequest = {
+        deleteVolumeRequest: {
+            volumeId: resourceId
+        }
+    };
+
+    let api = new osc.VolumeApi(config);
+    return api.deleteVolume(deleteParameters)
+    .then((res: osc.DeleteVolumeResponse | string) => {
+        if (typeof res === "string") {
+            return res;
+        }
+        return undefined;
+    }, (err_: any) => {
+        return "Error, bad credential or region?" + err_;
+    });
+}
