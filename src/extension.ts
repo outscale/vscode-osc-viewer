@@ -21,7 +21,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// The command has been defined in the package.json file
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json
-	let disposable = vscode.commands.registerCommand('osc-viewer.helloWorld', () => {
+	const disposable = vscode.commands.registerCommand('osc-viewer.helloWorld', () => {
 		// The code you place here will be executed every time your command is executed
 		// Display a message box to the user
 		vscode.window.showInformationMessage('Hello World from osc-viewer! v2');
@@ -34,7 +34,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('profile', profileProvider);
 	vscode.window.createTreeView('profile', {
 		treeDataProvider: profileProvider,
-	  });
+	});
 	vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
 	vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
 	vscode.commands.registerCommand('profile.addEntry', () => multiStepInput());
@@ -132,7 +132,9 @@ export function activate(context: vscode.ExtensionContext) {
 
 }
 // this method is called when your extension is deactivated
-export function deactivate() { }
+export function deactivate() { 
+	return;
+}
 
 function showYesOrNoWindow(question: string, cb: () => void) {
 	vscode.window.showInformationMessage(question, "Yes", "No")

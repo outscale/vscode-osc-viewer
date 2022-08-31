@@ -15,7 +15,7 @@ export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNod
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const snapshot of result) {
 				if (typeof snapshot.snapshotId === 'undefined' || typeof snapshot.description === 'undefined') {
 					continue;

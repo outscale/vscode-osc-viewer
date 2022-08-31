@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getAccounts(profile: Profile): Promise<Array<osc.Account> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadAccountsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadAccountsOperationRequest = {
         readAccountsRequest: {}
     };
 
-    let api = new osc.AccountApi(config);
+    const api = new osc.AccountApi(config);
     return api.readAccounts(readParameters)
     .then((res: osc.ReadAccountsResponse | string) => {
         if (typeof res === "string") {
@@ -26,12 +26,12 @@ export function getAccounts(profile: Profile): Promise<Array<osc.Account> | stri
 }
 
 export function getAccount(profile: Profile, _: string): Promise<osc.Account | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadAccountsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadAccountsOperationRequest = {
         readAccountsRequest: {}
     };
 
-    let api = new osc.AccountApi(config);
+    const api = new osc.AccountApi(config);
     return api.readAccounts(readParameters)
     .then((res: osc.ReadAccountsResponse | string) => {
         if (typeof res === "string") {

@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getExternalIPs(profile: Profile): Promise<Array<osc.PublicIp> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadPublicIpsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadPublicIpsOperationRequest = {
         readPublicIpsRequest: {}
     };
 
-    let api = new osc.PublicIpApi(config);
+    const api = new osc.PublicIpApi(config);
     return api.readPublicIps(readParameters)
     .then((res: osc.ReadPublicIpsResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getExternalIPs(profile: Profile): Promise<Array<osc.PublicIp> | 
 }
 
 export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc.PublicIp | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadPublicIpsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadPublicIpsOperationRequest = {
         readPublicIpsRequest: {
             filters: {
                 publicIpIds: [publicIpId]
@@ -35,7 +35,7 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
         }
     };
 
-    let api = new osc.PublicIpApi(config);
+    const api = new osc.PublicIpApi(config);
     return api.readPublicIps(readParameters)
     .then((res: osc.ReadPublicIpsResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
 }
 
 export function deleteExternalIP(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeletePublicIpOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeletePublicIpOperationRequest = {
         deletePublicIpRequest: {
             publicIpId: resourceId
         }
     };
 
-    let api = new osc.PublicIpApi(config);
+    const api = new osc.PublicIpApi(config);
     return api.deletePublicIp(deleteParameters)
     .then((res: osc.DeleteImageResponse | string) => {
         if (typeof res === "string") {

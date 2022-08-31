@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getVolumes(profile: Profile): Promise<Array<osc.Volume> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadVolumesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadVolumesOperationRequest = {
         readVolumesRequest: {}
     };
 
-    let api = new osc.VolumeApi(config);
+    const api = new osc.VolumeApi(config);
     return api.readVolumes(readParameters)
     .then((res: osc.ReadVolumesResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getVolumes(profile: Profile): Promise<Array<osc.Volume> | string
 }
 
 export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volume | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadVolumesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadVolumesOperationRequest = {
         readVolumesRequest: {
             filters: {
                 volumeIds: [volumeId]
@@ -35,7 +35,7 @@ export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volum
         }
     };
 
-    let api = new osc.VolumeApi(config);
+    const api = new osc.VolumeApi(config);
     return api.readVolumes(readParameters)
     .then((res: osc.ReadVolumesResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volum
 }
 
 export function deleteVolume(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteVolumeOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteVolumeOperationRequest = {
         deleteVolumeRequest: {
             volumeId: resourceId
         }
     };
 
-    let api = new osc.VolumeApi(config);
+    const api = new osc.VolumeApi(config);
     return api.deleteVolume(deleteParameters)
     .then((res: osc.DeleteVolumeResponse | string) => {
         if (typeof res === "string") {

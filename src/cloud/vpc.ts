@@ -6,11 +6,11 @@ import { Profile } from "../flat/node";
 
 export function getNets(profile: Profile): Promise<Array<osc.Net> | string> {
     const config = getConfig(profile);
-    let readParameters: osc.ReadNetsOperationRequest = {
+    const readParameters: osc.ReadNetsOperationRequest = {
         readNetsRequest: {}
     };
 
-    let api = new osc.NetApi(config);
+    const api = new osc.NetApi(config);
     return api.readNets(readParameters)
         .then((res: osc.ReadNetsResponse | string) => {
             if (typeof res === "string") {
@@ -27,7 +27,7 @@ export function getNets(profile: Profile): Promise<Array<osc.Net> | string> {
 
 export function getNet(profile: Profile, netId: string): Promise<osc.Net | string> {
     const config = getConfig(profile);
-    let readParameters: osc.ReadNetsOperationRequest = {
+    const readParameters: osc.ReadNetsOperationRequest = {
         readNetsRequest: {
             filters: {
                 netIds: [netId]
@@ -35,7 +35,7 @@ export function getNet(profile: Profile, netId: string): Promise<osc.Net | strin
         }
     };
 
-    let api = new osc.NetApi(config);
+    const api = new osc.NetApi(config);
     return api.readNets(readParameters)
         .then((res: osc.ReadNetsResponse | string) => {
             if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getNet(profile: Profile, netId: string): Promise<osc.Net | strin
 }
 
 export function deleteNet(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteNetOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteNetOperationRequest = {
         deleteNetRequest: {
             netId: resourceId
         }
     };
 
-    let api = new osc.NetApi(config);
+    const api = new osc.NetApi(config);
     return api.deleteNet(deleteParameters)
     .then((res: osc.DeleteNetResponse | string) => {
         if (typeof res === "string") {

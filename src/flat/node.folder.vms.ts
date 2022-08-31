@@ -18,7 +18,7 @@ export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
                 vscode.window.showInformationMessage(vmsResult);
                 return Promise.resolve([]);
             }
-            let resources = [];
+            const resources = [];
             for (const vm of vmsResult) {
                 if (typeof vm.vmId === 'undefined') {
                     continue;

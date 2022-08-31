@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getLoadBalancers(profile: Profile): Promise<Array<osc.LoadBalancer> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadLoadBalancersOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadLoadBalancersOperationRequest = {
         readLoadBalancersRequest: {}
     };
 
-    let api = new osc.LoadBalancerApi(config);
+    const api = new osc.LoadBalancerApi(config);
     return api.readLoadBalancers(readParameters)
     .then((res: osc.ReadLoadBalancersResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getLoadBalancers(profile: Profile): Promise<Array<osc.LoadBalanc
 }
 
 export function getLoadBalancer(profile: Profile, loadBalancerName: string): Promise<osc.LoadBalancer | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadLoadBalancersOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadLoadBalancersOperationRequest = {
         readLoadBalancersRequest: {
             filters: {
                 loadBalancerNames: [loadBalancerName]
@@ -35,7 +35,7 @@ export function getLoadBalancer(profile: Profile, loadBalancerName: string): Pro
         }
     };
 
-    let api = new osc.LoadBalancerApi(config);
+    const api = new osc.LoadBalancerApi(config);
     return api.readLoadBalancers(readParameters)
     .then((res: osc.ReadLoadBalancersResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getLoadBalancer(profile: Profile, loadBalancerName: string): Pro
 }
 
 export function deleteLoadBalancer(profile: Profile, loadBalancerName: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteLoadBalancerOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteLoadBalancerOperationRequest = {
         deleteLoadBalancerRequest: {
             loadBalancerName: loadBalancerName
         }
     };
 
-    let api = new osc.LoadBalancerApi(config);
+    const api = new osc.LoadBalancerApi(config);
     return api.deleteLoadBalancer(deleteParameters)
     .then((res: osc.DeleteLoadBalancerResponse | string) => {
         if (typeof res === "string") {

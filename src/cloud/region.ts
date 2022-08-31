@@ -3,8 +3,8 @@ import { getCloudUnauthenticatedConfig } from "./cloud";
 
 export function getRegions(): Promise<osc.Region[] | string> {
     const cloudConfig = getCloudUnauthenticatedConfig();
-    let api = new osc.RegionApi(cloudConfig);
-    let readParameters: osc.ReadRegionsOperationRequest = {
+    const api = new osc.RegionApi(cloudConfig);
+    const readParameters: osc.ReadRegionsOperationRequest = {
         readRegionsRequest: {}
     };
     return api.readRegions(readParameters).then((res: osc.ReadRegionsResponse | string) => {

@@ -15,7 +15,7 @@ export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolder
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const lb of result) {
                 if (typeof lb.loadBalancerName === 'undefined') {
                     continue;

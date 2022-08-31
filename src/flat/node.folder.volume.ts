@@ -15,7 +15,7 @@ export class VolumeFolderNode extends FolderNode implements ExplorerFolderNode {
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const volume of result) {
                 if (typeof volume.volumeId === 'undefined' || typeof volume.state === 'undefined') {
                     continue;

@@ -15,7 +15,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const keypair of result) {
                 if (typeof keypair.keypairName === 'undefined') {
                     continue;

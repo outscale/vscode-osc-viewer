@@ -26,7 +26,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 					vscode.window.showInformationMessage(result);
 					return Promise.resolve([]);
 				}
-				let resources = [];
+				const resources = [];
 				for (const image of result) {
 					if (typeof image.imageId === 'undefined' || typeof image.imageName === 'undefined') {
 						continue;

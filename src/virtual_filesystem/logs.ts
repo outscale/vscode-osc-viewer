@@ -40,10 +40,10 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
     }
 
     async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-        var document = this._documents.get(uri.toString());
-        var resourceId: string;
-        var profile: Profile;
-        var lastData: string = "";
+        let document = this._documents.get(uri.toString());
+        let resourceId: string;
+        let profile: Profile;
+        let lastData = "";
         if (document) {
             resourceId = document.resourceId;
             profile = document.profile;

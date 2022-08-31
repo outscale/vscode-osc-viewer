@@ -16,7 +16,7 @@ export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderN
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const publicIp of result) {
 				if (typeof publicIp.publicIp === 'undefined' || typeof publicIp.publicIpId === 'undefined') {
 					continue;

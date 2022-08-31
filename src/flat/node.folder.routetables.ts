@@ -16,7 +16,7 @@ export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderN
 				vscode.window.showInformationMessage(result);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const routeTable of result) {
 				if (typeof routeTable.routeTableId === 'undefined') {
 					continue;

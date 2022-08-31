@@ -49,7 +49,7 @@ export class OscVirtualContentProvider implements vscode.TextDocumentContentProv
 
         // Retrieve Profile
         const uriProfile = pathSplit[1];
-        let profile = getProfile(uriProfile);
+        const profile = getProfile(uriProfile);
 
         // Retrieve the resource Type
         const resourceType = pathSplit[2];

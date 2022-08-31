@@ -75,7 +75,7 @@ import { Profile } from '../flat/node';
 	}
 
     async function inputRegion(input: MultiStepInput, state: Partial<State>) {
-		let regionGroups : QuickPickItem[]= [];
+		const regionGroups : QuickPickItem[]= [];
 		
 		await getRegions().then( result => {
 			if (typeof result === "string") {
@@ -152,7 +152,7 @@ import { Profile } from '../flat/node';
 
     function writeProfile(state: Partial<State>) {
         // Found a config file
-        let configJson = readConfigFile();
+        const configJson = readConfigFile();
         if (typeof configJson === 'undefined') {
             window.showErrorMessage('No config file found');
             return undefined;

@@ -8,6 +8,11 @@
     "plugins": [
         "@typescript-eslint"
     ],
+    "extends": [
+        "eslint:recommended",
+        "plugin:@typescript-eslint/eslint-recommended",
+        "plugin:@typescript-eslint/recommended"
+    ],
     "rules": {
         "@typescript-eslint/naming-convention": "warn",
         "@typescript-eslint/semi": "warn",
@@ -19,6 +24,7 @@
     "ignorePatterns": [
         "out",
         "dist",
+        "node_modules",
         "**/*.d.ts"
     ]
 }

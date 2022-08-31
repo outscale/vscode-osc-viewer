@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityGroup> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadSecurityGroupsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadSecurityGroupsOperationRequest = {
         readSecurityGroupsRequest: {}
     };
 
-    let api = new osc.SecurityGroupApi(config);
+    const api = new osc.SecurityGroupApi(config);
     return api.readSecurityGroups(readParameters)
     .then((res: osc.ReadSecurityGroupsResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityG
 }
 
 export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.SecurityGroup | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadSecurityGroupsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadSecurityGroupsOperationRequest = {
         readSecurityGroupsRequest: {
             filters: {
                 securityGroupIds: [sgId]
@@ -35,7 +35,7 @@ export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.Se
         }
     };
 
-    let api = new osc.SecurityGroupApi(config);
+    const api = new osc.SecurityGroupApi(config);
     return api.readSecurityGroups(readParameters)
     .then((res: osc.ReadSecurityGroupsResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.Se
 }
 
 export function deleteSecurityGroup(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteSecurityGroupOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteSecurityGroupOperationRequest = {
         deleteSecurityGroupRequest: {
             securityGroupId: resourceId
         }
     };
 
-    let api = new osc.SecurityGroupApi(config);
+    const api = new osc.SecurityGroupApi(config);
     return api.deleteSecurityGroup(deleteParameters)
     .then((res: osc.DeleteSecurityGroupResponse | string) => {
         if (typeof res === "string") {

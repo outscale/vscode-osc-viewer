@@ -3,12 +3,12 @@ import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 export function getVms(profile: Profile): Promise<Array<osc.Vm> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadVmsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadVmsOperationRequest = {
         readVmsRequest: {}
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.readVms(readParameters)
     .then((res: osc.ReadVmsResponse | string) => {
         if (typeof res === "string") {
@@ -24,8 +24,8 @@ export function getVms(profile: Profile): Promise<Array<osc.Vm> | string> {
 }
 
 export function getVm(profile: Profile, vmId: string): Promise<osc.Vm | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadVmsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadVmsOperationRequest = {
         readVmsRequest: {
             filters: {
                 vmIds: [vmId]
@@ -33,7 +33,7 @@ export function getVm(profile: Profile, vmId: string): Promise<osc.Vm | string> 
         }
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.readVms(readParameters)
     .then((res: osc.ReadVmsResponse | string) => {
         if (typeof res === "string") {
@@ -62,14 +62,14 @@ export function getVmName(vm: osc.Vm): string {
 }
 
 export function deleteVm(profile: Profile, vmId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteVmsOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteVmsOperationRequest = {
         deleteVmsRequest: {
             vmIds: [vmId]
         }
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.deleteVms(deleteParameters)
     .then((res: osc.DeleteVmsResponse | string) => {
         if (typeof res === "string") {
@@ -83,14 +83,14 @@ export function deleteVm(profile: Profile, vmId: string): Promise<string | undef
 }
 
 export function startVm(profile: Profile, vmId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let startParameters : osc.StartVmsOperationRequest = {
+    const config = getConfig(profile);
+    const startParameters : osc.StartVmsOperationRequest = {
         startVmsRequest: {
             vmIds: [vmId]
         }
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.startVms(startParameters)
     .then((res: osc.StartVmsResponse | string) => {
         if (typeof res === "string") {
@@ -105,14 +105,14 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
 }
 
 export function stopVm(profile: Profile, vmId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let stopParameters : osc.StopVmsOperationRequest = {
+    const config = getConfig(profile);
+    const stopParameters : osc.StopVmsOperationRequest = {
         stopVmsRequest: {
             vmIds: [vmId]
         }
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.stopVms(stopParameters)
     .then((res: osc.StopVmsResponse | string) => {
         if (typeof res === "string") {
@@ -127,14 +127,14 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
 }
 
 export async function getLogs(profile: Profile, vmId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let stopParameters : osc.ReadConsoleOutputOperationRequest = {
+    const config = getConfig(profile);
+    const stopParameters : osc.ReadConsoleOutputOperationRequest = {
         readConsoleOutputRequest: {
             vmId: vmId
         }
     };
 
-    let api = new osc.VmApi(config);
+    const api = new osc.VmApi(config);
     return api.readConsoleOutput(stopParameters)
             .then((res: osc.ReadConsoleOutputResponse | string) => {
                 if (typeof res === "string") {

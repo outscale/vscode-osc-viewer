@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getKeypairs(profile: Profile): Promise<Array<osc.Keypair> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadKeypairsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadKeypairsOperationRequest = {
         readKeypairsRequest: {}
     };
 
-    let api = new osc.KeypairApi(config);
+    const api = new osc.KeypairApi(config);
     return api.readKeypairs(readParameters)
     .then((res: osc.ReadKeypairsResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getKeypairs(profile: Profile): Promise<Array<osc.Keypair> | stri
 }
 
 export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Keypair | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadKeypairsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadKeypairsOperationRequest = {
         readKeypairsRequest: {
             filters: {
                 keypairNames: [keypairId]
@@ -35,7 +35,7 @@ export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Key
         }
     };
 
-    let api = new osc.KeypairApi(config);
+    const api = new osc.KeypairApi(config);
     return api.readKeypairs(readParameters)
     .then((res: osc.ReadKeypairsResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Key
 }
 
 export function deleteKeypair(profile: Profile, keypairId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteKeypairOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteKeypairOperationRequest = {
         deleteKeypairRequest: {
             keypairName: keypairId
         }
     };
 
-    let api = new osc.KeypairApi(config);
+    const api = new osc.KeypairApi(config);
     return api.deleteKeypair(deleteParameters)
     .then((res: osc.DeleteKeypairResponse | string) => {
         if (typeof res === "string") {

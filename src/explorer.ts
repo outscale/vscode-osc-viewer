@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, Profile } from './flat/node';
+import { ExplorerNode } from './flat/node';
 import { ProfileNode } from './flat/node.profile';
 import { createConfigFile, getConfigFile, getDefaultConfigFilePath, jsonToProfile, readConfigFile } from './config_file/utils';
 
@@ -48,7 +48,7 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
 		vscode.workspace.openTextDocument(vscode.Uri.file(oscConfigPath).with({ scheme: 'file' })).then(doc => {
 			vscode.window.showTextDocument(doc);
-		  });
+		});
 
 	}
 

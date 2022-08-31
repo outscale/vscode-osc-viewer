@@ -5,14 +5,14 @@ import { Profile } from "../flat/node";
 
 
 export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<Array<osc.Image> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadImagesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadImagesOperationRequest = {
         readImagesRequest: {
             filters: filters
         }
     };
 
-    let api = new osc.ImageApi(config);
+    const api = new osc.ImageApi(config);
     return api.readImages(readParameters)
     .then((res: osc.ReadImagesResponse | string) => {
         if (typeof res === "string") {
@@ -28,8 +28,8 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
 }
 
 export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadImagesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadImagesOperationRequest = {
         readImagesRequest: {
             filters: {
                 imageIds: [omiId]
@@ -37,7 +37,7 @@ export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | str
         }
     };
 
-    let api = new osc.ImageApi(config);
+    const api = new osc.ImageApi(config);
     return api.readImages(readParameters)
     .then((res: osc.ReadImagesResponse | string) => {
         if (typeof res === "string") {
@@ -53,14 +53,14 @@ export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | str
 }
 
 export function deleteOMI(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteImageOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteImageOperationRequest = {
         deleteImageRequest: {
             imageId: resourceId
         }
     };
 
-    let api = new osc.ImageApi(config);
+    const api = new osc.ImageApi(config);
     return api.deleteImage(deleteParameters)
     .then((res: osc.DeleteImageResponse | string) => {
         if (typeof res === "string") {

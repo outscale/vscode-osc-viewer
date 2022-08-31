@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getSnapshots(profile: Profile): Promise<Array<osc.Snapshot> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadSnapshotsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadSnapshotsOperationRequest = {
         readSnapshotsRequest: {}
     };
 
-    let api = new osc.SnapshotApi(config);
+    const api = new osc.SnapshotApi(config);
     return api.readSnapshots(readParameters)
     .then((res: osc.ReadSnapshotsResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getSnapshots(profile: Profile): Promise<Array<osc.Snapshot> | st
 }
 
 export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.Snapshot | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadSnapshotsOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadSnapshotsOperationRequest = {
         readSnapshotsRequest: {
             filters: {
                 snapshotIds: [snapshotId]
@@ -35,7 +35,7 @@ export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.S
         }
     };
 
-    let api = new osc.SnapshotApi(config);
+    const api = new osc.SnapshotApi(config);
     return api.readSnapshots(readParameters)
     .then((res: osc.ReadSnapshotsResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.S
 }
 
 export function deleteSnapshot(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteSnapshotOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteSnapshotOperationRequest = {
         deleteSnapshotRequest: {
             snapshotId: resourceId
         }
     };
 
-    let api = new osc.SnapshotApi(config);
+    const api = new osc.SnapshotApi(config);
     return api.deleteSnapshot(deleteParameters)
     .then((res: osc.DeleteSnapshotResponse | string) => {
         if (typeof res === "string") {

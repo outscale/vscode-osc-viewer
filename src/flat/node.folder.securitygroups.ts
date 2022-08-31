@@ -15,7 +15,7 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
 				vscode.window.showInformationMessage(sgsResults);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const sg of sgsResults) {
                 if (typeof sg.securityGroupId === 'undefined' || typeof sg.securityGroupName === 'undefined') {
                     continue;

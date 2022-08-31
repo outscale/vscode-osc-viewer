@@ -66,15 +66,15 @@ export function getProfile(profileName: string): Profile {
     if (typeof profileData === "undefined") {
         throw new Error("malformed uri");
     }
-    var profile = jsonToProfile(profileName, profileData);
+    const profile = jsonToProfile(profileName, profileData);
 
     return profile;
 }
 
 export function jsonToProfile(profileName: string, profileJson: any): Profile {
-    var profile;
-    var host = "outscale.com";
-    var https = true;
+    let profile;
+    let host = "outscale.com";
+    let https = true;
     if ('host' in profileJson) {
         host = profileJson["host"];
     }

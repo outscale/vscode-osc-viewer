@@ -15,7 +15,7 @@ export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 				vscode.window.showInformationMessage(netsResults);
 				return Promise.resolve([]);
 			}
-			let resources = [];
+			const resources = [];
 			for (const net of netsResults) {
 				if (typeof net.netId === 'undefined') {
 					continue;

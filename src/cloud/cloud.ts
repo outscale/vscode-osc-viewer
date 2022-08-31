@@ -7,7 +7,7 @@ global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;
 
 export function getConfig(profile: Profile): osc.Configuration {
-    let protocol = ((profile.https) ? 'https' : 'http');
+    const protocol = ((profile.https) ? 'https' : 'http');
     return new osc.Configuration({
         basePath: protocol + "://api." + profile.region + "." +  profile.host + "/api/v1",
         awsV4SignParameters: {

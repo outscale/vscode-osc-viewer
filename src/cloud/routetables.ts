@@ -5,12 +5,12 @@ import { Profile } from "../flat/node";
 
 
 export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadRouteTablesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadRouteTablesOperationRequest = {
         readRouteTablesRequest: {}
     };
 
-    let api = new osc.RouteTableApi(config);
+    const api = new osc.RouteTableApi(config);
     return api.readRouteTables(readParameters)
     .then((res: osc.ReadRouteTablesResponse | string) => {
         if (typeof res === "string") {
@@ -26,8 +26,8 @@ export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> 
 }
 
 export function getRouteTable(profile: Profile, routeTableId: string): Promise<osc.RouteTable | string> {
-    let config = getConfig(profile);
-    let readParameters : osc.ReadRouteTablesOperationRequest = {
+    const config = getConfig(profile);
+    const readParameters : osc.ReadRouteTablesOperationRequest = {
         readRouteTablesRequest: {
             filters: {
                 routeTableIds: [routeTableId]
@@ -35,7 +35,7 @@ export function getRouteTable(profile: Profile, routeTableId: string): Promise<o
         }
     };
 
-    let api = new osc.RouteTableApi(config);
+    const api = new osc.RouteTableApi(config);
     return api.readRouteTables(readParameters)
     .then((res: osc.ReadRouteTablesResponse | string) => {
         if (typeof res === "string") {
@@ -51,14 +51,14 @@ export function getRouteTable(profile: Profile, routeTableId: string): Promise<o
 }
 
 export function deleteRouteTable(profile: Profile, resourceId: string): Promise<string | undefined> {
-    let config = getConfig(profile);
-    let deleteParameters : osc.DeleteRouteTableOperationRequest = {
+    const config = getConfig(profile);
+    const deleteParameters : osc.DeleteRouteTableOperationRequest = {
         deleteRouteTableRequest: {
             routeTableId: resourceId
         }
     };
 
-    let api = new osc.RouteTableApi(config);
+    const api = new osc.RouteTableApi(config);
     return api.deleteRouteTable(deleteParameters)
     .then((res: osc.DeleteRouteTableResponse | string) => {
         if (typeof res === "string") {
