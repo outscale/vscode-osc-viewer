@@ -12,7 +12,7 @@ export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getKeypairs(this.profile).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showInformationMessage(result);
+				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
 			}
 			const resources = [];

@@ -12,7 +12,7 @@ export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getNets(this.profile).then(netsResults => {
 			if (typeof netsResults === "string") {
-				vscode.window.showInformationMessage(netsResults);
+				vscode.window.showErrorMessage(netsResults);
 				return Promise.resolve([]);
 			}
 			const resources = [];

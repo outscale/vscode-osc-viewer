@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
 import { getVmName, getVms } from '../cloud/vm';
 import { VmResourceNode } from './node.resources.vms';
 
@@ -15,7 +14,7 @@ export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
     getChildren(): Thenable<ExplorerNode[]> {
         return getVms(this.profile).then(vmsResult => {
             if (typeof vmsResult === "string") {
-                vscode.window.showInformationMessage(vmsResult);
+                vscode.window.showErrorMessage(vmsResult);
                 return Promise.resolve([]);
             }
             const resources = [];

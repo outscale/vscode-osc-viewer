@@ -14,7 +14,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getAccounts(this.profile).then((account: Array<osc.Account> | string) => {
 			if (typeof account === "string") {
-				vscode.window.showInformationMessage(account);
+				vscode.window.showErrorMessage(account);
 				return Promise.resolve([]);
 			}
 
@@ -23,7 +23,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 			}
 			return getOMIs(this.profile, {accountIds: [account[0].accountId]}).then(result => {
 				if (typeof result === "string") {
-					vscode.window.showInformationMessage(result);
+					vscode.window.showErrorMessage(result);
 					return Promise.resolve([]);
 				}
 				const resources = [];

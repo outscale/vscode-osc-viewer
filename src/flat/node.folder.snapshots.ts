@@ -12,7 +12,7 @@ export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNod
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getSnapshots(this.profile).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showInformationMessage(result);
+				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
 			}
 			const resources = [];

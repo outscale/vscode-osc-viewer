@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
 import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
 import { getExternalIPs } from '../cloud/eips';
 import { PublicIpResourceNode } from './node.resources.eip';
 
@@ -13,7 +12,7 @@ export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderN
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getExternalIPs(this.profile).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showInformationMessage(result);
+				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
 			}
 			const resources = [];

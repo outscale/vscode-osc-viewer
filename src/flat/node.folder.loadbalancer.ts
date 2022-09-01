@@ -12,7 +12,7 @@ export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolder
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getLoadBalancers(this.profile).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showInformationMessage(result);
+				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
 			}
 			const resources = [];

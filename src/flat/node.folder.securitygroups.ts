@@ -12,7 +12,7 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getSecurityGroups(this.profile).then(sgsResults => {
 			if (typeof sgsResults === "string") {
-				vscode.window.showInformationMessage(sgsResults);
+				vscode.window.showErrorMessage(sgsResults);
 				return Promise.resolve([]);
 			}
 			const resources = [];

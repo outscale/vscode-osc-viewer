@@ -1,8 +1,6 @@
 import { MultiStepInput} from './multistep';
 import { readConfigFile, writeConfigFile } from './utils';
-import { QuickPickItem, window } from 'vscode';
-import * as fs from 'fs';
-import { getRegions } from '../cloud/region';
+import { window } from 'vscode';
 import { getAccounts } from '../cloud/account';
 import { Profile } from '../flat/node';
 
