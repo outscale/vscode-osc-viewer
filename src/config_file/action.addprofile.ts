@@ -107,7 +107,7 @@ import { Profile } from '../flat/node';
 			title,
 			step: 6,
 			totalSteps: steps,
-			placeholder: 'Pick a region',
+			placeholder: 'Use HTTPS ?',
 			items: [{label: 'yes'}, {label: 'no'}],
 			shouldResume: shouldResume
 		});
