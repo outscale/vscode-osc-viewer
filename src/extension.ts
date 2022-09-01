@@ -60,10 +60,10 @@ export function activate(context: vscode.ExtensionContext) {
 	
 
 	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode) => {
-		showYesOrNoWindow("Do you want delete the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+		showYesOrNoWindow("Do you want to delete the resource '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
 			const res = await arg.deleteResource();
 			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`Deletion of ${arg.resourceName} succeeded`);
+				vscode.window.showInformationMessage(`${arg.resourceName} deleted`);
 			} else {
 				vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
 			}
@@ -78,10 +78,10 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode) => {
-		showYesOrNoWindow("Do you want stop the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+		showYesOrNoWindow("Do you want to stop the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
 			const res = await arg.stopResource();
 			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`Stop of ${arg.resourceName} succeeded`);
+				vscode.window.showInformationMessage(`${arg.resourceName} stopped`);
 			} else {
 				vscode.window.showErrorMessage(`Error while stopping ${arg.resourceName}: ${res}`);
 			}
@@ -89,10 +89,10 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode) => {
-		showYesOrNoWindow("Do you want start the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
+		showYesOrNoWindow("Do you want to start the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
 			const res = await arg.startResource();
 			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`Start of ${arg.resourceName} succeeded`);
+				vscode.window.showInformationMessage(`${arg.resourceName} started`);
 			} else {
 				vscode.window.showErrorMessage(`Error while starting ${arg.resourceName}: ${res}`);
 			}
@@ -137,7 +137,7 @@ export function deactivate() {
 }
 
 function showYesOrNoWindow(question: string, cb: () => void) {
-	vscode.window.showInformationMessage(question, "Yes", "No")
+	vscode.window.showWarningMessage(question, "Yes", "No")
 		.then(async (answer) => {
 			if (answer === "Yes") {
 				cb();
