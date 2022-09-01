@@ -75,29 +75,15 @@ import { Profile } from '../flat/node';
 	}
 
     async function inputRegion(input: MultiStepInput, state: Partial<State>) {
-		const regionGroups : QuickPickItem[]= [];
-		
-		await getRegions().then( result => {
-			if (typeof result === "string") {
-				return undefined;
-			}
-			for (const region of result) {
-				if (typeof region.regionName === "undefined") {
-					continue;
-				}
-				regionGroups.push({label: region.regionName});
-			}
-		});
-
-		const pick = await input.showQuickPick({
+		state.region = await input.showInputBox({
 			title,
 			step: 4,
 			totalSteps: steps,
-			placeholder: 'Pick a region',
-			items: regionGroups,
+			value: 'eu-west-2',
+			prompt: 'Pick a region',
+			validate: valideIsNotNull,
 			shouldResume: shouldResume
 		});
-		state.region = pick.label;
 
 		return (input: MultiStepInput) => inputHost(input, state);
 	}
