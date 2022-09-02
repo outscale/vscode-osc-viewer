@@ -1,5 +1,6 @@
 import * as osc from "outscale-api";
 import * as vscode from 'vscode';
+import { FetchParams, Middleware, RequestContext, ResponseContext } from "outscale-api";
 import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
 import { Profile } from "../flat/node";
@@ -7,6 +8,17 @@ import { Profile } from "../flat/node";
 global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;
 
+class Logging implements Middleware {
+    pre (context: RequestContext): Promise<FetchParams | void> {
+        console.log("Request of ", context.url, context.init);
+        return Promise.resolve();
+    }
+
+    post (context: ResponseContext): Promise<Response | void> {
+        console.log("Response of ", context.url, context.response);
+        return Promise.resolve();
+    }
+}
 
 function getVersion(): string {
     const extensionContext = vscode.extensions.getExtension('outscale.osc-viewer');
@@ -34,7 +46,8 @@ export function getConfig(profile: Profile): osc.Configuration {
         headers: {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "User-Agent": getUserAgent()
-        }
+        },
+        middleware: [new Logging()]
     });
 }
 
@@ -46,7 +59,8 @@ export function getCloudUnauthenticatedConfig(): osc.Configuration {
         headers: {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "User-Agent": getUserAgent()
-        }
+        },
+        middleware: [new Logging()]
     });
 }
 
