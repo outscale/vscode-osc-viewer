@@ -1,4 +1,10 @@
 # Change Log
+## [v0.3.1]
+### Features
+ - Implement `Delete` action for all resources
+ - Add User-Agent
+ - Add Logging of requests
+
 ## [v0.3.0]
 ### Features
  - Add new resources (PublicIp, OMI, Snapshots, Routetables)
