@@ -2,7 +2,7 @@ import * as fs from 'fs';
 import path = require('path');
 import { Profile } from '../flat/node';
 
-const OSC_CONFIG_PATH = [process.env.HOME + "/.osc/config.json"];
+const OSC_CONFIG_PATH = [process.env.HOME + "/.osc_sdk/config.json", process.env.HOME + "/.osc/config.json"];
 
 export function getConfigFile(): string | undefined {
     for (const oscConfigPath of OSC_CONFIG_PATH) {
@@ -48,7 +48,7 @@ export function writeConfigFile(data: any): void {
 }
 
 export function getDefaultConfigFilePath(): string {
-    return OSC_CONFIG_PATH[0];
+    return OSC_CONFIG_PATH[-1];
 }
 
 export function createConfigFile() {
