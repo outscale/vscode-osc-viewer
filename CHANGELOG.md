@@ -1,4 +1,8 @@
 # Change Log
+## [v0.3.2]
+### Bufixes
+ - Fix retrieval of VM console logs
+ - Fix read of old path configuration file 
 ## [v0.3.1]
 ### Features
  - Implement `Delete` action for all resources
