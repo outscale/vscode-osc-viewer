@@ -23,6 +23,6 @@ jobs:
       - name: Build
         run: | 
           npm install
-          npm run-script publish
+          npm run-script vscode:publish
         env: 
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
