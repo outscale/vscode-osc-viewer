@@ -1,6 +1,9 @@
 # Change Log
+## [v0.3.3]
+### Bugfixes
+  - Fix path resolution on Windows (#26)
 ## [v0.3.2]
-### Bufixes
+### Bugfixes
  - Fix retrieval of VM console logs
  - Fix read of old path configuration file 
 ## [v0.3.1]
