@@ -1,0 +1,35 @@
+# Github action for releasing the binaries
+name: Publish
+
+on:
+  pull_request:
+    branches:
+      - main
+  push:
+    branches:
+      - main
+  workflow_dispatch:  
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install node
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      
+      - name: Install dependencies
+        run: |
+          npm install
+
+      - name: Check linting
+        run: |
+          npm run-script lint
+
+      - name: Build
+        run: | 
+          npm run-script package
