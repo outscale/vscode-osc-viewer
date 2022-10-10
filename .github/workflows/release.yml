@@ -25,6 +25,10 @@ jobs:
         run: | 
           npm install
           npm run-script package
+        
+      - name: Get changelog for release
+        id: changelog
+        uses: mindsers/changelog-reader-action@v2
 
       - name: Create Release
         uses: softprops/action-gh-release@v1
@@ -34,5 +38,6 @@ jobs:
           name: Release ${{ github.ref_name }}
           draft: true
           prerelease: false
+          body: ${{ steps.changelog.outputs.changes }}
           files: |
             ./osc-viewer-*.vsix
