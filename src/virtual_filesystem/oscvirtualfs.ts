@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, NicToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -26,6 +26,7 @@ import { getInternetService } from '../cloud/internetservices';
 import { getNatService } from '../cloud/natservices';
 import { getNetAccessPoint } from '../cloud/netaccesspoints';
 import { getNetPeering } from '../cloud/netpeerings';
+import { getNic } from '../cloud/nics';
 
 
 class ResourceEncoding {
@@ -59,6 +60,7 @@ const resourceMap = new Map([
     ["NatService", new ResourceEncoding(getNatService, NatServiceToJSON)],
     ["NetAccessPoint", new ResourceEncoding(getNetAccessPoint, NetAccessPointToJSON)],
     ["NetPeering", new ResourceEncoding(getNetPeering, NetPeeringToJSON)],
+    ["Nic", new ResourceEncoding(getNic, NicToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {
