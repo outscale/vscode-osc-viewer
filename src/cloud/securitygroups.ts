@@ -4,6 +4,7 @@ import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource SecurityGroup
 export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityGroup> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSecurityGroupsOperationRequest = {
@@ -17,7 +18,7 @@ export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityG
             return res;
         }
         if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-            return "Listing suceeded but it seems you have no Security Group";
+            return "Listing suceeded but it seems you have no SecurityGroup";
         }
         return res.securityGroups;
     }, (err_: any) => {
@@ -25,12 +26,13 @@ export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityG
     });
 }
 
-export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.SecurityGroup | string> {
+// Retrieve a specific item of the resource SecurityGroup
+export function getSecurityGroup(profile: Profile, resourceId: string): Promise<osc.SecurityGroup | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSecurityGroupsOperationRequest = {
         readSecurityGroupsRequest: {
             filters: {
-                securityGroupIds: [sgId]
+                securityGroupIds: [resourceId]
             }
         }
     };
@@ -42,7 +44,7 @@ export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.Se
             return res;
         }
         if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-            return "Listing suceeded but it seems you have no Security Group";
+            return "Listing suceeded but it seems you have no SecurityGroup";
         }
         return res.securityGroups[0];
     }, (err_: any) => {
@@ -50,6 +52,7 @@ export function getSecurityGroup(profile: Profile, sgId: string): Promise<osc.Se
     });
 }
 
+// Delete a specific item the resource SecurityGroup
 export function deleteSecurityGroup(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters : osc.DeleteSecurityGroupOperationRequest = {
@@ -66,6 +69,6 @@ export function deleteSecurityGroup(profile: Profile, resourceId: string): Promi
         }
         return undefined;
     }, (err_: any) => {
-        return err_;
+        return "Error, bad credential or region?" + err_;
     });
 }
