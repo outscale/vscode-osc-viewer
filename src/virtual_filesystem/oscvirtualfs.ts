@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -16,6 +16,7 @@ import { Profile } from "../flat/node";
 import { getAccount } from '../cloud/account';
 import { getAccessKey } from '../cloud/accesskeys';
 import { getApiAccessRule } from '../cloud/apiaccessrules';
+import { getCa } from '../cloud/cas';
 
 
 class ResourceEncoding {
@@ -39,6 +40,7 @@ const resourceMap = new Map([
     ["routetables", new ResourceEncoding(getRouteTable, RouteTableToJSON)],
     ["AccessKey", new ResourceEncoding(getAccessKey, AccessKeyToJSON)],
     ["ApiAccessRule", new ResourceEncoding(getApiAccessRule, ApiAccessRuleToJSON)],
+    ["Ca", new ResourceEncoding(getCa, CaToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {
