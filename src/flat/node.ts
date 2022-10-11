@@ -43,6 +43,7 @@ export type ResourceNodeType=
     "NetPeering" |
     "Nic" |
     "Subnet" |
+    "VirtualGateway" |
     "vms" |
     "vpc" |
     "securitygroups" |
