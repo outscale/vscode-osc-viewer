@@ -11,6 +11,7 @@ import { OMIsFolderNode } from './folders/simple/node.folder.image';
 import { SnapshotsFolderNode } from './folders/simple/node.folder.snapshot';
 import { RouteTablesFolderNode } from './folders/simple/node.folder.routetable';
 import { getAccount } from '../cloud/account';
+import { AccessKeysFolderNode } from './folders/simple/node.folder.accesskey';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -27,6 +28,7 @@ export class ProfileNode implements ExplorerProfileNode {
 
 	getChildren(): Thenable<ExplorerNode[]> {
 		return Promise.resolve([
+			new AccessKeysFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
