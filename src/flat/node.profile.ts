@@ -1,15 +1,15 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerProfileNode, Profile } from './node';
-import { VmsFolderNode } from './node.folder.vms';
-import { VpcFolderNode } from './node.folder.vpc';
-import { SecurityGroupsFolderNode } from './node.folder.securitygroups';
-import { KeypairsFolderNode } from './node.folder.keypair';
-import { VolumeFolderNode } from './node.folder.volume';
-import { LoadBalancerFolderNode } from './node.folder.loadbalancer';
-import { ExternalIPsFolderNode } from './node.folder.eips';
-import { OMIsFolderNode } from './node.folder.omis';
-import { SnapshotsFolderNode } from './node.folder.snapshots';
-import { RouteTablesFolderNode } from './node.folder.routetables';
+import { VmsFolderNode } from './folders/specific/node.folder.vm';
+import { VpcFolderNode } from './folders/simple/node.folder.net';
+import { SecurityGroupsFolderNode } from './folders/simple/node.folder.securitygroup';
+import { KeypairsFolderNode } from './folders/simple/node.folder.keypair';
+import { VolumeFolderNode } from './folders/specific/node.folder.volume';
+import { LoadBalancerFolderNode } from './folders/simple/node.folder.loadbalancer';
+import { ExternalIPsFolderNode } from './folders/specific/node.folder.publicip';
+import { OMIsFolderNode } from './folders/simple/node.folder.image';
+import { SnapshotsFolderNode } from './folders/simple/node.folder.snapshot';
+import { RouteTablesFolderNode } from './folders/simple/node.folder.routetable';
 import { getAccount } from '../cloud/account';
 
 

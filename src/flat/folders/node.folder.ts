@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../node';
 
 
 export abstract class FolderNode implements ExplorerFolderNode {

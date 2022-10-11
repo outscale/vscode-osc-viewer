@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { getExternalIPs } from '../cloud/eips';
-import { PublicIpResourceNode } from './node.resources.eip';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { getExternalIPs } from '../../../cloud/publicips';
+import { PublicIpResourceNode } from '../../resources/node.resources.eip';
 
 export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {

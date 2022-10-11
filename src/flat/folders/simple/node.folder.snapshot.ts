@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
-import { deleteSnapshot, getSnapshots } from '../cloud/snapshots';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { ResourceNode } from '../../resources/node.resources';
+import { deleteSnapshot, getSnapshots } from '../../../cloud/snapshots';
 
 export class SnapshotsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {

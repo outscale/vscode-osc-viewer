@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { getVmName, getVms } from '../cloud/vm';
-import { VmResourceNode } from './node.resources.vms';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { getVmName, getVms } from '../../../cloud/vms';
+import { VmResourceNode } from '../../resources/node.resources.vms';
 
 
 const filteredState = ["pending","running", "stopping", "stopped", "shutting-down"];
