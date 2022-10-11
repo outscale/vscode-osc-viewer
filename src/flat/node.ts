@@ -28,7 +28,8 @@ export type ExplorerNode =
     ExplorerFolderNode |
     ExplorerResourceNode;
 
-export type ResourceNodeType= 
+export type ResourceNodeType=
+    "AccessKey" |
     "vms" |
     "vpc" |
     "securitygroups" |
