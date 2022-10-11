@@ -31,6 +31,7 @@ export type ExplorerNode =
 export type ResourceNodeType=
     "AccessKey" |
     "ApiAccessRule" |
+    "Ca" |
     "vms" |
     "vpc" |
     "securitygroups" |
