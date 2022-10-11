@@ -37,6 +37,7 @@ export type ResourceNodeType=
     "DirectLink" |
     "DirectLinkInterface" |
     "FlexibleGpu" |
+    "InternetService" |
     "vms" |
     "vpc" |
     "securitygroups" |
