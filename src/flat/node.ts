@@ -39,6 +39,7 @@ export type ResourceNodeType=
     "FlexibleGpu" |
     "InternetService" |
     "NatService" |
+    "NetAccessPoint" |
     "vms" |
     "vpc" |
     "securitygroups" |
