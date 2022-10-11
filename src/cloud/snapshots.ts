@@ -4,6 +4,7 @@ import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource Snapshot
 export function getSnapshots(profile: Profile): Promise<Array<osc.Snapshot> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSnapshotsOperationRequest = {
@@ -25,12 +26,13 @@ export function getSnapshots(profile: Profile): Promise<Array<osc.Snapshot> | st
     });
 }
 
-export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.Snapshot | string> {
+// Retrieve a specific item of the resource Snapshot
+export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.Snapshot | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSnapshotsOperationRequest = {
         readSnapshotsRequest: {
             filters: {
-                snapshotIds: [snapshotId]
+                snapshotIds: [resourceId]
             }
         }
     };
@@ -42,7 +44,7 @@ export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.S
             return res;
         }
         if (res.snapshots === undefined || res.snapshots.length === 0) {
-            return "Listing suceeded but it seems you have no Snapshots";
+            return "Listing suceeded but it seems you have no Snapshot";
         }
         return res.snapshots[0];
     }, (err_: any) => {
@@ -50,6 +52,7 @@ export function getSnapshot(profile: Profile, snapshotId: string): Promise<osc.S
     });
 }
 
+// Delete a specific item the resource Snapshot
 export function deleteSnapshot(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters : osc.DeleteSnapshotOperationRequest = {
