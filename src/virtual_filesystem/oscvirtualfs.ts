@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -20,6 +20,7 @@ import { getCa } from '../cloud/cas';
 import { getClientGateway } from '../cloud/clientgateways';
 import { getDhcpOption } from '../cloud/dhcpoptions';
 import { getDirectLinkInterface } from '../cloud/directlinkinterfaces';
+import { getDirectLink } from '../cloud/directlinks';
 
 
 class ResourceEncoding {
@@ -46,6 +47,7 @@ const resourceMap = new Map([
     ["Ca", new ResourceEncoding(getCa, CaToJSON)],
     ["ClientGateway", new ResourceEncoding(getClientGateway, ClientGatewayToJSON)],
     ["DhcpOption", new ResourceEncoding(getDhcpOption, DhcpOptionsSetToJSON)],
+    ["DirectLink", new ResourceEncoding(getDirectLink, DirectLinkToJSON)],
     ["DirectLinkInterface", new ResourceEncoding(getDirectLinkInterface, DirectLinkInterfaceToJSON)],
 ]);
 
