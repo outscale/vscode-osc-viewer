@@ -15,6 +15,7 @@ import { AccessKeysFolderNode } from './folders/simple/node.folder.accesskey';
 import { ApiAccessRulesFolderNode } from './folders/simple/node.folder.apiaccessrule';
 import { CasFolderNode } from './folders/simple/node.folder.ca';
 import { ClientGatewaysFolderNode } from './folders/simple/node.folder.clientgateway';
+import { DhcpOptionsFolderNode } from './folders/simple/node.folder.dhcpoption';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -35,6 +36,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new ApiAccessRulesFolderNode(this.profile),
 			new CasFolderNode(this.profile),
 			new ClientGatewaysFolderNode(this.profile),
+			new DhcpOptionsFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
