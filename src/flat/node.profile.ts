@@ -26,6 +26,7 @@ import { NetPeeringsFolderNode } from './folders/simple/node.folder.netpeering';
 import { NicsFolderNode } from './folders/simple/node.folder.nic';
 import { SubnetsFolderNode } from './folders/simple/node.folder.subnet';
 import { VirtualGatewaysFolderNode } from './folders/simple/node.folder.virtualgateway';
+import { VpnConnectionsFolderNode } from './folders/simple/node.folder.vpnconnection';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -57,6 +58,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new NicsFolderNode(this.profile),
 			new SubnetsFolderNode(this.profile),
 			new VirtualGatewaysFolderNode(this.profile),
+			new VpnConnectionsFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
