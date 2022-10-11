@@ -34,6 +34,7 @@ export type ResourceNodeType=
     "Ca" |
     "ClientGateway" |
     "DhcpOption" |
+    "DirectLink" |
     "DirectLinkInterface" |
     "vms" |
     "vpc" |
