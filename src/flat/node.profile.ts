@@ -24,6 +24,7 @@ import { NatServicesFolderNode } from './folders/simple/node.folder.natservice';
 import { NetAccessPointsFolderNode } from './folders/simple/node.folder.netaccesspoint';
 import { NetPeeringsFolderNode } from './folders/simple/node.folder.netpeering';
 import { NicsFolderNode } from './folders/simple/node.folder.nic';
+import { SubnetsFolderNode } from './folders/simple/node.folder.subnet';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -53,6 +54,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new NetAccessPointsFolderNode(this.profile),
 			new NetPeeringsFolderNode(this.profile),
 			new NicsFolderNode(this.profile),
+			new SubnetsFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
