@@ -44,6 +44,7 @@ export type ResourceNodeType=
     "Nic" |
     "Subnet" |
     "VirtualGateway" |
+    "VpnConnection" |
     "vms" |
     "vpc" |
     "securitygroups" |

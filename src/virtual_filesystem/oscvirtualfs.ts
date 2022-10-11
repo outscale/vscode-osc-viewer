@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, NicToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, SubnetToJSON, VirtualGatewayToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, NicToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, SubnetToJSON, VirtualGatewayToJSON, VmToJSON, VolumeToJSON, VpnConnectionToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -29,6 +29,7 @@ import { getNetPeering } from '../cloud/netpeerings';
 import { getNic } from '../cloud/nics';
 import { getSubnet } from '../cloud/subnets';
 import { getVirtualGateway } from '../cloud/virtualgateways';
+import { getVpnConnection } from '../cloud/vpnconnections';
 
 
 class ResourceEncoding {
@@ -65,6 +66,7 @@ const resourceMap = new Map([
     ["Nic", new ResourceEncoding(getNic, NicToJSON)],
     ["Subnet", new ResourceEncoding(getSubnet, SubnetToJSON)],
     ["VirtualGateway", new ResourceEncoding(getVirtualGateway, VirtualGatewayToJSON)],
+    ["VpnConnection", new ResourceEncoding(getVpnConnection, VpnConnectionToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {
