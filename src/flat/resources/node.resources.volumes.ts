@@ -1,7 +1,6 @@
 import { ThemeIcon } from 'vscode';
-import { deleteVm, startVm, stopVm } from '../cloud/vm';
-import { deleteVolume } from '../cloud/volume';
-import { Profile } from './node';
+import { deleteVolume } from '../../cloud/volumes';
+import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 
 
