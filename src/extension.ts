@@ -10,6 +10,8 @@ import { VmResourceNode } from './flat/resources/node.resources.vms';
 import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './virtual_filesystem/logs';
 import { ProfileNode } from './flat/node.profile';
+import { FolderNode } from './flat/folders/node.folder';
+import { DISABLE_FOLDER_PARAMETER, FILTERS_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -127,6 +129,22 @@ export function activate(context: vscode.ExtensionContext) {
 		if (typeof res === 'string') {
 			await write(res);
 		}
+	});
+
+	vscode.commands.registerCommand('osc.disableResourceFolder', async (arg: FolderNode) => {
+		const res = await arg.folderName;
+		// Add the folderName into the conf
+		let disableFolder = getConfigurationParameter<Array<string>>(DISABLE_FOLDER_PARAMETER);
+		if (typeof disableFolder === 'undefined') {
+			disableFolder = [];
+		}
+		if (! disableFolder.includes(res)) {
+			disableFolder.push(res);
+		}
+		await updateConfigurationParameter(DISABLE_FOLDER_PARAMETER, disableFolder);
+
+		// Refresh the profile
+		await vscode.commands.executeCommand('profile.refreshEntry');
 	});
 
 
