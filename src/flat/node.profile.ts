@@ -17,6 +17,7 @@ import { CasFolderNode } from './folders/simple/node.folder.ca';
 import { ClientGatewaysFolderNode } from './folders/simple/node.folder.clientgateway';
 import { DhcpOptionsFolderNode } from './folders/simple/node.folder.dhcpoption';
 import { DirectLinkInterfacesFolderNode } from './folders/simple/node.folder.directlinkinterface';
+import { DirectLinksFolderNode } from './folders/simple/node.folder.directlink';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -38,6 +39,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new CasFolderNode(this.profile),
 			new ClientGatewaysFolderNode(this.profile),
 			new DhcpOptionsFolderNode(this.profile),
+			new DirectLinksFolderNode(this.profile),
 			new DirectLinkInterfacesFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
