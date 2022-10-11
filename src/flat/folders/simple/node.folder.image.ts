@@ -8,7 +8,7 @@ import { getAccounts } from '../../../cloud/account';
 
 export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "OMIs");
+		super(profile, "Images");
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
