@@ -19,6 +19,7 @@ import { DhcpOptionsFolderNode } from './folders/simple/node.folder.dhcpoption';
 import { DirectLinkInterfacesFolderNode } from './folders/simple/node.folder.directlinkinterface';
 import { DirectLinksFolderNode } from './folders/simple/node.folder.directlink';
 import { FlexibleGpusFolderNode } from './folders/simple/node.folder.flexiblegpu';
+import { InternetServicesFolderNode } from './folders/simple/node.folder.internetservice';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -43,6 +44,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new DirectLinksFolderNode(this.profile),
 			new DirectLinkInterfacesFolderNode(this.profile),
 			new FlexibleGpusFolderNode(this.profile),
+			new InternetServicesFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
