@@ -1,9 +1,10 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from './cloud';
+import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource RouteTable
 export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadRouteTablesOperationRequest = {
@@ -17,7 +18,7 @@ export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> 
             return res;
         }
         if (res.routeTables === undefined || res.routeTables.length === 0) {
-            return "Listing suceeded but it seems you have no RouteTables";
+            return "Listing suceeded but it seems you have no RouteTable";
         }
         return res.routeTables;
     }, (err_: any) => {
@@ -25,12 +26,13 @@ export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> 
     });
 }
 
-export function getRouteTable(profile: Profile, routeTableId: string): Promise<osc.RouteTable | string> {
+// Retrieve a specific item of the resource RouteTable
+export function getRouteTable(profile: Profile, resourceId: string): Promise<osc.RouteTable | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadRouteTablesOperationRequest = {
         readRouteTablesRequest: {
             filters: {
-                routeTableIds: [routeTableId]
+                routeTableIds: [resourceId]
             }
         }
     };
@@ -42,7 +44,7 @@ export function getRouteTable(profile: Profile, routeTableId: string): Promise<o
             return res;
         }
         if (res.routeTables === undefined || res.routeTables.length === 0) {
-            return "Listing suceeded but it seems you have no Routetables";
+            return "Listing suceeded but it seems you have no RouteTable";
         }
         return res.routeTables[0];
     }, (err_: any) => {
@@ -50,6 +52,7 @@ export function getRouteTable(profile: Profile, routeTableId: string): Promise<o
     });
 }
 
+// Delete a specific item the resource RouteTable
 export function deleteRouteTable(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters : osc.DeleteRouteTableOperationRequest = {
