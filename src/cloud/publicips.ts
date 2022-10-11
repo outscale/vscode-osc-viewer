@@ -1,6 +1,6 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
 
 
@@ -60,7 +60,7 @@ export function deleteExternalIP(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.PublicIpApi(config);
     return api.deletePublicIp(deleteParameters)
-    .then((res: osc.DeleteImageResponse | string) => {
+    .then((res: osc.DeletePublicIpResponse | string) => {
         if (typeof res === "string") {
             return res;
         }

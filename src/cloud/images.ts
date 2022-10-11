@@ -1,9 +1,10 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from './cloud';
+import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource Image
 export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<Array<osc.Image> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadImagesOperationRequest = {
@@ -19,7 +20,7 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
             return res;
         }
         if (res.images === undefined || res.images.length === 0) {
-            return "Listing suceeded but it seems you have no OMIs";
+            return "Listing suceeded but it seems you have no Image";
         }
         return res.images;
     }, (err_: any) => {
@@ -27,12 +28,13 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
     });
 }
 
-export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | string> {
+// Retrieve a specific item of the resource Image
+export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadImagesOperationRequest = {
         readImagesRequest: {
             filters: {
-                imageIds: [omiId]
+                imageIds: [resourceId]
             }
         }
     };
@@ -44,7 +46,7 @@ export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | str
             return res;
         }
         if (res.images === undefined || res.images.length === 0) {
-            return "Listing suceeded but it seems you have no OMIs";
+            return "Listing suceeded but it seems you have no Image";
         }
         return res.images[0];
     }, (err_: any) => {
@@ -52,6 +54,7 @@ export function getOMI(profile: Profile, omiId: string): Promise<osc.Image | str
     });
 }
 
+// Delete a specific item the resource Image
 export function deleteOMI(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters : osc.DeleteImageOperationRequest = {

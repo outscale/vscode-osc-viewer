@@ -1,6 +1,6 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
 
 
