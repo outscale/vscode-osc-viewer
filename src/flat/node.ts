@@ -36,6 +36,7 @@ export type ResourceNodeType=
     "DhcpOption" |
     "DirectLink" |
     "DirectLinkInterface" |
+    "FlexibleGpu" |
     "vms" |
     "vpc" |
     "securitygroups" |
