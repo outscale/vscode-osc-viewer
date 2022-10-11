@@ -42,6 +42,7 @@ export type ResourceNodeType=
     "NetAccessPoint" |
     "NetPeering" |
     "Nic" |
+    "Subnet" |
     "vms" |
     "vpc" |
     "securitygroups" |
