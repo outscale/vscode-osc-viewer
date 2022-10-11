@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { getVolumes } from '../cloud/volume';
-import { VolumeResourceNode } from './node.resources.volumes';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { getVolumes } from '../../../cloud/volumes';
+import { VolumeResourceNode } from '../../resources/node.resources.volumes';
 
 export class VolumeFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {

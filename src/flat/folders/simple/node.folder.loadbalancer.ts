@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { deleteLoadBalancer, getLoadBalancers } from '../cloud/loadbalancer';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
+import { deleteLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { ResourceNode } from '../../resources/node.resources';
 
 export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {

@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
-import { deleteKeypair, getKeypairs } from '../cloud/keypair';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { ResourceNode } from '../../resources/node.resources';
+import { deleteKeypair, getKeypairs } from '../../../cloud/keypairs';
 
 export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {

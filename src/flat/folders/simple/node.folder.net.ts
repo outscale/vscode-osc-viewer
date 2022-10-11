@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
-import { deleteNet, getNets } from '../cloud/vpc';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { ResourceNode } from '../../resources/node.resources';
+import { deleteNet, getNets } from '../../../cloud/nets';
 
 export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 	constructor(readonly profile: Profile) {
