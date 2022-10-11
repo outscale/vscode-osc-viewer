@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNet, getNets } from '../../../cloud/nets';
 
+export const NET_FOLDER_NAME="Nets";
 export class VpcFolderNode extends FolderNode implements ExplorerFolderNode {
 	constructor(readonly profile: Profile) {
-		super(profile, "Nets");
+		super(profile, NET_FOLDER_NAME);
 	}
 
 	getChildren(): Thenable<ExplorerNode[]> {

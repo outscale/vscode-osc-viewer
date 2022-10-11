@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteVpnConnection, getVpnConnections } from '../../../cloud/vpnconnections';
 
+export const VPNCONNECTIONS_FOLDER_NAME="Vpn Connections";
 export class VpnConnectionsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Vpn Connections");
+		super(profile, VPNCONNECTIONS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

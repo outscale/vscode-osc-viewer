@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteSubnet, getSubnets } from '../../../cloud/subnets';
 
+export const SUBNETS_FOLDER_NAME= "Subnets";
 export class SubnetsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Subnets");
+		super(profile, SUBNETS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

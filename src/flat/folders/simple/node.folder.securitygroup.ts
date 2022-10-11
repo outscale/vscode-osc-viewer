@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteSecurityGroup, getSecurityGroups } from '../../../cloud/securitygroups';
 
+export const SECURITYGROUPS_FOLDER_NAME="Security Groups";
 export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Security Groups");
+		super(profile, SECURITYGROUPS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

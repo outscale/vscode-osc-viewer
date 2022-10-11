@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNetPeering, getNetPeerings } from '../../../cloud/netpeerings';
 
+export const NETPEERINGS_FOLDER_NAME="Net Peerings";
 export class NetPeeringsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Net Peerings");
+		super(profile, NETPEERINGS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

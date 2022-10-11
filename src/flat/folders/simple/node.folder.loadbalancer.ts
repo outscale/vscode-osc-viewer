@@ -4,9 +4,10 @@ import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
 import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 
+export const LOADBALANCER_FOLDER_NAME="LoadBalancers";
 export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "LoadBalancers");
+		super(profile, LOADBALANCER_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteDirectLink, getDirectLinks } from '../../../cloud/directlinks';
 
+export const DIRECTLINKS_FOLDER_NAME="DirectLinks";
 export class DirectLinksFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "DirectLinks");
+		super(profile, DIRECTLINKS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
