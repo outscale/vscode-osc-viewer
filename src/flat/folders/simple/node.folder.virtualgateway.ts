@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteVirtualGateway, getVirtualGateways } from '../../../cloud/virtualgateways';
 
+export const VIRTUALGATEWAYS_FOLDER_NAME="Virtual Gateways";
 export class VirtualGatewaysFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Virtual Gateways");
+		super(profile, VIRTUALGATEWAYS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteInternetService, getInternetServices } from '../../../cloud/internetservices';
 
+export const INTERNETSERVICES_FOLDER_NAME="Internet Services";
 export class InternetServicesFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Internet Services");
+		super(profile, INTERNETSERVICES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

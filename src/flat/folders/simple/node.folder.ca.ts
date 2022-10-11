@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteCa, getCas } from '../../../cloud/cas';
 
+export const CA_FOLDER_NAME="Cas";
 export class CasFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Cas");
+		super(profile, CA_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

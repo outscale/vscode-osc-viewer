@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNetAccessPoint, getNetAccessPoints } from '../../../cloud/netaccesspoints';
 
+export const NETACCESSPOINTS_FOLDER_NAME="Net AccessPoints";
 export class NetAccessPointsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Net AccessPoints");
+		super(profile, NETACCESSPOINTS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

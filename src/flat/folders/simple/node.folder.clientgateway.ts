@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteClientGateway, getClientGateways } from '../../../cloud/clientgateways';
 
+export const CLIENTGATEWAYS_FOLDER_NAME="Client Gateways";
 export class ClientGatewaysFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Client Gateways");
+		super(profile, CLIENTGATEWAYS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -6,9 +6,10 @@ import { ResourceNode } from '../../resources/node.resources';
 import { deleteOMI, getOMIs } from '../../../cloud/images';
 import { getAccounts } from '../../../cloud/account';
 
+export const IMAGES_FOLDER_NAME="Images";
 export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Images");
+		super(profile, IMAGES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteApiAccessRule, getApiAccessRules } from '../../../cloud/apiaccessrules';
 
+export const APIACCESSRULES_FOLDER_NAME="Api Access Rules";
 export class ApiAccessRulesFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Api Access Rules");
+		super(profile, APIACCESSRULES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

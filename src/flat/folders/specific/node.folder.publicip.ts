@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { getExternalIPs } from '../../../cloud/publicips';
 import { PublicIpResourceNode } from '../../resources/node.resources.eip';
 
+export const PUBLICIP_FOLDER_NAME = "External IPs";
 export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "External IPs");
+		super(profile, PUBLICIP_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
