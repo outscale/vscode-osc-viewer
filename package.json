@@ -45,6 +45,11 @@
           "type": "boolean",
           "default": false,
           "description": "Automatic refresh of console logs."
+        },
+        "osc-viewer.disableFolders": {
+          "type": "array",
+          "default": [],
+          "description": "Disable specified folders."
         }
       }
     },
@@ -192,6 +197,11 @@
         {
           "command": "osc.copyAccountId",
           "when": "view == profile && viewItem == profilenode",
+          "group": "oscprofile@1"
+        },
+        {
+          "command": "osc.disableResourceFolder",
+          "when": "view == profile && viewItem == foldernode",
           "group": "oscprofile@1"
         }
       ]
