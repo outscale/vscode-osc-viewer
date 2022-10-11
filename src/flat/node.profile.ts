@@ -16,6 +16,7 @@ import { ApiAccessRulesFolderNode } from './folders/simple/node.folder.apiaccess
 import { CasFolderNode } from './folders/simple/node.folder.ca';
 import { ClientGatewaysFolderNode } from './folders/simple/node.folder.clientgateway';
 import { DhcpOptionsFolderNode } from './folders/simple/node.folder.dhcpoption';
+import { DirectLinkInterfacesFolderNode } from './folders/simple/node.folder.directlinkinterface';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -37,6 +38,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new CasFolderNode(this.profile),
 			new ClientGatewaysFolderNode(this.profile),
 			new DhcpOptionsFolderNode(this.profile),
+			new DirectLinkInterfacesFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
