@@ -1,6 +1,6 @@
 import { ThemeIcon } from 'vscode';
-import { deleteExternalIP } from '../cloud/eips';
-import { Profile } from './node';
+import { deleteExternalIP } from '../../cloud/publicips';
+import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 
 

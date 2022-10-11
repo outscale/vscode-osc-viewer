@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerResourceNode, Profile, ResourceNodeType } from './node';
+import { ExplorerNode, ExplorerResourceNode, Profile, ResourceNodeType } from '../node';
 
 
 
