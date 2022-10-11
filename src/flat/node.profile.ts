@@ -20,6 +20,7 @@ import { DirectLinkInterfacesFolderNode } from './folders/simple/node.folder.dir
 import { DirectLinksFolderNode } from './folders/simple/node.folder.directlink';
 import { FlexibleGpusFolderNode } from './folders/simple/node.folder.flexiblegpu';
 import { InternetServicesFolderNode } from './folders/simple/node.folder.internetservice';
+import { NatServicesFolderNode } from './folders/simple/node.folder.natservice';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -45,6 +46,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new DirectLinkInterfacesFolderNode(this.profile),
 			new FlexibleGpusFolderNode(this.profile),
 			new InternetServicesFolderNode(this.profile),
+			new NatServicesFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),

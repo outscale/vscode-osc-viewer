@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -23,6 +23,7 @@ import { getDirectLinkInterface } from '../cloud/directlinkinterfaces';
 import { getDirectLink } from '../cloud/directlinks';
 import { getFlexibleGpu } from '../cloud/flexiblegpus';
 import { getInternetService } from '../cloud/internetservices';
+import { getNatService } from '../cloud/natservices';
 
 
 class ResourceEncoding {
@@ -53,6 +54,7 @@ const resourceMap = new Map([
     ["DirectLinkInterface", new ResourceEncoding(getDirectLinkInterface, DirectLinkInterfaceToJSON)],
     ["FlexibleGpu", new ResourceEncoding(getFlexibleGpu, FlexibleGpuToJSON)],
     ["InternetService", new ResourceEncoding(getInternetService, InternetServiceToJSON)],
+    ["NatService", new ResourceEncoding(getNatService, NatServiceToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {
