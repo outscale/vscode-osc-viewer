@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { Observable } from 'rxjs';
-import { getLogs } from '../cloud/vm';
+import { getLogs } from '../cloud/vms';
 import { getProfile } from '../config_file/utils';
 import { Profile } from '../flat/node';
 

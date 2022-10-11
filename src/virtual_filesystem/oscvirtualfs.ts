@@ -1,16 +1,16 @@
 import * as vscode from 'vscode';
 
 import { AccountToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
-import { getExternalIP } from "../cloud/eips";
-import { getKeypair } from "../cloud/keypair";
-import { getLoadBalancer } from "../cloud/loadbalancer";
+import { getExternalIP } from "../cloud/publicips";
+import { getKeypair } from "../cloud/keypairs";
+import { getLoadBalancer } from "../cloud/loadbalancers";
 import { getOMI } from "../cloud/omis";
 import { getRouteTable } from "../cloud/routetables";
 import { getSecurityGroup } from "../cloud/securitygroups";
 import { getSnapshot } from "../cloud/snapshots";
-import { getVm } from "../cloud/vm";
-import { getVolume } from "../cloud/volume";
-import { getNet } from "../cloud/vpc";
+import { getVm } from "../cloud/vms";
+import { getVolume } from "../cloud/volumes";
+import { getNet } from "../cloud/nets";
 import { getProfile } from "../config_file/utils";
 import { Profile } from "../flat/node";
 import { getAccount } from '../cloud/account';
