@@ -25,6 +25,7 @@ import { NetAccessPointsFolderNode } from './folders/simple/node.folder.netacces
 import { NetPeeringsFolderNode } from './folders/simple/node.folder.netpeering';
 import { NicsFolderNode } from './folders/simple/node.folder.nic';
 import { SubnetsFolderNode } from './folders/simple/node.folder.subnet';
+import { VirtualGatewaysFolderNode } from './folders/simple/node.folder.virtualgateway';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -55,6 +56,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new NetPeeringsFolderNode(this.profile),
 			new NicsFolderNode(this.profile),
 			new SubnetsFolderNode(this.profile),
+			new VirtualGatewaysFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
