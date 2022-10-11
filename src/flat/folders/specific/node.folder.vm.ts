@@ -6,9 +6,10 @@ import { VmResourceNode } from '../../resources/node.resources.vms';
 
 
 const filteredState = ["pending","running", "stopping", "stopped", "shutting-down"];
+export const VM_FOLDER_NAME = "Vms";
 export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-        super(profile, "Vms");
+        super(profile, VM_FOLDER_NAME);
     }
 
     getChildren(): Thenable<ExplorerNode[]> {

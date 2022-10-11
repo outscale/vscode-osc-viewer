@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { getVolumes } from '../../../cloud/volumes';
 import { VolumeResourceNode } from '../../resources/node.resources.volumes';
 
+export const VOLUME_FOLDER_NAME = "Volumes";
 export class VolumeFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Volumes");
+		super(profile, VOLUME_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

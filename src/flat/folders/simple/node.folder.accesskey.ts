@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteAccessKey, getAccessKeys } from '../../../cloud/accesskeys';
 
+export const ACCESSKEY_FOLDER_NAME = "Access Keys";
 export class AccessKeysFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Access Keys");
+		super(profile, ACCESSKEY_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

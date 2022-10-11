@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNatService, getNatServices } from '../../../cloud/natservices';
 
+export const NATSERVICES_FOLDER_NAME="Nat Services";
 export class NatServicesFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Nat Services");
+		super(profile, NATSERVICES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

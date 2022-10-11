@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteFlexibleGpu, getFlexibleGpus } from '../../../cloud/flexiblegpus';
 
+export const FLEXIBLEGPUS_FOLDER_NAME="Flexible Gpus";
 export class FlexibleGpusFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Flexible Gpus");
+		super(profile, FLEXIBLEGPUS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

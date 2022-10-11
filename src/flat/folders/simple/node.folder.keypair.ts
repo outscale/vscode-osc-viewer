@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteKeypair, getKeypairs } from '../../../cloud/keypairs';
 
+export const KEYPAIRS_FOLDER_NAME="Keypairs";
 export class KeypairsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Keypairs");
+		super(profile, KEYPAIRS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {

@@ -4,9 +4,10 @@ import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteRouteTable, getRouteTables } from '../../../cloud/routetables';
 
+export const ROUTETABLES_FOLDER_NAME="Route tables";
 export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, "Route tables");
+		super(profile, ROUTETABLES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
