@@ -41,6 +41,7 @@ export type ResourceNodeType=
     "NatService" |
     "NetAccessPoint" |
     "NetPeering" |
+    "Nic" |
     "vms" |
     "vpc" |
     "securitygroups" |
