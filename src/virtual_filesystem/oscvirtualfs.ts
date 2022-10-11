@@ -4,7 +4,7 @@ import { AccountToJSON, ImageToJSON, KeypairToJSON, LoadBalancerToJSON, NetToJSO
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
-import { getOMI } from "../cloud/omis";
+import { getOMI } from "../cloud/images";
 import { getRouteTable } from "../cloud/routetables";
 import { getSecurityGroup } from "../cloud/securitygroups";
 import { getSnapshot } from "../cloud/snapshots";
