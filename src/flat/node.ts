@@ -40,6 +40,7 @@ export type ResourceNodeType=
     "InternetService" |
     "NatService" |
     "NetAccessPoint" |
+    "NetPeering" |
     "vms" |
     "vpc" |
     "securitygroups" |

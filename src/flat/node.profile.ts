@@ -22,6 +22,7 @@ import { FlexibleGpusFolderNode } from './folders/simple/node.folder.flexiblegpu
 import { InternetServicesFolderNode } from './folders/simple/node.folder.internetservice';
 import { NatServicesFolderNode } from './folders/simple/node.folder.natservice';
 import { NetAccessPointsFolderNode } from './folders/simple/node.folder.netaccesspoint';
+import { NetPeeringsFolderNode } from './folders/simple/node.folder.netpeering';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -49,6 +50,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new InternetServicesFolderNode(this.profile),
 			new NatServicesFolderNode(this.profile),
 			new NetAccessPointsFolderNode(this.profile),
+			new NetPeeringsFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),
