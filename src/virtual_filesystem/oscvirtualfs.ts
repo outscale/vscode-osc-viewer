@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, VmToJSON, VolumeToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -24,6 +24,7 @@ import { getDirectLink } from '../cloud/directlinks';
 import { getFlexibleGpu } from '../cloud/flexiblegpus';
 import { getInternetService } from '../cloud/internetservices';
 import { getNatService } from '../cloud/natservices';
+import { getNetAccessPoint } from '../cloud/netaccesspoints';
 
 
 class ResourceEncoding {
@@ -55,6 +56,7 @@ const resourceMap = new Map([
     ["FlexibleGpu", new ResourceEncoding(getFlexibleGpu, FlexibleGpuToJSON)],
     ["InternetService", new ResourceEncoding(getInternetService, InternetServiceToJSON)],
     ["NatService", new ResourceEncoding(getNatService, NatServiceToJSON)],
+    ["NetAccessPoint", new ResourceEncoding(getNetAccessPoint, NetAccessPointToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {
