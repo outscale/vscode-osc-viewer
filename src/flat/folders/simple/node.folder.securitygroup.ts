@@ -1,8 +1,8 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from './node';
-import { FolderNode } from './node.folder';
-import { ResourceNode } from './node.resources';
-import { deleteSecurityGroup, getSecurityGroups } from '../cloud/securitygroups';
+import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { FolderNode } from '../node.folder';
+import { ResourceNode } from '../../resources/node.resources';
+import { deleteSecurityGroup, getSecurityGroups } from '../../../cloud/securitygroups';
 
 export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
