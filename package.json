@@ -29,7 +29,8 @@
     "onFileSystem:osc",
     "onFileSystem:osc-logs",
     "onCommand:osc.copyAccountId",
-    "onCommand:osc.showAccountId"
+    "onCommand:osc.showAccountId",
+    "onCommand:osc.disableResourceFolder"
   ],
   "main": "./out/main.js",
   "contributes": {
@@ -114,6 +115,11 @@
       {
         "command": "osc.copyAccountId",
         "title": "Copy Account Id"
+      },
+      {
+        "command": "osc.disableResourceFolder",
+        "title": "Hide",
+        "icon": "$(eye-closed)"
       }
     ],
     "viewsContainers": {
@@ -201,8 +207,8 @@
         },
         {
           "command": "osc.disableResourceFolder",
-          "when": "view == profile && viewItem == foldernode",
-          "group": "oscprofile@1"
+          "when": "view == profile && viewItem =~ /foldernode$/",
+          "group": "inline@3"
         }
       ]
     }
