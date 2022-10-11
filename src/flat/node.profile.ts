@@ -14,6 +14,7 @@ import { getAccount } from '../cloud/account';
 import { AccessKeysFolderNode } from './folders/simple/node.folder.accesskey';
 import { ApiAccessRulesFolderNode } from './folders/simple/node.folder.apiaccessrule';
 import { CasFolderNode } from './folders/simple/node.folder.ca';
+import { ClientGatewaysFolderNode } from './folders/simple/node.folder.clientgateway';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -33,6 +34,7 @@ export class ProfileNode implements ExplorerProfileNode {
 			new AccessKeysFolderNode(this.profile),
 			new ApiAccessRulesFolderNode(this.profile),
 			new CasFolderNode(this.profile),
+			new ClientGatewaysFolderNode(this.profile),
 			new VmsFolderNode(this.profile),
 			new VpcFolderNode(this.profile),
 			new SecurityGroupsFolderNode(this.profile),

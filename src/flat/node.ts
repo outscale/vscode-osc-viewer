@@ -32,6 +32,7 @@ export type ResourceNodeType=
     "AccessKey" |
     "ApiAccessRule" |
     "Ca" |
+    "ClientGateway" |
     "vms" |
     "vpc" |
     "securitygroups" |
