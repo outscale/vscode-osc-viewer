@@ -33,6 +33,7 @@ export type ResourceNodeType=
     "ApiAccessRule" |
     "Ca" |
     "ClientGateway" |
+    "DhcpOption" |
     "vms" |
     "vpc" |
     "securitygroups" |
