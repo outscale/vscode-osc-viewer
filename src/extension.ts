@@ -155,6 +155,11 @@ export function activate(context: vscode.ExtensionContext) {
 		await vscode.commands.executeCommand('profile.refreshEntry');
 	});
 
+	vscode.commands.registerCommand('osc.resetFilters', async (arg: FiltersFolderNode<any>) => {
+		await arg.resetFilters();
+		// Refresh the profile
+		await vscode.commands.executeCommand('profile.refreshEntry');
+	});
 
 }
 // this method is called when your extension is deactivated

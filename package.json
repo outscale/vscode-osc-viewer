@@ -31,7 +31,8 @@
     "onCommand:osc.copyAccountId",
     "onCommand:osc.showAccountId",
     "onCommand:osc.disableResourceFolder",
-    "onCommand:osc.editFilters"
+    "onCommand:osc.editFilters",
+    "onCommand:osc.resetFilters"
   ],
   "main": "./out/main.js",
   "contributes": {
@@ -131,6 +132,11 @@
         "command": "osc.editFilters",
         "title": "Edit Filters",
         "icon": "$(filter)"
+      },
+      {
+        "command": "osc.resetFilters",
+        "title": "Reset Filters",
+        "icon": "$(clear-all)"
       }
     ],
     "viewsContainers": {
@@ -225,6 +231,11 @@
           "command": "osc.editFilters",
           "when": "view == profile && viewItem =~ /filterfoldernode$/",
           "group": "inline@1"
+        },
+        {
+          "command": "osc.resetFilters",
+          "when": "view == profile && viewItem == filterfoldernode",
+          "group": "inline@2"
         }
       ]
     }
