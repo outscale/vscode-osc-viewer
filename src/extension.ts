@@ -11,7 +11,9 @@ import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './virtual_filesystem/logs';
 import { ProfileNode } from './flat/node.profile';
 import { FolderNode } from './flat/folders/node.folder';
-import { DISABLE_FOLDER_PARAMETER, FILTERS_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
+import { FiltersFolderNode } from './flat/folders/node.filterfolder';
+import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
+import { editFilters } from './config_file/action.editFilters';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -143,6 +145,12 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 		await updateConfigurationParameter(DISABLE_FOLDER_PARAMETER, disableFolder);
 
+		// Refresh the profile
+		await vscode.commands.executeCommand('profile.refreshEntry');
+	});
+
+	vscode.commands.registerCommand('osc.editFilters', async (arg: FiltersFolderNode<any>) => {
+		await editFilters(arg);
 		// Refresh the profile
 		await vscode.commands.executeCommand('profile.refreshEntry');
 	});
