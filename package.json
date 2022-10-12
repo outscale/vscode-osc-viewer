@@ -30,7 +30,8 @@
     "onFileSystem:osc-logs",
     "onCommand:osc.copyAccountId",
     "onCommand:osc.showAccountId",
-    "onCommand:osc.disableResourceFolder"
+    "onCommand:osc.disableResourceFolder",
+    "onCommand:osc.editFilters"
   ],
   "main": "./out/main.js",
   "contributes": {
@@ -125,6 +126,11 @@
         "command": "osc.disableResourceFolder",
         "title": "Hide",
         "icon": "$(eye-closed)"
+      },
+      {
+        "command": "osc.editFilters",
+        "title": "Edit Filters",
+        "icon": "$(filter)"
       }
     ],
     "viewsContainers": {
@@ -214,6 +220,11 @@
           "command": "osc.disableResourceFolder",
           "when": "view == profile && viewItem =~ /foldernode$/",
           "group": "inline@3"
+        },
+        {
+          "command": "osc.editFilters",
+          "when": "view == profile && viewItem =~ /filterfoldernode$/",
+          "group": "inline@1"
         }
       ]
     }

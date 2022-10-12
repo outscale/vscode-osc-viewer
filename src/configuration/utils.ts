@@ -13,5 +13,5 @@ export function getConfigurationParameter<T>(parameter: string):  T | undefined 
 
 export async function updateConfigurationParameter(parameter: string, value: any) {
     const conf = vscode.workspace.getConfiguration(CONFIGURATION_NAME);
-    conf.update(parameter, value, true).then();
+    await conf.update(parameter, value, true);
 }
