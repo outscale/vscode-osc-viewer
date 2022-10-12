@@ -51,6 +51,11 @@
           "type": "array",
           "default": [],
           "description": "Disable specified folders."
+        },
+        "osc-viewer.filters": {
+          "type": "object",
+          "default": {},
+          "description": "Filters for reading resources."
         }
       }
     },
