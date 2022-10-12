@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteRouteTable, getRouteTables } from '../../../cloud/routetables';
+import { FiltersRouteTable, FiltersRouteTableFromJSON } from 'outscale-api';
 
 export const ROUTETABLES_FOLDER_NAME="Route tables";
-export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderNode {
+export class RouteTablesFolderNode extends FiltersFolderNode<FiltersRouteTable> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, ROUTETABLES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getRouteTables(this.profile).then(result => {
+		this.updateFilters();
+		return getRouteTables(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
 				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
@@ -27,4 +29,8 @@ export class RouteTablesFolderNode extends FolderNode implements ExplorerFolderN
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersRouteTable {
+		return FiltersRouteTableFromJSON(json);
+	}
 }

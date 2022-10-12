@@ -1,19 +1,22 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
 import { getVmName, getVms } from '../../../cloud/vms';
 import { VmResourceNode } from '../../resources/node.resources.vms';
+import { FiltersVm, FiltersVmFromJSON } from 'outscale-api';
+import { FiltersFolderNode } from '../node.filterfolder';
 
 
 const filteredState = ["pending","running", "stopping", "stopped", "shutting-down"];
 export const VM_FOLDER_NAME = "Vms";
-export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements ExplorerFolderNode {
+  
     constructor(readonly profile: Profile) {
         super(profile, VM_FOLDER_NAME);
     }
 
     getChildren(): Thenable<ExplorerNode[]> {
-        return getVms(this.profile).then(vmsResult => {
+        this.updateFilters();
+        return getVms(this.profile, this.filters).then(vmsResult => {
             if (typeof vmsResult === "string") {
                 vscode.window.showErrorMessage(vmsResult);
                 return Promise.resolve([]);
@@ -37,6 +40,10 @@ export class VmsFolderNode extends FolderNode implements ExplorerFolderNode {
             return Promise.resolve(resources);
         });
 
+    }
+
+    filtersFromJson(json: string): FiltersVm {
+        return FiltersVmFromJSON(json);
     }
 
 }

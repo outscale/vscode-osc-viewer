@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { deleteLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
+import { FiltersLoadBalancer, FiltersLoadBalancerFromJSON } from 'outscale-api';
 
 export const LOADBALANCER_FOLDER_NAME="LoadBalancers";
-export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolderNode {
+export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalancer> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, LOADBALANCER_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getLoadBalancers(this.profile).then(result => {
+		this.updateFilters();
+		return getLoadBalancers(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
 				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
@@ -27,4 +29,8 @@ export class LoadBalancerFolderNode extends FolderNode implements ExplorerFolder
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersLoadBalancer {
+		return FiltersLoadBalancerFromJSON(json);
+	}
 }

@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
 import { getExternalIPs } from '../../../cloud/publicips';
 import { PublicIpResourceNode } from '../../resources/node.resources.eip';
+import { FiltersPublicIp, FiltersPublicIpFromJSON } from 'outscale-api';
+import { FiltersFolderNode } from '../node.filterfolder';
 
 export const PUBLICIP_FOLDER_NAME = "External IPs";
-export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class ExternalIPsFolderNode extends FiltersFolderNode<FiltersPublicIp> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, PUBLICIP_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getExternalIPs(this.profile).then(result => {
+		this.updateFilters();
+		return getExternalIPs(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
 				vscode.window.showErrorMessage(result);
 				return Promise.resolve([]);
@@ -27,4 +29,8 @@ export class ExternalIPsFolderNode extends FolderNode implements ExplorerFolderN
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersPublicIp {
+		return FiltersPublicIpFromJSON(json);
+	}
 }

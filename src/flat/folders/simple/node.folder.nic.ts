@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNic, getNics } from '../../../cloud/nics';
+import { FiltersNic, FiltersNicFromJSON } from 'outscale-api';
 
 export const NICS_FOLDER_NAME="Nics";
-export class NicsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class NicsFolderNode extends FiltersFolderNode<FiltersNic> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, NICS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getNics(this.profile).then(results => {
+		this.updateFilters();
+		return getNics(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class NicsFolderNode extends FolderNode implements ExplorerFolderNode {
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersNic {
+		return FiltersNicFromJSON(json);
+	}
 }
