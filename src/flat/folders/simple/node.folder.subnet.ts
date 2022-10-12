@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteSubnet, getSubnets } from '../../../cloud/subnets';
+import { FiltersSubnet, FiltersSubnetFromJSON } from 'outscale-api';
 
 export const SUBNETS_FOLDER_NAME= "Subnets";
-export class SubnetsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class SubnetsFolderNode extends FiltersFolderNode<FiltersSubnet> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, SUBNETS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getSubnets(this.profile).then(results => {
+		this.updateFilters();
+		return getSubnets(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class SubnetsFolderNode extends FolderNode implements ExplorerFolderNode 
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersSubnet {
+		return FiltersSubnetFromJSON(json);
+	}
 }

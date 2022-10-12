@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNetPeering, getNetPeerings } from '../../../cloud/netpeerings';
+import { FiltersNetPeering, FiltersNetPeeringFromJSON } from 'outscale-api';
 
 export const NETPEERINGS_FOLDER_NAME="Net Peerings";
-export class NetPeeringsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class NetPeeringsFolderNode extends FiltersFolderNode<FiltersNetPeering> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, NETPEERINGS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getNetPeerings(this.profile).then(results => {
+		this.updateFilters();
+		return getNetPeerings(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class NetPeeringsFolderNode extends FolderNode implements ExplorerFolderN
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersNetPeering {
+		return FiltersNetPeeringFromJSON(json);
+	}
 }

@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteCa, getCas } from '../../../cloud/cas';
+import { FiltersCa, FiltersCaFromJSON } from 'outscale-api';
 
 export const CA_FOLDER_NAME="Cas";
-export class CasFolderNode extends FolderNode implements ExplorerFolderNode {
+export class CasFolderNode extends FiltersFolderNode<FiltersCa> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, CA_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getCas(this.profile).then(results => {
+		this.updateFilters();
+		return getCas(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class CasFolderNode extends FolderNode implements ExplorerFolderNode {
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersCa {
+		return FiltersCaFromJSON(json);
+	}
 }
