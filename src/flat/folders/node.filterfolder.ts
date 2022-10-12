@@ -11,6 +11,7 @@ export abstract class FiltersFolderNode<T> extends FolderNode {
 	filters: T | undefined;
     constructor(readonly profile: Profile, readonly folderName: string) {
 		super(profile, folderName);
+        this.filters = undefined;
 		this.updateFilters();
     }
 
@@ -30,6 +31,14 @@ export abstract class FiltersFolderNode<T> extends FolderNode {
         return treeItem;
 	}
 
+    async resetFilters(): Promise<void> {
+        const filters = getConfigurationParameter<any>(FILTERS_PARAMETER);
+        if (this.folderName in filters) {
+            filters[this.folderName] = undefined;
+        }
+        await updateConfigurationParameter(FILTERS_PARAMETER, filters);
+        this.filters = undefined;
+    }
 
 	updateFilters(): void {
         const filters = getConfigurationParameter<any>(FILTERS_PARAMETER);
