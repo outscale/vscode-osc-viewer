@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersVirtualGateway } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource VirtualGateway
-export function getVirtualGateways(profile: Profile): Promise<Array<osc.VirtualGateway> | string> {
+export function getVirtualGateways(profile: Profile, filters?: FiltersVirtualGateway): Promise<Array<osc.VirtualGateway> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadVirtualGatewaysOperationRequest = {
-        readVirtualGatewaysRequest: {}
+        readVirtualGatewaysRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.VirtualGatewayApi(config);

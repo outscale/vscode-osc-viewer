@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersNetPeering } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource NetPeering
-export function getNetPeerings(profile: Profile): Promise<Array<osc.NetPeering> | string> {
+export function getNetPeerings(profile: Profile, filters?: FiltersNetPeering): Promise<Array<osc.NetPeering> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadNetPeeringsOperationRequest = {
-        readNetPeeringsRequest: {}
+        readNetPeeringsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.NetPeeringApi(config);

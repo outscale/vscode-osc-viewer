@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersRouteTable } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource RouteTable
-export function getRouteTables(profile: Profile): Promise<Array<osc.RouteTable> | string> {
+export function getRouteTables(profile: Profile, filters?: FiltersRouteTable): Promise<Array<osc.RouteTable> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadRouteTablesOperationRequest = {
-        readRouteTablesRequest: {}
+        readRouteTablesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.RouteTableApi(config);

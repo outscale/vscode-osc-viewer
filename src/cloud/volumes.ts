@@ -2,12 +2,15 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersVolume } from "outscale-api";
 
 
-export function getVolumes(profile: Profile): Promise<Array<osc.Volume> | string> {
+export function getVolumes(profile: Profile, filters?: FiltersVolume): Promise<Array<osc.Volume> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadVolumesOperationRequest = {
-        readVolumesRequest: {}
+        readVolumesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.VolumeApi(config);

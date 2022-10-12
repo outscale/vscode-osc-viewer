@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersVpnConnection } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource VpnConnection
-export function getVpnConnections(profile: Profile): Promise<Array<osc.VpnConnection> | string> {
+export function getVpnConnections(profile: Profile, filters?: FiltersVpnConnection): Promise<Array<osc.VpnConnection> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadVpnConnectionsOperationRequest = {
-        readVpnConnectionsRequest: {}
+        readVpnConnectionsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.VpnConnectionApi(config);

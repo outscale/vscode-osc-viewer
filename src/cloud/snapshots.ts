@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersSnapshot } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource Snapshot
-export function getSnapshots(profile: Profile): Promise<Array<osc.Snapshot> | string> {
+export function getSnapshots(profile: Profile, filters?: FiltersSnapshot): Promise<Array<osc.Snapshot> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSnapshotsOperationRequest = {
-        readSnapshotsRequest: {}
+        readSnapshotsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.SnapshotApi(config);

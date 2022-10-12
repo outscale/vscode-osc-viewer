@@ -1,11 +1,14 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersVm } from "outscale-api";
 
-export function getVms(profile: Profile): Promise<Array<osc.Vm> | string> {
+export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc.Vm> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadVmsOperationRequest = {
-        readVmsRequest: {}
+        readVmsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.VmApi(config);

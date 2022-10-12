@@ -2,12 +2,15 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersKeypair } from "outscale-api";
 
 
-export function getKeypairs(profile: Profile): Promise<Array<osc.Keypair> | string> {
+export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise<Array<osc.Keypair> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadKeypairsOperationRequest = {
-        readKeypairsRequest: {}
+        readKeypairsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.KeypairApi(config);

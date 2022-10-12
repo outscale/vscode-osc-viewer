@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersApiAccessRule } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource ApiAccessRule
-export function getApiAccessRules(profile: Profile): Promise<Array<osc.ApiAccessRule> | string> {
+export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRule): Promise<Array<osc.ApiAccessRule> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadApiAccessRulesOperationRequest = {
-        readApiAccessRulesRequest: {}
+        readApiAccessRulesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.ApiAccessRuleApi(config);
