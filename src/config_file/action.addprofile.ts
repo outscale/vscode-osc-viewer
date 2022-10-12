@@ -114,7 +114,7 @@ import { Profile } from '../flat/node';
 
 	function shouldResume() {
 		// Could show a notification with the option to resume.
-		return new Promise<boolean>((resolve, reject) => {
+		return new Promise<boolean>(() => {
 			// noop
 		});
 	}
