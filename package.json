@@ -73,13 +73,13 @@
       },
       {
         "command": "profile.configure",
-        "title": "Configure",
-        "icon": "$(gear)"
+        "title": "View Profile configuration",
+        "icon": "$(organization)"
       },
       {
         "command": "profile.addEntry",
         "title": "Add",
-        "icon": "$(gist-new)"
+        "icon": "$(person-add)"
       },
       {
         "command": "osc.showResource",
@@ -161,17 +161,17 @@
         {
           "command": "profile.refreshEntry",
           "when": "view == profile",
-          "group": "navigation"
+          "group": "navigation@1"
         },
         {
           "command": "profile.configure",
           "when": "view == profile",
-          "group": "navigation"
+          "group": "navigation@2"
         },
         {
           "command": "profile.addEntry",
           "when": "view == profile",
-          "group": "navigation"
+          "group": "navigation@3"
         }
       ],
       "editor/title": [
