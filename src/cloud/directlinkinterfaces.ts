@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersDirectLinkInterface } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource DirectLinkInterface
-export function getDirectLinkInterfaces(profile: Profile): Promise<Array<osc.DirectLinkInterfaces> | string> {
+export function getDirectLinkInterfaces(profile: Profile, filters?: FiltersDirectLinkInterface): Promise<Array<osc.DirectLinkInterfaces> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadDirectLinkInterfacesOperationRequest = {
-        readDirectLinkInterfacesRequest: {}
+        readDirectLinkInterfacesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.DirectLinkInterfaceApi(config);

@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersAccessKeys } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource AccessKey
-export function getAccessKeys(profile: Profile): Promise<Array<osc.AccessKey> | string> {
+export function getAccessKeys(profile: Profile, filters?: FiltersAccessKeys): Promise<Array<osc.AccessKey> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadAccessKeysOperationRequest = {
-        readAccessKeysRequest: {}
+        readAccessKeysRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.AccessKeyApi(config);

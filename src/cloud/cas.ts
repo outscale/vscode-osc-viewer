@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersCa } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource Ca
-export function getCas(profile: Profile): Promise<Array<osc.Ca> | string> {
+export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc.Ca> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadCasOperationRequest = {
-        readCasRequest: {}
+        readCasRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.CaApi(config);

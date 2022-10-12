@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersSubnet } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource Subnet
-export function getSubnets(profile: Profile): Promise<Array<osc.Subnet> | string> {
+export function getSubnets(profile: Profile, filters?: FiltersSubnet): Promise<Array<osc.Subnet> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSubnetsOperationRequest = {
-        readSubnetsRequest: {}
+        readSubnetsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.SubnetApi(config);

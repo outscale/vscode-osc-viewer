@@ -2,12 +2,15 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersNet } from "outscale-api";
 
 
-export function getNets(profile: Profile): Promise<Array<osc.Net> | string> {
+export function getNets(profile: Profile, filters?: FiltersNet): Promise<Array<osc.Net> | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNetsOperationRequest = {
-        readNetsRequest: {}
+        readNetsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.NetApi(config);

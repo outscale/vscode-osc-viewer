@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersDirectLink } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource DirectLink
-export function getDirectLinks(profile: Profile): Promise<Array<osc.DirectLink> | string> {
+export function getDirectLinks(profile: Profile, filters?: FiltersDirectLink): Promise<Array<osc.DirectLink> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadDirectLinksOperationRequest = {
-        readDirectLinksRequest: {}
+        readDirectLinksRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.DirectLinkApi(config);

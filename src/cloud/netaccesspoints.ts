@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersNetAccessPoint } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource NetAccessPoint
-export function getNetAccessPoints(profile: Profile): Promise<Array<osc.NetAccessPoint> | string> {
+export function getNetAccessPoints(profile: Profile, filters?: FiltersNetAccessPoint): Promise<Array<osc.NetAccessPoint> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadNetAccessPointsOperationRequest = {
-        readNetAccessPointsRequest: {}
+        readNetAccessPointsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.NetAccessPointApi(config);

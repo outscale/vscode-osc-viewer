@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersDhcpOptions } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource DhcpOption
-export function getDhcpOptions(profile: Profile): Promise<Array<osc.DhcpOptionsSet> | string> {
+export function getDhcpOptions(profile: Profile, filters?: FiltersDhcpOptions): Promise<Array<osc.DhcpOptionsSet> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadDhcpOptionsOperationRequest = {
-        readDhcpOptionsRequest: {}
+        readDhcpOptionsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.DhcpOptionApi(config);

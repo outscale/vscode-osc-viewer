@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersNic } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource Nic
-export function getNics(profile: Profile): Promise<Array<osc.Nic> | string> {
+export function getNics(profile: Profile, filters?: FiltersNic): Promise<Array<osc.Nic> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadNicsOperationRequest = {
-        readNicsRequest: {}
+        readNicsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.NicApi(config);
