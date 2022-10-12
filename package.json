@@ -82,6 +82,11 @@
         "icon": "$(person-add)"
       },
       {
+        "command": "osc.openParameter",
+        "title": "Open Parameter",
+        "icon": "$(gear)"
+      },
+      {
         "command": "osc.showResource",
         "title": "Get"
       },
@@ -172,6 +177,11 @@
           "command": "profile.addEntry",
           "when": "view == profile",
           "group": "navigation@3"
+        },
+        {
+          "command": "osc.openParameter",
+          "when": "view == profile",
+          "group": "navigation@4"
         }
       ],
       "editor/title": [
