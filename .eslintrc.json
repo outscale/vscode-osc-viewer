@@ -15,11 +15,12 @@
     ],
     "rules": {
         "@typescript-eslint/naming-convention": "warn",
-        "@typescript-eslint/semi": "warn",
+        "@typescript-eslint/semi": "error",
         "curly": "warn",
         "eqeqeq": "warn",
         "no-throw-literal": "warn",
-        "semi": "off"
+        "semi": "error",
+        "@typescript-eslint/no-explicit-any": "off"
     },
     "ignorePatterns": [
         "out",
