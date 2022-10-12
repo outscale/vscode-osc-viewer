@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNetAccessPoint, getNetAccessPoints } from '../../../cloud/netaccesspoints';
+import { FiltersNetAccessPoint, FiltersNetAccessPointFromJSON } from 'outscale-api';
 
 export const NETACCESSPOINTS_FOLDER_NAME="Net AccessPoints";
-export class NetAccessPointsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class NetAccessPointsFolderNode extends FiltersFolderNode<FiltersNetAccessPoint> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, NETACCESSPOINTS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getNetAccessPoints(this.profile).then(results => {
+		this.updateFilters();
+		return getNetAccessPoints(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class NetAccessPointsFolderNode extends FolderNode implements ExplorerFol
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersNetAccessPoint {
+		return FiltersNetAccessPointFromJSON(json);
+	}
 }

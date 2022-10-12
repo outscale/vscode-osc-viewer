@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNatService, getNatServices } from '../../../cloud/natservices';
+import { FiltersNatService, FiltersNatServiceFromJSON } from 'outscale-api';
 
 export const NATSERVICES_FOLDER_NAME="Nat Services";
-export class NatServicesFolderNode extends FolderNode implements ExplorerFolderNode {
+export class NatServicesFolderNode extends FiltersFolderNode<FiltersNatService> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, NATSERVICES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getNatServices(this.profile).then(results => {
+		this.updateFilters();
+		return getNatServices(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class NatServicesFolderNode extends FolderNode implements ExplorerFolderN
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersNatService {
+		return FiltersNatServiceFromJSON(json);
+	}
 }

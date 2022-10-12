@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteDirectLinkInterface, getDirectLinkInterfaces } from '../../../cloud/directlinkinterfaces';
+import { FiltersDirectLinkInterface, FiltersDirectLinkInterfaceFromJSON } from 'outscale-api';
 
 export const DIRECTLINKINTERFACES_FOLDER_NAME="DirectLink Interfaces";
-export class DirectLinkInterfacesFolderNode extends FolderNode implements ExplorerFolderNode {
+export class DirectLinkInterfacesFolderNode extends FiltersFolderNode<FiltersDirectLinkInterface> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, DIRECTLINKINTERFACES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getDirectLinkInterfaces(this.profile).then(results => {
+		this.updateFilters();
+		return getDirectLinkInterfaces(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class DirectLinkInterfacesFolderNode extends FolderNode implements Explor
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersDirectLinkInterface {
+		return FiltersDirectLinkInterfaceFromJSON(json);
+	}
 }

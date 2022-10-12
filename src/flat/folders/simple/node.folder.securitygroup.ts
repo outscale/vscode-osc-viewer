@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteSecurityGroup, getSecurityGroups } from '../../../cloud/securitygroups';
+import { FiltersSecurityGroup, FiltersSecurityGroupFromJSON } from 'outscale-api';
 
 export const SECURITYGROUPS_FOLDER_NAME="Security Groups";
-export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFolderNode {
+export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityGroup> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, SECURITYGROUPS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getSecurityGroups(this.profile).then(sgsResults => {
+		this.updateFilters();
+		return getSecurityGroups(this.profile, this.filters).then(sgsResults => {
 			if (typeof sgsResults === "string") {
 				vscode.window.showErrorMessage(sgsResults);
 				return Promise.resolve([]);
@@ -27,4 +29,8 @@ export class SecurityGroupsFolderNode extends FolderNode implements ExplorerFold
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersSecurityGroup {
+		return FiltersSecurityGroupFromJSON(json);
+	}
 }

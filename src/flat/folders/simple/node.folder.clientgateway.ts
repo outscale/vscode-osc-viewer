@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteClientGateway, getClientGateways } from '../../../cloud/clientgateways';
+import { FiltersClientGateway, FiltersClientGatewayFromJSON } from 'outscale-api';
 
 export const CLIENTGATEWAYS_FOLDER_NAME="Client Gateways";
-export class ClientGatewaysFolderNode extends FolderNode implements ExplorerFolderNode {
+export class ClientGatewaysFolderNode extends FiltersFolderNode<FiltersClientGateway> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, CLIENTGATEWAYS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getClientGateways(this.profile).then(results => {
+		this.updateFilters();
+		return getClientGateways(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class ClientGatewaysFolderNode extends FolderNode implements ExplorerFold
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersClientGateway {
+		return FiltersClientGatewayFromJSON(json);
+	}
 }

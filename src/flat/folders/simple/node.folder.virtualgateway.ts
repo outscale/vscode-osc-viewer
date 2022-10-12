@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteVirtualGateway, getVirtualGateways } from '../../../cloud/virtualgateways';
+import { FiltersVirtualGateway, FiltersVirtualGatewayFromJSON } from 'outscale-api';
 
 export const VIRTUALGATEWAYS_FOLDER_NAME="Virtual Gateways";
-export class VirtualGatewaysFolderNode extends FolderNode implements ExplorerFolderNode {
+export class VirtualGatewaysFolderNode extends FiltersFolderNode<FiltersVirtualGateway> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, VIRTUALGATEWAYS_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getVirtualGateways(this.profile).then(results => {
+		this.updateFilters();
+		return getVirtualGateways(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class VirtualGatewaysFolderNode extends FolderNode implements ExplorerFol
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersVirtualGateway {
+		return FiltersVirtualGatewayFromJSON(json);
+	}
 }

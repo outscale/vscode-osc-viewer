@@ -1,17 +1,19 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
-import { FolderNode } from '../node.folder';
+import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteApiAccessRule, getApiAccessRules } from '../../../cloud/apiaccessrules';
+import { FiltersApiAccessRule, FiltersApiAccessRuleFromJSON } from 'outscale-api';
 
 export const APIACCESSRULES_FOLDER_NAME="Api Access Rules";
-export class ApiAccessRulesFolderNode extends FolderNode implements ExplorerFolderNode {
+export class ApiAccessRulesFolderNode extends FiltersFolderNode<FiltersApiAccessRule> implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
 		super(profile, APIACCESSRULES_FOLDER_NAME);
     }
 
 	getChildren(): Thenable<ExplorerNode[]> {
-		return getApiAccessRules(this.profile).then(results => {
+		this.updateFilters();
+		return getApiAccessRules(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
 				vscode.window.showErrorMessage(results);
 				return Promise.resolve([]);
@@ -31,4 +33,8 @@ export class ApiAccessRulesFolderNode extends FolderNode implements ExplorerFold
 		});
 		
     }
+
+	filtersFromJson(json: string): FiltersApiAccessRule {
+		return FiltersApiAccessRuleFromJSON(json);
+	}
 }
