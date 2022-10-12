@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersFlexibleGpu } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource FlexibleGpu
-export function getFlexibleGpus(profile: Profile): Promise<Array<osc.FlexibleGpu> | string> {
+export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu): Promise<Array<osc.FlexibleGpu> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadFlexibleGpusOperationRequest = {
-        readFlexibleGpusRequest: {}
+        readFlexibleGpusRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.FlexibleGpuApi(config);

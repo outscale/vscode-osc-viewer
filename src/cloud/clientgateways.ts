@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersClientGateway } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource ClientGateway
-export function getClientGateways(profile: Profile): Promise<Array<osc.ClientGateway> | string> {
+export function getClientGateways(profile: Profile, filters?: FiltersClientGateway): Promise<Array<osc.ClientGateway> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadClientGatewaysOperationRequest = {
-        readClientGatewaysRequest: {}
+        readClientGatewaysRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.ClientGatewayApi(config);

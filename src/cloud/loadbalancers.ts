@@ -2,12 +2,15 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersLoadBalancer } from "outscale-api";
 
 
-export function getLoadBalancers(profile: Profile): Promise<Array<osc.LoadBalancer> | string> {
+export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer): Promise<Array<osc.LoadBalancer> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadLoadBalancersOperationRequest = {
-        readLoadBalancersRequest: {}
+        readLoadBalancersRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.LoadBalancerApi(config);

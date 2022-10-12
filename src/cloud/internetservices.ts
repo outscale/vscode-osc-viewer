@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersInternetService } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource InternetService
-export function getInternetServices(profile: Profile): Promise<Array<osc.InternetService> | string> {
+export function getInternetServices(profile: Profile, filters?: FiltersInternetService): Promise<Array<osc.InternetService> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadInternetServicesOperationRequest = {
-        readInternetServicesRequest: {}
+        readInternetServicesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.InternetServiceApi(config);

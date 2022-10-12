@@ -2,12 +2,15 @@
 import * as osc from "outscale-api";
 import { getConfig } from './cloud';
 import { Profile } from "../flat/node";
+import { FiltersPublicIp } from "outscale-api";
 
 
-export function getExternalIPs(profile: Profile): Promise<Array<osc.PublicIp> | string> {
+export function getExternalIPs(profile: Profile, filters?: FiltersPublicIp): Promise<Array<osc.PublicIp> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadPublicIpsOperationRequest = {
-        readPublicIpsRequest: {}
+        readPublicIpsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.PublicIpApi(config);

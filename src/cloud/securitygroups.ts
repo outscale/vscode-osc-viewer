@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersSecurityGroup } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource SecurityGroup
-export function getSecurityGroups(profile: Profile): Promise<Array<osc.SecurityGroup> | string> {
+export function getSecurityGroups(profile: Profile, filters?: FiltersSecurityGroup): Promise<Array<osc.SecurityGroup> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadSecurityGroupsOperationRequest = {
-        readSecurityGroupsRequest: {}
+        readSecurityGroupsRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.SecurityGroupApi(config);

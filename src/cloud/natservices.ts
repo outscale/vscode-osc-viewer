@@ -1,14 +1,17 @@
 
 import * as osc from "outscale-api";
+import { FiltersNatService } from "outscale-api";
 import { getConfig } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
 // Retrieve all items of the resource NatService
-export function getNatServices(profile: Profile): Promise<Array<osc.NatService> | string> {
+export function getNatServices(profile: Profile, filters?: FiltersNatService): Promise<Array<osc.NatService> | string> {
     const config = getConfig(profile);
     const readParameters : osc.ReadNatServicesOperationRequest = {
-        readNatServicesRequest: {}
+        readNatServicesRequest: {
+            filters: filters
+        }
     };
 
     const api = new osc.NatServiceApi(config);
