@@ -161,6 +161,10 @@ export function activate(context: vscode.ExtensionContext) {
 		await vscode.commands.executeCommand('profile.refreshEntry');
 	});
 
+	vscode.commands.registerCommand('osc.openParameter', async () => {
+		vscode.commands.executeCommand('workbench.action.openSettings', '@ext:outscale.osc-viewer');
+	});
+
 }
 // this method is called when your extension is deactivated
 export function deactivate() { 
