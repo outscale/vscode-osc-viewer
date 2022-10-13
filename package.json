@@ -253,7 +253,14 @@
           "group": "inline@2"
         }
       ]
-    }
+    },
+    "viewsWelcome": [
+      {
+        "view": "profile",
+        "contents": "In order to use 3DS Outscale plugin, you have to configure profiles the configuration file.\n[Open configuration file](command:profile.configure)\n[Add a profile](command:profile.addEntry)\n",
+        "when": "workbenchState == empty"
+      }
+    ]
   },
   "scripts": {
     "vscode:prepublish": "npm run esbuild-base -- --minify",
