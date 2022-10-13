@@ -8,7 +8,11 @@
   "preview": true,
   "repository": {
     "type": "git",
-    "url": "github.com/outscale-dev/vscode-osc-viewer"
+    "url": "https://github.com/outscale-dev/vscode-osc-viewer"
+  },
+  "homepage": "https://github.com/outscale-dev/vscode-osc-viewer",
+  "bugs": {
+      "url": "https://github.com/outscale-dev/vscode-osc-viewer/issues"
   },
   "engines": {
     "vscode": "^1.69.0"
