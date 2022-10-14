@@ -3,6 +3,7 @@ import * as vscode from 'vscode';
 import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
 import { Profile } from "../flat/node";
+import { ResponseContext } from "outscale-api";
 
 global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;
@@ -17,6 +18,17 @@ function getVersion(): string {
 
 function getUserAgent(): string {
     return "vscode-osc-viewer/" + getVersion();
+}
+
+async function returnError(context: ResponseContext): Promise<Response | void> {
+    const status = context.response.status;
+    if (context.response.ok) {
+        return Promise.resolve(context.response);
+    }
+    const value = await context.response.json();
+    console.error("[osc-viewer]", context.url, JSON.stringify(value));
+    // eslint-disable-next-line no-throw-literal
+    throw `${status} ${context.response.statusText}`;
 }
 
 export function getConfig(profile: Profile): osc.Configuration {
@@ -34,6 +46,11 @@ export function getConfig(profile: Profile): osc.Configuration {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "User-Agent": getUserAgent()
         },
+        middleware: [
+            {
+                post: returnError, 
+            }
+        ]
     });
 }
 
