@@ -15,7 +15,7 @@ export class NatServicesFolderNode extends FiltersFolderNode<FiltersNatService> 
 		this.updateFilters();
 		return getNatServices(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
-				vscode.window.showErrorMessage(results);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${results}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

@@ -15,7 +15,7 @@ export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityG
 		this.updateFilters();
 		return getSecurityGroups(this.profile, this.filters).then(sgsResults => {
 			if (typeof sgsResults === "string") {
-				vscode.window.showErrorMessage(sgsResults);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${sgsResults}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

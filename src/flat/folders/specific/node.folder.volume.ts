@@ -16,7 +16,7 @@ export class VolumeFolderNode extends FiltersFolderNode<FiltersVolume> implement
 		this.updateFilters();
 		return getVolumes(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showErrorMessage(result);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

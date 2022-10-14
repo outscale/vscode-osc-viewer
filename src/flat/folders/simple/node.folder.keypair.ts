@@ -15,7 +15,7 @@ export class KeypairsFolderNode extends FiltersFolderNode<FiltersKeypair> implem
 		this.updateFilters();
 		return getKeypairs(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showErrorMessage(result);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

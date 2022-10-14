@@ -15,7 +15,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 	getChildren(): Thenable<ExplorerNode[]> {
 		return getAccounts(this.profile).then((account: Array<osc.Account> | string) => {
 			if (typeof account === "string") {
-				vscode.window.showErrorMessage(account);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${account}`);
 				return Promise.resolve([]);
 			}
 
@@ -24,7 +24,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
 			}
 			return getOMIs(this.profile, {accountIds: [account[0].accountId]}).then(result => {
 				if (typeof result === "string") {
-					vscode.window.showErrorMessage(result);
+					vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
 					return Promise.resolve([]);
 				}
 				const resources = [];
