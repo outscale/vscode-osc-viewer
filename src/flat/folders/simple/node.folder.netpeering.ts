@@ -15,7 +15,7 @@ export class NetPeeringsFolderNode extends FiltersFolderNode<FiltersNetPeering> 
 		this.updateFilters();
 		return getNetPeerings(this.profile, this.filters).then(results => {
 			if (typeof results === "string") {
-				vscode.window.showErrorMessage(results);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${results}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

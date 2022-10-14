@@ -15,7 +15,7 @@ export class SnapshotsFolderNode extends FiltersFolderNode<FiltersSnapshot> impl
 		this.updateFilters();
 		return getSnapshots(this.profile, this.filters).then(result => {
 			if (typeof result === "string") {
-				vscode.window.showErrorMessage(result);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];

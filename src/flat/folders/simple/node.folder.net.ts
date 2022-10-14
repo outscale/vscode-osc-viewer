@@ -15,7 +15,7 @@ export class VpcFolderNode extends FiltersFolderNode<FiltersNet> implements Expl
 		this.updateFilters();
 		return getNets(this.profile, this.filters).then(netsResults => {
 			if (typeof netsResults === "string") {
-				vscode.window.showErrorMessage(netsResults);
+				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${netsResults}`);
 				return Promise.resolve([]);
 			}
 			const resources = [];
