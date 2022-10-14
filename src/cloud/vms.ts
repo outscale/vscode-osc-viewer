@@ -22,7 +22,7 @@ export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc
         }
         return res.vms;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -47,7 +47,7 @@ export function getVm(profile: Profile, vmId: string): Promise<osc.Vm | string> 
         }
         return res.vms[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -80,7 +80,7 @@ export function deleteVm(profile: Profile, vmId: string): Promise<string | undef
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
     
 }
@@ -102,7 +102,7 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
         console.log(res);
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
     
 }
@@ -124,7 +124,7 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
         console.log(res);
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
     
 }

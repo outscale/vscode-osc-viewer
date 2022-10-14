@@ -24,7 +24,7 @@ export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer
         }
         return res.loadBalancers;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -49,7 +49,7 @@ export function getLoadBalancer(profile: Profile, loadBalancerName: string): Pro
         }
         return res.loadBalancers[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -69,6 +69,6 @@ export function deleteLoadBalancer(profile: Profile, loadBalancerName: string): 
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

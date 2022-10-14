@@ -25,7 +25,7 @@ export function getVpnConnections(profile: Profile, filters?: FiltersVpnConnecti
         }
         return res.vpnConnections;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getVpnConnection(profile: Profile, resourceId: string): Promise<
         }
         return res.vpnConnections[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteVpnConnection(profile: Profile, resourceId: string): Promi
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

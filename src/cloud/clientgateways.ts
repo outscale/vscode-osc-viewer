@@ -25,7 +25,7 @@ export function getClientGateways(profile: Profile, filters?: FiltersClientGatew
         }
         return res.clientGateways;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getClientGateway(profile: Profile, resourceId: string): Promise<
         }
         return res.clientGateways[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteClientGateway(profile: Profile, resourceId: string): Promi
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

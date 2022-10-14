@@ -24,7 +24,7 @@ export function getVolumes(profile: Profile, filters?: FiltersVolume): Promise<A
         }
         return res.volumes;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -49,7 +49,7 @@ export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volum
         }
         return res.volumes[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -69,6 +69,6 @@ export function deleteVolume(profile: Profile, resourceId: string): Promise<stri
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

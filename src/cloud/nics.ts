@@ -25,7 +25,7 @@ export function getNics(profile: Profile, filters?: FiltersNic): Promise<Array<o
         }
         return res.nics;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | 
         }
         return res.nics[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteNic(profile: Profile, resourceId: string): Promise<string 
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

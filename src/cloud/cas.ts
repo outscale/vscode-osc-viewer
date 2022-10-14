@@ -25,7 +25,7 @@ export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc
         }
         return res.cas;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | st
         }
         return res.cas[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteCa(profile: Profile, resourceId: string): Promise<string |
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

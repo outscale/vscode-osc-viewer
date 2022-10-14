@@ -25,7 +25,7 @@ export function getSubnets(profile: Profile, filters?: FiltersSubnet): Promise<A
         }
         return res.subnets;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Sub
         }
         return res.subnets[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteSubnet(profile: Profile, resourceId: string): Promise<stri
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

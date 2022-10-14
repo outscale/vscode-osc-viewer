@@ -21,7 +21,7 @@ export function getAccounts(profile: Profile): Promise<Array<osc.Account> | stri
         }
         return res.accounts;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -42,6 +42,6 @@ export function getAccount(profile: Profile, _: string): Promise<osc.Account | s
         }
         return res.accounts[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

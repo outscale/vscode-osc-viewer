@@ -25,7 +25,7 @@ export function getDhcpOptions(profile: Profile, filters?: FiltersDhcpOptions): 
         }
         return res.dhcpOptionsSets;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc
         }
         return res.dhcpOptionsSets[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteDhcpOption(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

@@ -25,7 +25,7 @@ export function getDirectLinkInterfaces(profile: Profile, filters?: FiltersDirec
         }
         return res.directLinkInterfaces;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getDirectLinkInterface(profile: Profile, resourceId: string): Pr
         }
         return res.directLinkInterfaces[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteDirectLinkInterface(profile: Profile, resourceId: string):
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

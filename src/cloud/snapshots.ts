@@ -25,7 +25,7 @@ export function getSnapshots(profile: Profile, filters?: FiltersSnapshot): Promi
         }
         return res.snapshots;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.S
         }
         return res.snapshots[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteSnapshot(profile: Profile, resourceId: string): Promise<st
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

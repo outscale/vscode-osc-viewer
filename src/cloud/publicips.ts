@@ -24,7 +24,7 @@ export function getExternalIPs(profile: Profile, filters?: FiltersPublicIp): Pro
         }
         return res.publicIps;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -49,7 +49,7 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
         }
         return res.publicIps[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -69,6 +69,6 @@ export function deleteExternalIP(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
