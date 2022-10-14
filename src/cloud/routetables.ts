@@ -25,7 +25,7 @@ export function getRouteTables(profile: Profile, filters?: FiltersRouteTable): P
         }
         return res.routeTables;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getRouteTable(profile: Profile, resourceId: string): Promise<osc
         }
         return res.routeTables[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteRouteTable(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

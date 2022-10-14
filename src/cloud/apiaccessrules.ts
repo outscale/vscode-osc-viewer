@@ -25,7 +25,7 @@ export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRu
         }
         return res.apiAccessRules;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getApiAccessRule(profile: Profile, resourceId: string): Promise<
         }
         return res.apiAccessRules[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteApiAccessRule(profile: Profile, resourceId: string): Promi
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

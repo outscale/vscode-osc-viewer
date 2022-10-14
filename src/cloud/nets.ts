@@ -24,7 +24,7 @@ export function getNets(profile: Profile, filters?: FiltersNet): Promise<Array<o
             }
             return res.nets;
         }, (err_: any) => {
-            return "Error, bad credential or region?" + err_;
+            return err_;
         });
 }
 
@@ -49,7 +49,7 @@ export function getNet(profile: Profile, netId: string): Promise<osc.Net | strin
             }
             return res.nets[0];
         }, (err_: any) => {
-            return "Error, bad credential or region?" + err_;
+            return err_;
         });
 }
 
@@ -69,6 +69,6 @@ export function deleteNet(profile: Profile, resourceId: string): Promise<string 
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

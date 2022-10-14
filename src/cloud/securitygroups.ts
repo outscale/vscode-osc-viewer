@@ -25,7 +25,7 @@ export function getSecurityGroups(profile: Profile, filters?: FiltersSecurityGro
         }
         return res.securityGroups;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getSecurityGroup(profile: Profile, resourceId: string): Promise<
         }
         return res.securityGroups[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteSecurityGroup(profile: Profile, resourceId: string): Promi
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

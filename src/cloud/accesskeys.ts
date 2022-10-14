@@ -25,7 +25,7 @@ export function getAccessKeys(profile: Profile, filters?: FiltersAccessKeys): Pr
         }
         return res.accessKeys;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getAccessKey(profile: Profile, resourceId: string): Promise<osc.
         }
         return res.accessKeys[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteAccessKey(profile: Profile, resourceId: string): Promise<s
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

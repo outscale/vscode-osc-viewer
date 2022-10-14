@@ -24,7 +24,7 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
         }
         return res.images;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -50,7 +50,7 @@ export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image 
         }
         return res.images[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -71,6 +71,6 @@ export function deleteOMI(profile: Profile, resourceId: string): Promise<string 
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

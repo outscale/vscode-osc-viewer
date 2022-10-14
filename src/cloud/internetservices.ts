@@ -25,7 +25,7 @@ export function getInternetServices(profile: Profile, filters?: FiltersInternetS
         }
         return res.internetServices;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getInternetService(profile: Profile, resourceId: string): Promis
         }
         return res.internetServices[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteInternetService(profile: Profile, resourceId: string): Pro
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

@@ -25,7 +25,7 @@ export function getNetPeerings(profile: Profile, filters?: FiltersNetPeering): P
         }
         return res.netPeerings;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getNetPeering(profile: Profile, resourceId: string): Promise<osc
         }
         return res.netPeerings[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteNetPeering(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

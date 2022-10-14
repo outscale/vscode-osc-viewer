@@ -25,7 +25,7 @@ export function getVirtualGateways(profile: Profile, filters?: FiltersVirtualGat
         }
         return res.virtualGateways;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getVirtualGateway(profile: Profile, resourceId: string): Promise
         }
         return res.virtualGateways[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteVirtualGateway(profile: Profile, resourceId: string): Prom
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

@@ -25,7 +25,7 @@ export function getNetAccessPoints(profile: Profile, filters?: FiltersNetAccessP
         }
         return res.netAccessPoints;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getNetAccessPoint(profile: Profile, resourceId: string): Promise
         }
         return res.netAccessPoints[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteNetAccessPoint(profile: Profile, resourceId: string): Prom
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

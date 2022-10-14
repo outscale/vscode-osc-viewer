@@ -25,7 +25,7 @@ export function getNatServices(profile: Profile, filters?: FiltersNatService): P
         }
         return res.natServices;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getNatService(profile: Profile, resourceId: string): Promise<osc
         }
         return res.natServices[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteNatService(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

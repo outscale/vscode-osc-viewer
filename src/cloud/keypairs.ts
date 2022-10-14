@@ -24,7 +24,7 @@ export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise
         }
         return res.keypairs;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -49,7 +49,7 @@ export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Key
         }
         return res.keypairs[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -69,6 +69,6 @@ export function deleteKeypair(profile: Profile, keypairId: string): Promise<stri
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

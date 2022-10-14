@@ -25,7 +25,7 @@ export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu):
         }
         return res.flexibleGpus;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<os
         }
         return res.flexibleGpus[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteFlexibleGpu(profile: Profile, resourceId: string): Promise
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }

@@ -16,7 +16,7 @@ export function getRegions(): Promise<osc.Region[] | string> {
         }
         return res.regions;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 
 }

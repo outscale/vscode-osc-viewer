@@ -25,7 +25,7 @@ export function getDirectLinks(profile: Profile, filters?: FiltersDirectLink): P
         }
         return res.directLinks;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -51,7 +51,7 @@ export function getDirectLink(profile: Profile, resourceId: string): Promise<osc
         }
         return res.directLinks[0];
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
 
@@ -72,6 +72,6 @@ export function deleteDirectLink(profile: Profile, resourceId: string): Promise<
         }
         return undefined;
     }, (err_: any) => {
-        return "Error, bad credential or region?" + err_;
+        return err_;
     });
 }
