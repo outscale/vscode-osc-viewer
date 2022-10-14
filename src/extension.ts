@@ -14,6 +14,14 @@ import { FolderNode } from './flat/folders/node.folder';
 import { FiltersFolderNode } from './flat/folders/node.filterfolder';
 import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
 import { editFilters } from './config_file/action.editFilters';
+
+function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
+	if (typeof allSelectedItems === 'undefined') {
+		return [mainSelectedItem];
+	}
+	return allSelectedItems;
+}
+
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -38,6 +46,7 @@ export function activate(context: vscode.ExtensionContext) {
 	vscode.window.registerTreeDataProvider('profile', profileProvider);
 	vscode.window.createTreeView('profile', {
 		treeDataProvider: profileProvider,
+		canSelectMany: true,
 	});
 	vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
 	vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
@@ -133,15 +142,22 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('osc.disableResourceFolder', async (arg: FolderNode) => {
-		const res = await arg.folderName;
+	vscode.commands.registerCommand('osc.disableResourceFolder', async (arg: FolderNode, allSelected: FolderNode[]) => {
 		// Add the folderName into the conf
 		let disableFolder = getConfigurationParameter<Array<string>>(DISABLE_FOLDER_PARAMETER);
 		if (typeof disableFolder === 'undefined') {
 			disableFolder = [];
 		}
-		if (! disableFolder.includes(res)) {
-			disableFolder.push(res);
+		// We support multiple selection
+		const  targetFolders: FolderNode[]= getMultipleSelection<FolderNode>(arg, allSelected);
+		for (const folder of targetFolders) {
+			if (! (folder instanceof FolderNode)) {
+				continue;
+			}
+			const res = folder.folderName;
+			if (! disableFolder.includes(res)) {
+				disableFolder.push(res);
+			}
 		}
 		await updateConfigurationParameter(DISABLE_FOLDER_PARAMETER, disableFolder);
 
