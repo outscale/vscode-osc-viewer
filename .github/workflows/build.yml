@@ -33,3 +33,8 @@ jobs:
       - name: Build
         run: | 
           npm run-script package
+
+      - name: Ui test
+        run: | 
+          npm run-script docker-build-ui-test
+          npm run-script docker-start-ui-test
