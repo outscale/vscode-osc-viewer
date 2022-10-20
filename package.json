@@ -38,7 +38,7 @@
       "properties": {
         "osc-viewer.refreshConsoleLogs.interval": {
           "type": "integer",
-          "default": "5",
+          "default": 30,
           "description": "Interval in seconds to refresh console logs."
         },
         "osc-viewer.refreshConsoleLogs.enabled": {

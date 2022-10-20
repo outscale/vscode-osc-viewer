@@ -25,10 +25,15 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
         const conf = vscode.workspace.getConfiguration('osc-viewer');
         const hasParameter = conf.has("refreshConsoleLogs.enabled");
         if (!hasParameter || (hasParameter && conf.get("refreshConsoleLogs.enabled")))  {
+            const interval = conf.get("refreshConsoleLogs.interval");
+            let intervalNumber = 30;
+            if (typeof interval === 'number') {
+                intervalNumber = interval;
+            }
             this.clock$ = new Observable((subject) => {
                 setInterval(() => {
                     subject.next();
-                }, conf.get("refreshConsoleLogs.interval"));
+                }, 1000 * intervalNumber);
             });
             this.clock$.subscribe(() => {
                 for (const uri of this._documents.keys()) {
