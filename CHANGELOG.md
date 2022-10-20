@@ -1,4 +1,7 @@
 # Change Log
+## [v0.3.4]
+### Bugfixes
+  - Check type of interval for automatic reload
 ## [v0.3.3]
 ### Bugfixes
   - Fix path resolution on Windows (#26)
