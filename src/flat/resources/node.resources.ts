@@ -25,6 +25,13 @@ export class ResourceNode implements ExplorerResourceNode {
 		return this.deleteFunc(this.profile, this.resourceId);
 	}
 
+	getResourceName(): string {
+		if (this.resourceName.length > 0) {
+			return this.resourceName;
+		}
+		return this.resourceId;
+	}
+
 
 	getTreeItem(): vscode.TreeItem {
 		const treeItem = new vscode.TreeItem(this.resourceId, vscode.TreeItemCollapsibleState.None);
