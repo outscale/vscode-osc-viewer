@@ -113,15 +113,22 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode) => {
-		showYesOrNoWindow("Do you want to start the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
-			const res = await arg.startResource();
-			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`${arg.resourceName} started`);
-			} else {
-				vscode.window.showErrorMessage(`Error while starting ${arg.resourceName}: ${res}`);
+
+	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode, allSelected: VmResourceNode[]) => {
+		const targetFolders: VmResourceNode[] = getMultipleSelection<VmResourceNode>(arg, allSelected);
+		for (const resource of targetFolders) {
+			if (!(resource instanceof VmResourceNode)) {
+				continue;
 			}
-		});
+			showYesOrNoWindow(`Do you want to start the resource ${resource.getResourceName()} ?`, async () => {
+				const res = await arg.startResource();
+				if (typeof res === "undefined") {
+					vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been started`);
+				} else {
+					vscode.window.showErrorMessage(`Error while starting the resource ${resource.resourceName}: ${res}`);
+				}
+			});
+		}
 	});
 
 	vscode.commands.registerCommand('osc.showConsoleLogs', async (arg: VmResourceNode) => {
