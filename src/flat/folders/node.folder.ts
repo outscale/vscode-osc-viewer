@@ -5,17 +5,17 @@ export abstract class FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile, readonly folderName: string) {
     }
 
-	getContextValue(): string {
-		return "foldernode";
-	}
+    getContextValue(): string {
+        return "foldernode";
+    }
 
-	getTreeItem(): vscode.TreeItem {
-		const treeItem = new vscode.TreeItem(this.folderName, vscode.TreeItemCollapsibleState.Collapsed);
-		treeItem.contextValue = this.getContextValue();
+    getTreeItem(): vscode.TreeItem {
+        const treeItem = new vscode.TreeItem(this.folderName, vscode.TreeItemCollapsibleState.Collapsed);
+        treeItem.contextValue = this.getContextValue();
         return treeItem;
-	}
+    }
 
-	abstract getChildren(): Thenable<ExplorerNode[]> ;
+    abstract getChildren(): Thenable<ExplorerNode[]>;
 
 
 

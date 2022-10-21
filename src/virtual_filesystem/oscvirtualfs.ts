@@ -35,8 +35,8 @@ import { getVpnConnection } from '../cloud/vpnconnections';
 class ResourceEncoding {
     constructor(
         public get: (profile: Profile, resourceId: string) => any,
-        public toString: (resourceData: any) => string, 
-    ){}
+        public toString: (resourceData: any) => string,
+    ) { }
 }
 
 const resourceMap = new Map([
@@ -93,7 +93,7 @@ export class OscVirtualContentProvider implements vscode.TextDocumentContentProv
     async readFileAsync(profile: Profile, resourceType: string, resourceId: string): Promise<string> {
         const resourceEncoding = resourceMap.get(resourceType);
         if (typeof resourceEncoding === 'undefined') {
-            vscode.window.showErrorMessage("Unable to display resource '"+ resourceId +"'");
+            vscode.window.showErrorMessage("Unable to display resource '" + resourceId + "'");
             throw new Error("failed");
         }
         const res = await resourceEncoding.get(profile, resourceId);

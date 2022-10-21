@@ -12,8 +12,8 @@ class LogsDocuments {
     constructor(
         public readonly resourceId: string,
         public readonly profile: Profile,
-        public readonly lastData : string,
-        public readonly subscription : Subscription | undefined,
+        public readonly lastData: string,
+        public readonly subscription: Subscription | undefined,
     ) { }
 }
 export class LogsProvider implements vscode.TextDocumentContentProvider {
@@ -29,7 +29,7 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
         // Let vscode informs us when the document is really closed
         vscode.workspace.onDidCloseTextDocument(doc => {
             const logsDocument = this._documents.get(doc.uri.toString());
-            if (typeof logsDocument ===  'undefined') {
+            if (typeof logsDocument === 'undefined') {
                 return;
             }
 
@@ -40,7 +40,7 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
         });
         const conf = vscode.workspace.getConfiguration('osc-viewer');
         const hasParameter = conf.has("refreshConsoleLogs.enabled");
-        if (!hasParameter || (hasParameter && conf.get("refreshConsoleLogs.enabled")))  {
+        if (!hasParameter || (hasParameter && conf.get("refreshConsoleLogs.enabled"))) {
             // 
             const interval = conf.get("refreshConsoleLogs.interval");
             let intervalNumber = DEFAULT_REFRESH_INTERVAL;
@@ -48,13 +48,13 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
                 intervalNumber = interval;
             }
             this.refreshEnabled = true;
-            this.refreshInterval= intervalNumber;
+            this.refreshInterval = intervalNumber;
         }
 
     }
 
     createSubscription(uri: vscode.Uri): Subscription | undefined {
-        if (! this.refreshEnabled) {
+        if (!this.refreshEnabled) {
             return undefined;
         }
         const refreshInterval = this.refreshInterval;
@@ -69,8 +69,8 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
             }, 1000 * uriInterval);
         });
         return observable.subscribe((uri: vscode.Uri) => {
-                console.log(uri);
-                this.onDidChangeEmitter.fire(uri);
+            console.log(uri);
+            this.onDidChangeEmitter.fire(uri);
         });
     }
 
@@ -101,7 +101,7 @@ export class LogsProvider implements vscode.TextDocumentContentProvider {
             this._documents.set(uri.toString(), document);
 
         }
-        
+
         return getLogs(profile, resourceId).then((res: string | undefined) => {
             if (typeof res === 'undefined') {
                 return Buffer.from(lastData, 'base64').toString('ascii');

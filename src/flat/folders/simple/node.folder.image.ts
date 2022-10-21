@@ -6,37 +6,37 @@ import { ResourceNode } from '../../resources/node.resources';
 import { deleteOMI, getOMIs } from '../../../cloud/images';
 import { getAccounts } from '../../../cloud/account';
 
-export const IMAGES_FOLDER_NAME="Images";
+export const IMAGES_FOLDER_NAME = "Images";
 export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
     constructor(readonly profile: Profile) {
-		super(profile, IMAGES_FOLDER_NAME);
+        super(profile, IMAGES_FOLDER_NAME);
     }
 
-	getChildren(): Thenable<ExplorerNode[]> {
-		return getAccounts(this.profile).then((account: Array<osc.Account> | string) => {
-			if (typeof account === "string") {
-				vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${account}`);
-				return Promise.resolve([]);
-			}
+    getChildren(): Thenable<ExplorerNode[]> {
+        return getAccounts(this.profile).then((account: Array<osc.Account> | string) => {
+            if (typeof account === "string") {
+                vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${account}`);
+                return Promise.resolve([]);
+            }
 
-			if (account.length === 0 || typeof account[0].accountId === 'undefined') {
-				return Promise.resolve([]);
-			}
-			return getOMIs(this.profile, {accountIds: [account[0].accountId]}).then(result => {
-				if (typeof result === "string") {
-					vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
-					return Promise.resolve([]);
-				}
-				const resources = [];
-				for (const image of result) {
-					if (typeof image.imageId === 'undefined' || typeof image.imageName === 'undefined') {
-						continue;
-					}
-					resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI));
-				}
-				return Promise.resolve(resources);
-			});
-		});
-		
+            if (account.length === 0 || typeof account[0].accountId === 'undefined') {
+                return Promise.resolve([]);
+            }
+            return getOMIs(this.profile, { accountIds: [account[0].accountId] }).then(result => {
+                if (typeof result === "string") {
+                    vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${result}`);
+                    return Promise.resolve([]);
+                }
+                const resources = [];
+                for (const image of result) {
+                    if (typeof image.imageId === 'undefined' || typeof image.imageName === 'undefined') {
+                        continue;
+                    }
+                    resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI));
+                }
+                return Promise.resolve(resources);
+            });
+        });
+
     }
 }

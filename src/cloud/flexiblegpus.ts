@@ -8,7 +8,7 @@ import { Profile } from "../flat/node";
 // Retrieve all items of the resource FlexibleGpu
 export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu): Promise<Array<osc.FlexibleGpu> | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadFlexibleGpusOperationRequest = {
+    const readParameters: osc.ReadFlexibleGpusOperationRequest = {
         readFlexibleGpusRequest: {
             filters: filters
         }
@@ -16,23 +16,23 @@ export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu):
 
     const api = new osc.FlexibleGpuApi(config);
     return api.readFlexibleGpus(readParameters)
-    .then((res: osc.ReadFlexibleGpusResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
-            return "Listing suceeded but it seems you have no FlexibleGpu";
-        }
-        return res.flexibleGpus;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadFlexibleGpusResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
+                return "Listing suceeded but it seems you have no FlexibleGpu";
+            }
+            return res.flexibleGpus;
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Retrieve a specific item of the resource FlexibleGpu
 export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<osc.FlexibleGpu | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadFlexibleGpusOperationRequest = {
+    const readParameters: osc.ReadFlexibleGpusOperationRequest = {
         readFlexibleGpusRequest: {
             filters: {
                 flexibleGpuIds: [resourceId]
@@ -42,23 +42,23 @@ export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<os
 
     const api = new osc.FlexibleGpuApi(config);
     return api.readFlexibleGpus(readParameters)
-    .then((res: osc.ReadFlexibleGpusResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
-            return "Listing suceeded but it seems you have no FlexibleGpu";
-        }
-        return res.flexibleGpus[0];
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadFlexibleGpusResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
+                return "Listing suceeded but it seems you have no FlexibleGpu";
+            }
+            return res.flexibleGpus[0];
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Delete a specific item the resource FlexibleGpu
 export function deleteFlexibleGpu(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
-    const deleteParameters : osc.DeleteFlexibleGpuOperationRequest = {
+    const deleteParameters: osc.DeleteFlexibleGpuOperationRequest = {
         deleteFlexibleGpuRequest: {
             flexibleGpuId: resourceId
         }
@@ -66,12 +66,12 @@ export function deleteFlexibleGpu(profile: Profile, resourceId: string): Promise
 
     const api = new osc.FlexibleGpuApi(config);
     return api.deleteFlexibleGpu(deleteParameters)
-    .then((res: osc.DeleteFlexibleGpuResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        return undefined;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.DeleteFlexibleGpuResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            return undefined;
+        }, (err_: any) => {
+            return err_;
+        });
 }

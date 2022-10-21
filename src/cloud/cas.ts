@@ -8,7 +8,7 @@ import { Profile } from "../flat/node";
 // Retrieve all items of the resource Ca
 export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc.Ca> | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadCasOperationRequest = {
+    const readParameters: osc.ReadCasOperationRequest = {
         readCasRequest: {
             filters: filters
         }
@@ -16,23 +16,23 @@ export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc
 
     const api = new osc.CaApi(config);
     return api.readCas(readParameters)
-    .then((res: osc.ReadCasResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.cas === undefined || res.cas.length === 0) {
-            return "Listing suceeded but it seems you have no Ca";
-        }
-        return res.cas;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadCasResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.cas === undefined || res.cas.length === 0) {
+                return "Listing suceeded but it seems you have no Ca";
+            }
+            return res.cas;
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Retrieve a specific item of the resource Ca
 export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadCasOperationRequest = {
+    const readParameters: osc.ReadCasOperationRequest = {
         readCasRequest: {
             filters: {
                 caIds: [resourceId]
@@ -42,23 +42,23 @@ export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | st
 
     const api = new osc.CaApi(config);
     return api.readCas(readParameters)
-    .then((res: osc.ReadCasResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.cas === undefined || res.cas.length === 0) {
-            return "Listing suceeded but it seems you have no Ca";
-        }
-        return res.cas[0];
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadCasResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.cas === undefined || res.cas.length === 0) {
+                return "Listing suceeded but it seems you have no Ca";
+            }
+            return res.cas[0];
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Delete a specific item the resource Ca
 export function deleteCa(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
-    const deleteParameters : osc.DeleteCaOperationRequest = {
+    const deleteParameters: osc.DeleteCaOperationRequest = {
         deleteCaRequest: {
             caId: resourceId
         }
@@ -66,12 +66,12 @@ export function deleteCa(profile: Profile, resourceId: string): Promise<string |
 
     const api = new osc.CaApi(config);
     return api.deleteCa(deleteParameters)
-    .then((res: osc.DeleteCaResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        return undefined;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.DeleteCaResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            return undefined;
+        }, (err_: any) => {
+            return err_;
+        });
 }

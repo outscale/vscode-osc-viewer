@@ -5,14 +5,14 @@ import { FILTERS_PARAMETER, getConfigurationParameter, updateConfigurationParame
 import { Profile } from '../node';
 import { FolderNode } from './node.folder';
 
-export type  FiltersType = FiltersVpnConnection | FiltersNetAccessPoint | FiltersNet | FiltersCa | FiltersSnapshot | FiltersFlexibleGpu | FiltersNic | FiltersDirectLink | FiltersApiAccessRule | FiltersLoadBalancer | FiltersKeypair | FiltersNetPeering | FiltersVolume | FiltersSubnet | FiltersDirectLinkInterface | FiltersClientGateway | FiltersNatService | FiltersSecurityGroup | FiltersRouteTable | FiltersImage | FiltersInternetService | FiltersVm | FiltersVirtualGateway | FiltersPublicIp;
+export type FiltersType = FiltersVpnConnection | FiltersNetAccessPoint | FiltersNet | FiltersCa | FiltersSnapshot | FiltersFlexibleGpu | FiltersNic | FiltersDirectLink | FiltersApiAccessRule | FiltersLoadBalancer | FiltersKeypair | FiltersNetPeering | FiltersVolume | FiltersSubnet | FiltersDirectLinkInterface | FiltersClientGateway | FiltersNatService | FiltersSecurityGroup | FiltersRouteTable | FiltersImage | FiltersInternetService | FiltersVm | FiltersVirtualGateway | FiltersPublicIp;
 export abstract class FiltersFolderNode<T> extends FolderNode {
 
-	filters: T | undefined;
+    filters: T | undefined;
     constructor(readonly profile: Profile, readonly folderName: string) {
-		super(profile, folderName);
+        super(profile, folderName);
         this.filters = undefined;
-		this.updateFilters();
+        this.updateFilters();
     }
 
     getContextValue(): string {
@@ -20,16 +20,16 @@ export abstract class FiltersFolderNode<T> extends FolderNode {
             return "emptyfilterfoldernode";
         }
         return "filterfoldernode";
-	}
+    }
 
     getTreeItem(): vscode.TreeItem {
-		const treeItem = super.getTreeItem();
+        const treeItem = super.getTreeItem();
         if (typeof this.filters !== 'undefined') {
             treeItem.iconPath = new ThemeIcon("filter-filled");
         }
 
         return treeItem;
-	}
+    }
 
     async resetFilters(): Promise<void> {
         const filters = getConfigurationParameter<any>(FILTERS_PARAMETER);
@@ -40,13 +40,13 @@ export abstract class FiltersFolderNode<T> extends FolderNode {
         this.filters = undefined;
     }
 
-	updateFilters(): void {
+    updateFilters(): void {
         const filters = getConfigurationParameter<any>(FILTERS_PARAMETER);
         if (this.folderName in filters) {
             this.filters = this.filtersFromJson(filters[this.folderName]);
         }
     }
 
-	abstract filtersFromJson(json: string): T;
+    abstract filtersFromJson(json: string): T;
 
 }

@@ -13,7 +13,7 @@ export interface ExplorerResourceNode extends ExplorerProfileNode {
     readonly resourceName: string;
     readonly resourceId: string;
     readonly resourceType: ResourceNodeType;
-    readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string| undefined> ;
+    readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string | undefined>;
     deleteResource(): Promise<string | undefined>
     getResourceId(): Promise<string | undefined>
     getIconPath(): vscode.ThemeIcon;
@@ -28,7 +28,7 @@ export type ExplorerNode =
     ExplorerFolderNode |
     ExplorerResourceNode;
 
-export type ResourceNodeType=
+export type ResourceNodeType =
     "AccessKey" |
     "ApiAccessRule" |
     "Ca" |
@@ -53,7 +53,7 @@ export type ResourceNodeType=
     "loadbalancers" |
     "eips" |
     "omis" |
-    "snapshots"|
+    "snapshots" |
     "routetables";
 export class NodeImpl {
 }
@@ -61,13 +61,13 @@ export class NodeImpl {
 export class Profile {
     accountId: string;
     constructor(
-		public readonly name: string,
-		public readonly accessKey: string,
-		public readonly secretKey: string,
+        public readonly name: string,
+        public readonly accessKey: string,
+        public readonly secretKey: string,
         public readonly region: string,
         public readonly host: string,
         public readonly https: boolean
-	) {	
+    ) {
         this.name = name;
         this.accessKey = accessKey;
         this.secretKey = secretKey;

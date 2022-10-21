@@ -8,7 +8,7 @@ import { Profile } from "../flat/node";
 // Retrieve all items of the resource ApiAccessRule
 export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRule): Promise<Array<osc.ApiAccessRule> | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadApiAccessRulesOperationRequest = {
+    const readParameters: osc.ReadApiAccessRulesOperationRequest = {
         readApiAccessRulesRequest: {
             filters: filters
         }
@@ -16,23 +16,23 @@ export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRu
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.readApiAccessRules(readParameters)
-    .then((res: osc.ReadApiAccessRulesResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
-            return "Listing suceeded but it seems you have no ApiAccessRule";
-        }
-        return res.apiAccessRules;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadApiAccessRulesResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
+                return "Listing suceeded but it seems you have no ApiAccessRule";
+            }
+            return res.apiAccessRules;
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Retrieve a specific item of the resource ApiAccessRule
 export function getApiAccessRule(profile: Profile, resourceId: string): Promise<osc.ApiAccessRule | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadApiAccessRulesOperationRequest = {
+    const readParameters: osc.ReadApiAccessRulesOperationRequest = {
         readApiAccessRulesRequest: {
             filters: {
                 apiAccessRuleIds: [resourceId]
@@ -42,23 +42,23 @@ export function getApiAccessRule(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.readApiAccessRules(readParameters)
-    .then((res: osc.ReadApiAccessRulesResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
-            return "Listing suceeded but it seems you have no ApiAccessRule";
-        }
-        return res.apiAccessRules[0];
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadApiAccessRulesResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
+                return "Listing suceeded but it seems you have no ApiAccessRule";
+            }
+            return res.apiAccessRules[0];
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 // Delete a specific item the resource ApiAccessRule
 export function deleteApiAccessRule(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
-    const deleteParameters : osc.DeleteApiAccessRuleOperationRequest = {
+    const deleteParameters: osc.DeleteApiAccessRuleOperationRequest = {
         deleteApiAccessRuleRequest: {
             apiAccessRuleId: resourceId
         }
@@ -66,12 +66,12 @@ export function deleteApiAccessRule(profile: Profile, resourceId: string): Promi
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.deleteApiAccessRule(deleteParameters)
-    .then((res: osc.DeleteApiAccessRuleResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        return undefined;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.DeleteApiAccessRuleResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            return undefined;
+        }, (err_: any) => {
+            return err_;
+        });
 }
