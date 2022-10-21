@@ -29,6 +29,10 @@ jobs:
       - name: Check linting
         run: |
           npm run-script lint
+  
+      - name: Check format
+        run: |
+          npm run-script check-format
 
       - name: Build
         run: | 
