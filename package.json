@@ -274,7 +274,9 @@
     "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
     "watch": "tsc -watch -p ./",
-    "vscode:publish": "vsce publish"
+    "vscode:publish": "vsce publish",
+    "check-format": "tsfmt --verify",
+    "format": "tsfmt -r"
   },
   "devDependencies": {
     "@types/chai": "^4.3.3",
@@ -293,7 +295,8 @@
     "outscale-api": "^0.4.0",
     "typescript": "^4.8.4",
     "vsce": "^2.8.0",
-    "vscode-extension-tester": "4.4.0"
+    "vscode-extension-tester": "4.4.0",
+    "typescript-formatter": "^7.2.2"
   },
   "dependencies": {
     "cross-fetch": "^3.1.5",
