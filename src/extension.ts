@@ -103,7 +103,7 @@ export function activate(context: vscode.ExtensionContext) {
                 continue;
             }
             showYesOrNoWindow(`Do you want to stop the resource ${resource.getResourceName()} ?`, async () => {
-                const res = await arg.stopResource();
+                const res = await resource.stopResource();
                 if (typeof res === "undefined") {
                     vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been stopped`);
                 } else {
@@ -121,7 +121,7 @@ export function activate(context: vscode.ExtensionContext) {
                 continue;
             }
             showYesOrNoWindow(`Do you want to start the resource ${resource.getResourceName()} ?`, async () => {
-                const res = await arg.startResource();
+                const res = await resource.startResource();
                 if (typeof res === "undefined") {
                     vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been started`);
                 } else {
