@@ -70,17 +70,23 @@ export function activate(context: vscode.ExtensionContext) {
 		await vscode.window.showTextDocument(doc);
 		await vscode.languages.setTextDocumentLanguage(doc, "json");
 	}));
-	
 
-	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode) => {
-		showYesOrNoWindow("Do you want to delete the resource '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
-			const res = await arg.deleteResource();
-			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`${arg.resourceName} deleted`);
-			} else {
-				vscode.window.showErrorMessage(`Error while deleting ${arg.resourceName}: ${res}`);
+
+	vscode.commands.registerCommand('osc.deleteResource', async (arg: ResourceNode, allSelected: ResourceNode[]) => {
+		const targetFolders: ResourceNode[] = getMultipleSelection<ResourceNode>(arg, allSelected);
+		for (const folder of targetFolders) {
+			if (!(folder instanceof ResourceNode)) {
+				continue;
 			}
-		});
+			showYesOrNoWindow(`Do you want to delete the resource ${folder.getResourceName()} ?`, async () => {
+				const res = await folder.deleteResource();
+				if (typeof res === "undefined") {
+					vscode.window.showInformationMessage(`The resource ${folder.getResourceName()} has been deleted`);
+				} else {
+					vscode.window.showErrorMessage(`Error while deleting the resource ${folder.getResourceName()}: ${res}`);
+				}
+			});
+		}
 	});
 
 	vscode.commands.registerCommand('osc.copyResourceId', async (arg: ResourceNode) => {
