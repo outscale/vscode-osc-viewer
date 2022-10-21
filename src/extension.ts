@@ -96,15 +96,21 @@ export function activate(context: vscode.ExtensionContext) {
 		}
 	});
 
-	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode) => {
-		showYesOrNoWindow("Do you want to stop the VM '" + arg.resourceId + " (" + arg.resourceName + ")" + "' ?", async () => {
-			const res = await arg.stopResource();
-			if (typeof res === "undefined") {
-				vscode.window.showInformationMessage(`${arg.resourceName} stopped`);
-			} else {
-				vscode.window.showErrorMessage(`Error while stopping ${arg.resourceName}: ${res}`);
+	vscode.commands.registerCommand('osc.stopVm', async (arg: VmResourceNode, allSelected: VmResourceNode[]) => {
+		const targetFolders: VmResourceNode[] = getMultipleSelection<VmResourceNode>(arg, allSelected);
+		for (const resource of targetFolders) {
+			if (!(resource instanceof VmResourceNode)) {
+				continue;
 			}
-		});
+			showYesOrNoWindow(`Do you want to stop the resource ${resource.getResourceName()} ?`, async () => {
+				const res = await arg.stopResource();
+				if (typeof res === "undefined") {
+					vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been stopped`);
+				} else {
+					vscode.window.showErrorMessage(`Error while stopping the resource ${resource.resourceName}: ${res}`);
+				}
+			});
+		}
 	});
 
 	vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode) => {
