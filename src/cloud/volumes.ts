@@ -7,7 +7,7 @@ import { FiltersVolume } from "outscale-api";
 
 export function getVolumes(profile: Profile, filters?: FiltersVolume): Promise<Array<osc.Volume> | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadVolumesOperationRequest = {
+    const readParameters: osc.ReadVolumesOperationRequest = {
         readVolumesRequest: {
             filters: filters
         }
@@ -15,22 +15,22 @@ export function getVolumes(profile: Profile, filters?: FiltersVolume): Promise<A
 
     const api = new osc.VolumeApi(config);
     return api.readVolumes(readParameters)
-    .then((res: osc.ReadVolumesResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.volumes === undefined || res.volumes.length === 0) {
-            return "Listing suceeded but it seems you have no Volume";
-        }
-        return res.volumes;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadVolumesResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.volumes === undefined || res.volumes.length === 0) {
+                return "Listing suceeded but it seems you have no Volume";
+            }
+            return res.volumes;
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volume | string> {
     const config = getConfig(profile);
-    const readParameters : osc.ReadVolumesOperationRequest = {
+    const readParameters: osc.ReadVolumesOperationRequest = {
         readVolumesRequest: {
             filters: {
                 volumeIds: [volumeId]
@@ -40,22 +40,22 @@ export function getVolume(profile: Profile, volumeId: string): Promise<osc.Volum
 
     const api = new osc.VolumeApi(config);
     return api.readVolumes(readParameters)
-    .then((res: osc.ReadVolumesResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        if (res.volumes === undefined || res.volumes.length === 0) {
-            return "Listing suceeded but it seems you have no Volume";
-        }
-        return res.volumes[0];
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.ReadVolumesResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            if (res.volumes === undefined || res.volumes.length === 0) {
+                return "Listing suceeded but it seems you have no Volume";
+            }
+            return res.volumes[0];
+        }, (err_: any) => {
+            return err_;
+        });
 }
 
 export function deleteVolume(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
-    const deleteParameters : osc.DeleteVolumeOperationRequest = {
+    const deleteParameters: osc.DeleteVolumeOperationRequest = {
         deleteVolumeRequest: {
             volumeId: resourceId
         }
@@ -63,12 +63,12 @@ export function deleteVolume(profile: Profile, resourceId: string): Promise<stri
 
     const api = new osc.VolumeApi(config);
     return api.deleteVolume(deleteParameters)
-    .then((res: osc.DeleteVolumeResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
-        return undefined;
-    }, (err_: any) => {
-        return err_;
-    });
+        .then((res: osc.DeleteVolumeResponse | string) => {
+            if (typeof res === "string") {
+                return res;
+            }
+            return undefined;
+        }, (err_: any) => {
+            return err_;
+        });
 }

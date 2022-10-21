@@ -1,4 +1,4 @@
-import { MultiStepInput} from './multistep';
+import { MultiStepInput } from './multistep';
 import { readConfigFile, writeConfigFile } from './utils';
 import { window } from 'vscode';
 import { getAccounts } from '../cloud/account';
@@ -9,117 +9,117 @@ import { Profile } from '../flat/node';
  * 
  * This first part uses the helper class `MultiStepInput` that wraps the API for the multi-step case.
  */
- export async function multiStepInput() {
+export async function multiStepInput() {
 
 
-	interface State {
-		title: string;
-		step: number;
-		totalSteps: number;
-		name: string;
-		accessKey: string;
-		secretKey: string;
-		region: string;
-		host: string;
-		https: boolean;
-	}
+    interface State {
+        title: string;
+        step: number;
+        totalSteps: number;
+        name: string;
+        accessKey: string;
+        secretKey: string;
+        region: string;
+        host: string;
+        https: boolean;
+    }
 
-	async function collectInputs() {
-		const state = {} as Partial<State>;
-		await MultiStepInput.run(input => inputProfileName(input, state));
-		return state as State;
-	}
+    async function collectInputs() {
+        const state = {} as Partial<State>;
+        await MultiStepInput.run(input => inputProfileName(input, state));
+        return state as State;
+    }
 
-	const title = 'Add a profile';
-	const steps = 6;
+    const title = 'Add a profile';
+    const steps = 6;
 
-	async function inputProfileName(input: MultiStepInput, state: Partial<State>) {
-		state.name = await input.showInputBox({
-			title,
-			step: 1,
-			totalSteps: steps,
-			value: '',
-			prompt: 'Choose a unique name for the profile',
-			validate: validateNameIsUnique,
-			shouldResume: shouldResume
-		});
-		return (input: MultiStepInput) => inputAccessKey(input, state);
-	}
+    async function inputProfileName(input: MultiStepInput, state: Partial<State>) {
+        state.name = await input.showInputBox({
+            title,
+            step: 1,
+            totalSteps: steps,
+            value: '',
+            prompt: 'Choose a unique name for the profile',
+            validate: validateNameIsUnique,
+            shouldResume: shouldResume
+        });
+        return (input: MultiStepInput) => inputAccessKey(input, state);
+    }
 
-	async function inputAccessKey(input: MultiStepInput, state: Partial<State>) {
-		state.accessKey = await input.showInputBox({
-			title,
-			step: 2,
-			totalSteps: steps,
-			value: '',
-			prompt: 'Enter your Access Key',
-			validate: valideIsNotNull,
-			shouldResume: shouldResume
-		});
-		return (input: MultiStepInput) => inputSecretKey(input, state);
-	}
+    async function inputAccessKey(input: MultiStepInput, state: Partial<State>) {
+        state.accessKey = await input.showInputBox({
+            title,
+            step: 2,
+            totalSteps: steps,
+            value: '',
+            prompt: 'Enter your Access Key',
+            validate: valideIsNotNull,
+            shouldResume: shouldResume
+        });
+        return (input: MultiStepInput) => inputSecretKey(input, state);
+    }
 
     async function inputSecretKey(input: MultiStepInput, state: Partial<State>) {
-		state.secretKey = await input.showInputBox({
-			title,
-			step: 3,
-			totalSteps: steps,
-			value: '',
-			prompt: 'Enter your Secret Key',
-			validate: valideIsNotNull,
-			shouldResume: shouldResume
-		});
-		return (input: MultiStepInput) => inputRegion(input, state);
-	}
+        state.secretKey = await input.showInputBox({
+            title,
+            step: 3,
+            totalSteps: steps,
+            value: '',
+            prompt: 'Enter your Secret Key',
+            validate: valideIsNotNull,
+            shouldResume: shouldResume
+        });
+        return (input: MultiStepInput) => inputRegion(input, state);
+    }
 
     async function inputRegion(input: MultiStepInput, state: Partial<State>) {
-		state.region = await input.showInputBox({
-			title,
-			step: 4,
-			totalSteps: steps,
-			value: 'eu-west-2',
-			prompt: 'Pick a region',
-			validate: valideIsNotNull,
-			shouldResume: shouldResume
-		});
+        state.region = await input.showInputBox({
+            title,
+            step: 4,
+            totalSteps: steps,
+            value: 'eu-west-2',
+            prompt: 'Pick a region',
+            validate: valideIsNotNull,
+            shouldResume: shouldResume
+        });
 
-		return (input: MultiStepInput) => inputHost(input, state);
-	}
+        return (input: MultiStepInput) => inputHost(input, state);
+    }
 
-	async function inputHost(input: MultiStepInput, state: Partial<State>) {
-		state.host = await input.showInputBox({
-			title,
-			step: 5,
-			totalSteps: steps,
-			value: 'outscale.com',
-			prompt: 'Enter the host',
-			validate: valideIsNotNull,
-			shouldResume: shouldResume
-		});
+    async function inputHost(input: MultiStepInput, state: Partial<State>) {
+        state.host = await input.showInputBox({
+            title,
+            step: 5,
+            totalSteps: steps,
+            value: 'outscale.com',
+            prompt: 'Enter the host',
+            validate: valideIsNotNull,
+            shouldResume: shouldResume
+        });
 
-		return (input: MultiStepInput) => inputHttps(input, state);
-	}
+        return (input: MultiStepInput) => inputHttps(input, state);
+    }
 
-	async function inputHttps(input: MultiStepInput, state: Partial<State>) {
-		const pick = await input.showQuickPick({
-			title,
-			step: 6,
-			totalSteps: steps,
-			placeholder: 'Use HTTPS ?',
-			items: [{label: 'yes'}, {label: 'no'}],
-			shouldResume: shouldResume
-		});
-		state.https = (pick.label === 'yes') ? true: false;
-	}
+    async function inputHttps(input: MultiStepInput, state: Partial<State>) {
+        const pick = await input.showQuickPick({
+            title,
+            step: 6,
+            totalSteps: steps,
+            placeholder: 'Use HTTPS ?',
+            items: [{ label: 'yes' }, { label: 'no' }],
+            shouldResume: shouldResume
+        });
+        state.https = (pick.label === 'yes') ? true : false;
+    }
 
-	function shouldResume() {
-		// Could show a notification with the option to resume.
-		return new Promise<boolean>(() => {
-			// noop
-		});
-	}
+    function shouldResume() {
+        // Could show a notification with the option to resume.
+        return new Promise<boolean>(() => {
+            // noop
+        });
+    }
 
-	async function validateNameIsUnique(name: string) {
+    async function validateNameIsUnique(name: string) {
         const oscConfObject = readConfigFile();
         if (typeof oscConfObject === 'undefined') {
             window.showErrorMessage('No config file found');
@@ -127,12 +127,12 @@ import { Profile } from '../flat/node';
         }
 
         const found = Object.keys(oscConfObject).find(key => key === name);
-		return typeof found === 'string' ? 'The name is not unique' : undefined;
-	}
+        return typeof found === 'string' ? 'The name is not unique' : undefined;
+    }
 
-	async function valideIsNotNull(params: string) {
-		return params.length === 0 ? 'Cannot be empty': undefined;
-	}
+    async function valideIsNotNull(params: string) {
+        return params.length === 0 ? 'Cannot be empty' : undefined;
+    }
 
     function writeProfile(state: Partial<State>) {
         // Found a config file
@@ -145,7 +145,7 @@ import { Profile } from '../flat/node';
         if (typeof state.name === 'undefined') {
             return undefined;
         }
-        configJson[state.name]= {
+        configJson[state.name] = {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "access_key": state.accessKey,
             // eslint-disable-next-line @typescript-eslint/naming-convention
@@ -162,20 +162,20 @@ import { Profile } from '../flat/node';
 
     }
 
-	const state = await collectInputs();
-	
-	// Validate the account
-	const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region, state.host, state.https)).then((result) => {
-		if (typeof result === "string") {
-			window.showErrorMessage(`The account '${state.name}' is invalid. Please retry !`);
-			return false;
-		}
-		return true;
-	});
+    const state = await collectInputs();
 
-	if (!profileIsValid) {
-		return undefined;
-	}
+    // Validate the account
+    const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region, state.host, state.https)).then((result) => {
+        if (typeof result === "string") {
+            window.showErrorMessage(`The account '${state.name}' is invalid. Please retry !`);
+            return false;
+        }
+        return true;
+    });
+
+    if (!profileIsValid) {
+        return undefined;
+    }
 
     // Store value
     writeProfile(state);

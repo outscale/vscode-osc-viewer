@@ -6,10 +6,10 @@ import { FiltersVm, FiltersVmFromJSON } from 'outscale-api';
 import { FiltersFolderNode } from '../node.filterfolder';
 
 
-const filteredState = ["pending","running", "stopping", "stopped", "shutting-down"];
+const filteredState = ["pending", "running", "stopping", "stopped", "shutting-down"];
 export const VM_FOLDER_NAME = "Vms";
 export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements ExplorerFolderNode {
-  
+
     constructor(readonly profile: Profile) {
         super(profile, VM_FOLDER_NAME);
     }
@@ -31,7 +31,7 @@ export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements Explo
                     continue;
                 }
 
-                if (! filteredState.includes(vm.state)) {
+                if (!filteredState.includes(vm.state)) {
                     continue;
                 }
 

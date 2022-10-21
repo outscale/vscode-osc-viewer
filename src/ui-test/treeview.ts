@@ -105,7 +105,7 @@ describe('ActivityBar', () => {
             expect(action).not.undefined;
         });
 
-        it('open dialog', async function () {
+        it('open dialog', async function() {
             await action.click();
             const input = new InputBox();
             // Check the title

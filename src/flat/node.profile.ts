@@ -35,85 +35,85 @@ export class ProfileNode implements ExplorerProfileNode {
     }
 
 
-	getTreeItem(): vscode.TreeItem {
-		const treeItem = new vscode.TreeItem(this.profile.name, vscode.TreeItemCollapsibleState.Collapsed);
-		treeItem.iconPath = new vscode.ThemeIcon("account");
-		treeItem.contextValue = this.getContextValue();
+    getTreeItem(): vscode.TreeItem {
+        const treeItem = new vscode.TreeItem(this.profile.name, vscode.TreeItemCollapsibleState.Collapsed);
+        treeItem.iconPath = new vscode.ThemeIcon("account");
+        treeItem.contextValue = this.getContextValue();
         return treeItem;
-	}
-
-	getChildren(): Thenable<ExplorerNode[]> {
-		const resources = [
-			[ACCESSKEY_FOLDER_NAME, new AccessKeysFolderNode(this.profile)],
-			[APIACCESSRULES_FOLDER_NAME, new ApiAccessRulesFolderNode(this.profile)],
-			[CA_FOLDER_NAME, new CasFolderNode(this.profile)],
-			[CLIENTGATEWAYS_FOLDER_NAME, new ClientGatewaysFolderNode(this.profile)],
-			[DHCPOPTIONS_FOLDER_NAME, new DhcpOptionsFolderNode(this.profile)],
-			[DIRECTLINKS_FOLDER_NAME, new DirectLinksFolderNode(this.profile)],
-			[DIRECTLINKINTERFACES_FOLDER_NAME, new DirectLinkInterfacesFolderNode(this.profile)],
-			[FLEXIBLEGPUS_FOLDER_NAME, new FlexibleGpusFolderNode(this.profile)],
-			[IMAGES_FOLDER_NAME, new OMIsFolderNode(this.profile)],
-			[INTERNETSERVICES_FOLDER_NAME, new InternetServicesFolderNode(this.profile)],
-			[KEYPAIRS_FOLDER_NAME, new KeypairsFolderNode(this.profile)],
-			[LOADBALANCER_FOLDER_NAME, new LoadBalancerFolderNode(this.profile)],
-			[NATSERVICES_FOLDER_NAME, new NatServicesFolderNode(this.profile)],
-			[NET_FOLDER_NAME, new VpcFolderNode(this.profile)],
-			[NETACCESSPOINTS_FOLDER_NAME, new NetAccessPointsFolderNode(this.profile)],
-			[NETPEERINGS_FOLDER_NAME, new NetPeeringsFolderNode(this.profile)],
-			[NICS_FOLDER_NAME, new NicsFolderNode(this.profile)],
-			[PUBLICIP_FOLDER_NAME, new ExternalIPsFolderNode(this.profile)],
-			[ROUTETABLES_FOLDER_NAME, new RouteTablesFolderNode(this.profile)],
-			[SECURITYGROUPS_FOLDER_NAME, new SecurityGroupsFolderNode(this.profile)],
-			[SNAPSHOTS_FOLDER_NAME, new SnapshotsFolderNode(this.profile)],
-			[SUBNETS_FOLDER_NAME, new SubnetsFolderNode(this.profile)],
-			[VIRTUALGATEWAYS_FOLDER_NAME, new VirtualGatewaysFolderNode(this.profile)],
-			[VM_FOLDER_NAME, new VmsFolderNode(this.profile)],
-			[VPNCONNECTIONS_FOLDER_NAME, new VpnConnectionsFolderNode(this.profile)],
-			[VOLUME_FOLDER_NAME, new VolumeFolderNode(this.profile)],
-		];
-
-		let disableFolder = getConfigurationParameter<Array<string>>(DISABLE_FOLDER_PARAMETER);
-		if (typeof disableFolder === 'undefined') {
-			disableFolder = [];
-		}
-		const targetResources = [];
-		for (const [folder, folderNode] of resources) {
-			if (typeof folder !== "string") {
-				continue;
-			}
-			if (typeof folderNode === "string") {
-				continue;
-			}
-			if (! disableFolder.includes(folder)) {
-				targetResources.push(folderNode);
-			}
-		}
-		return Promise.resolve(targetResources);
-		
     }
 
-	getContextValue(): string {
-		return "profilenode";
-	}
+    getChildren(): Thenable<ExplorerNode[]> {
+        const resources = [
+            [ACCESSKEY_FOLDER_NAME, new AccessKeysFolderNode(this.profile)],
+            [APIACCESSRULES_FOLDER_NAME, new ApiAccessRulesFolderNode(this.profile)],
+            [CA_FOLDER_NAME, new CasFolderNode(this.profile)],
+            [CLIENTGATEWAYS_FOLDER_NAME, new ClientGatewaysFolderNode(this.profile)],
+            [DHCPOPTIONS_FOLDER_NAME, new DhcpOptionsFolderNode(this.profile)],
+            [DIRECTLINKS_FOLDER_NAME, new DirectLinksFolderNode(this.profile)],
+            [DIRECTLINKINTERFACES_FOLDER_NAME, new DirectLinkInterfacesFolderNode(this.profile)],
+            [FLEXIBLEGPUS_FOLDER_NAME, new FlexibleGpusFolderNode(this.profile)],
+            [IMAGES_FOLDER_NAME, new OMIsFolderNode(this.profile)],
+            [INTERNETSERVICES_FOLDER_NAME, new InternetServicesFolderNode(this.profile)],
+            [KEYPAIRS_FOLDER_NAME, new KeypairsFolderNode(this.profile)],
+            [LOADBALANCER_FOLDER_NAME, new LoadBalancerFolderNode(this.profile)],
+            [NATSERVICES_FOLDER_NAME, new NatServicesFolderNode(this.profile)],
+            [NET_FOLDER_NAME, new VpcFolderNode(this.profile)],
+            [NETACCESSPOINTS_FOLDER_NAME, new NetAccessPointsFolderNode(this.profile)],
+            [NETPEERINGS_FOLDER_NAME, new NetPeeringsFolderNode(this.profile)],
+            [NICS_FOLDER_NAME, new NicsFolderNode(this.profile)],
+            [PUBLICIP_FOLDER_NAME, new ExternalIPsFolderNode(this.profile)],
+            [ROUTETABLES_FOLDER_NAME, new RouteTablesFolderNode(this.profile)],
+            [SECURITYGROUPS_FOLDER_NAME, new SecurityGroupsFolderNode(this.profile)],
+            [SNAPSHOTS_FOLDER_NAME, new SnapshotsFolderNode(this.profile)],
+            [SUBNETS_FOLDER_NAME, new SubnetsFolderNode(this.profile)],
+            [VIRTUALGATEWAYS_FOLDER_NAME, new VirtualGatewaysFolderNode(this.profile)],
+            [VM_FOLDER_NAME, new VmsFolderNode(this.profile)],
+            [VPNCONNECTIONS_FOLDER_NAME, new VpnConnectionsFolderNode(this.profile)],
+            [VOLUME_FOLDER_NAME, new VolumeFolderNode(this.profile)],
+        ];
 
-	async getAccountId(): Promise<string> {
-		if (this.profile.accountId.length !== 0) {
-			return this.profile.accountId;
-		}
-		const res = await getAccount(this.profile, "");
-		if (typeof res === "string") {
-			vscode.window.showInformationMessage(res);
-			return Promise.resolve("");
-		}
+        let disableFolder = getConfigurationParameter<Array<string>>(DISABLE_FOLDER_PARAMETER);
+        if (typeof disableFolder === 'undefined') {
+            disableFolder = [];
+        }
+        const targetResources = [];
+        for (const [folder, folderNode] of resources) {
+            if (typeof folder !== "string") {
+                continue;
+            }
+            if (typeof folderNode === "string") {
+                continue;
+            }
+            if (!disableFolder.includes(folder)) {
+                targetResources.push(folderNode);
+            }
+        }
+        return Promise.resolve(targetResources);
 
-		if (typeof res.accountId === 'undefined') {
-			return Promise.resolve("");
-		}
+    }
 
-		this.profile.accountId = res.accountId;
+    getContextValue(): string {
+        return "profilenode";
+    }
 
-		return Promise.resolve(this.profile.accountId);
-	}
+    async getAccountId(): Promise<string> {
+        if (this.profile.accountId.length !== 0) {
+            return this.profile.accountId;
+        }
+        const res = await getAccount(this.profile, "");
+        if (typeof res === "string") {
+            vscode.window.showInformationMessage(res);
+            return Promise.resolve("");
+        }
+
+        if (typeof res.accountId === 'undefined') {
+            return Promise.resolve("");
+        }
+
+        this.profile.accountId = res.accountId;
+
+        return Promise.resolve(this.profile.accountId);
+    }
 
 
 }

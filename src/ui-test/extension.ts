@@ -7,8 +7,8 @@ const pjson = require('../../package.json');
 // sample test code on how to look for an extension
 describe('Example extension view tests', () => {
     let helloExtension: ExtensionsViewItem;
-    
-    before(async function () {
+
+    before(async function() {
         this.timeout(15000);
         // open the extensions view
         const view = await (await new ActivityBar().getViewControl('Extensions'))?.openView();

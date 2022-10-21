@@ -34,7 +34,7 @@ async function returnError(context: ResponseContext): Promise<Response | void> {
 export function getConfig(profile: Profile): osc.Configuration {
     const protocol = ((profile.https) ? 'https' : 'http');
     return new osc.Configuration({
-        basePath: protocol + "://api." + profile.region + "." +  profile.host + "/api/v1",
+        basePath: protocol + "://api." + profile.region + "." + profile.host + "/api/v1",
         awsV4SignParameters: {
             accessKeyId: profile.accessKey,
             secretAccessKey: profile.secretKey,
@@ -48,7 +48,7 @@ export function getConfig(profile: Profile): osc.Configuration {
         },
         middleware: [
             {
-                post: returnError, 
+                post: returnError,
             }
         ]
     });
