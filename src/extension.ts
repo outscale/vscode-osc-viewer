@@ -149,9 +149,13 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.commands.registerCommand('osc.showAccountInfo', async (arg: ProfileNode) => {
         const uri = vscode.Uri.parse('osc:/' + arg.profile.name + "/profile/" + arg.profile.name);
-        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
-        await vscode.window.showTextDocument(doc);
-        await vscode.languages.setTextDocumentLanguage(doc, "json");
+        try {
+            const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+            await vscode.window.showTextDocument(doc);
+            await vscode.languages.setTextDocumentLanguage(doc, "json");
+        } catch (err: any) {
+            vscode.window.showErrorMessage(err.toString());
+        }
     });
 
     vscode.commands.registerCommand('osc.copyAccountId', async (arg: ProfileNode) => {
