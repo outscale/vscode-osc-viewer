@@ -16,16 +16,13 @@ export function getSecurityGroups(profile: Profile, filters?: FiltersSecurityGro
 
     const api = new osc.SecurityGroupApi(config);
     return api.readSecurityGroups(readParameters)
-        .then((res: osc.ReadSecurityGroupsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSecurityGroupsResponse) => {
             if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-                return "Listing suceeded but it seems you have no SecurityGroup";
+                return [];
             }
             return res.securityGroups;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getSecurityGroup(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.SecurityGroupApi(config);
     return api.readSecurityGroups(readParameters)
-        .then((res: osc.ReadSecurityGroupsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSecurityGroupsResponse) => {
             if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-                return "Listing suceeded but it seems you have no SecurityGroup";
+                return {};
             }
             return res.securityGroups[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteSecurityGroup(profile: Profile, resourceId: string): Promi
 
     const api = new osc.SecurityGroupApi(config);
     return api.deleteSecurityGroup(deleteParameters)
-        .then((res: osc.DeleteSecurityGroupResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

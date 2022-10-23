@@ -16,16 +16,13 @@ export function getVpnConnections(profile: Profile, filters?: FiltersVpnConnecti
 
     const api = new osc.VpnConnectionApi(config);
     return api.readVpnConnections(readParameters)
-        .then((res: osc.ReadVpnConnectionsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVpnConnectionsResponse) => {
             if (res.vpnConnections === undefined || res.vpnConnections.length === 0) {
-                return "Listing suceeded but it seems you have no VpnConnection";
+                return [];
             }
             return res.vpnConnections;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getVpnConnection(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.VpnConnectionApi(config);
     return api.readVpnConnections(readParameters)
-        .then((res: osc.ReadVpnConnectionsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVpnConnectionsResponse) => {
             if (res.vpnConnections === undefined || res.vpnConnections.length === 0) {
-                return "Listing suceeded but it seems you have no VpnConnection";
+                return {};
             }
             return res.vpnConnections[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteVpnConnection(profile: Profile, resourceId: string): Promi
 
     const api = new osc.VpnConnectionApi(config);
     return api.deleteVpnConnection(deleteParameters)
-        .then((res: osc.DeleteVpnConnectionResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

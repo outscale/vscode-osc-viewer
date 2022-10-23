@@ -7,16 +7,13 @@ export function getRegions(): Promise<osc.Region[] | string> {
     const readParameters: osc.ReadRegionsOperationRequest = {
         readRegionsRequest: {}
     };
-    return api.readRegions(readParameters).then((res: osc.ReadRegionsResponse | string) => {
-        if (typeof res === "string") {
-            return res;
-        }
+    return api.readRegions(readParameters).then((res: osc.ReadRegionsResponse) => {
         if (typeof res.regions === "undefined" || res.regions.length === 0) {
-            return "Listing suceeded but it seems there is no region";
+            return [];
         }
         return res.regions;
     }, (err_: any) => {
-        return err_;
+        return err_.toString();
     });
 
 }

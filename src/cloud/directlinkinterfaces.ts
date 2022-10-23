@@ -16,16 +16,13 @@ export function getDirectLinkInterfaces(profile: Profile, filters?: FiltersDirec
 
     const api = new osc.DirectLinkInterfaceApi(config);
     return api.readDirectLinkInterfaces(readParameters)
-        .then((res: osc.ReadDirectLinkInterfacesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadDirectLinkInterfacesResponse) => {
             if (res.directLinkInterfaces === undefined || res.directLinkInterfaces.length === 0) {
-                return "Listing suceeded but it seems you have no DirectLinkInterface";
+                return [];
             }
             return res.directLinkInterfaces;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getDirectLinkInterface(profile: Profile, resourceId: string): Pr
 
     const api = new osc.DirectLinkInterfaceApi(config);
     return api.readDirectLinkInterfaces(readParameters)
-        .then((res: osc.ReadDirectLinkInterfacesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadDirectLinkInterfacesResponse) => {
             if (res.directLinkInterfaces === undefined || res.directLinkInterfaces.length === 0) {
-                return "Listing suceeded but it seems you have no DirectLinkInterface";
+                return {};
             }
             return res.directLinkInterfaces[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteDirectLinkInterface(profile: Profile, resourceId: string):
 
     const api = new osc.DirectLinkInterfaceApi(config);
     return api.deleteDirectLinkInterface(deleteParameters)
-        .then((res: osc.DeleteDirectLinkInterfaceResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

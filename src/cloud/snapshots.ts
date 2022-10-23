@@ -16,16 +16,13 @@ export function getSnapshots(profile: Profile, filters?: FiltersSnapshot): Promi
 
     const api = new osc.SnapshotApi(config);
     return api.readSnapshots(readParameters)
-        .then((res: osc.ReadSnapshotsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSnapshotsResponse) => {
             if (res.snapshots === undefined || res.snapshots.length === 0) {
-                return "Listing suceeded but it seems you have no Snapshot";
+                return [];
             }
             return res.snapshots;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.S
 
     const api = new osc.SnapshotApi(config);
     return api.readSnapshots(readParameters)
-        .then((res: osc.ReadSnapshotsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSnapshotsResponse) => {
             if (res.snapshots === undefined || res.snapshots.length === 0) {
-                return "Listing suceeded but it seems you have no Snapshot";
+                return {};
             }
             return res.snapshots[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteSnapshot(profile: Profile, resourceId: string): Promise<st
 
     const api = new osc.SnapshotApi(config);
     return api.deleteSnapshot(deleteParameters)
-        .then((res: osc.DeleteSnapshotResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

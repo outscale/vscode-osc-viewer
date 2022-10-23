@@ -16,16 +16,13 @@ export function getVirtualGateways(profile: Profile, filters?: FiltersVirtualGat
 
     const api = new osc.VirtualGatewayApi(config);
     return api.readVirtualGateways(readParameters)
-        .then((res: osc.ReadVirtualGatewaysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVirtualGatewaysResponse) => {
             if (res.virtualGateways === undefined || res.virtualGateways.length === 0) {
-                return "Listing suceeded but it seems you have no VirtualGateway";
+                return [];
             }
             return res.virtualGateways;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getVirtualGateway(profile: Profile, resourceId: string): Promise
 
     const api = new osc.VirtualGatewayApi(config);
     return api.readVirtualGateways(readParameters)
-        .then((res: osc.ReadVirtualGatewaysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVirtualGatewaysResponse) => {
             if (res.virtualGateways === undefined || res.virtualGateways.length === 0) {
-                return "Listing suceeded but it seems you have no VirtualGateway";
+                return {};
             }
             return res.virtualGateways[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteVirtualGateway(profile: Profile, resourceId: string): Prom
 
     const api = new osc.VirtualGatewayApi(config);
     return api.deleteVirtualGateway(deleteParameters)
-        .then((res: osc.DeleteVirtualGatewayResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

@@ -16,16 +16,13 @@ export function getAccessKeys(profile: Profile, filters?: FiltersAccessKeys): Pr
 
     const api = new osc.AccessKeyApi(config);
     return api.readAccessKeys(readParameters)
-        .then((res: osc.ReadAccessKeysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadAccessKeysResponse) => {
             if (res.accessKeys === undefined || res.accessKeys.length === 0) {
-                return "Listing suceeded but it seems you have no AccessKey";
+                return [];
             }
             return res.accessKeys;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getAccessKey(profile: Profile, resourceId: string): Promise<osc.
 
     const api = new osc.AccessKeyApi(config);
     return api.readAccessKeys(readParameters)
-        .then((res: osc.ReadAccessKeysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadAccessKeysResponse) => {
             if (res.accessKeys === undefined || res.accessKeys.length === 0) {
-                return "Listing suceeded but it seems you have no AccessKey";
+                return {};
             }
             return res.accessKeys[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteAccessKey(profile: Profile, resourceId: string): Promise<s
 
     const api = new osc.AccessKeyApi(config);
     return api.deleteAccessKey(deleteParameters)
-        .then((res: osc.DeleteAccessKeyResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
