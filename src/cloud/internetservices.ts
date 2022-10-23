@@ -16,16 +16,13 @@ export function getInternetServices(profile: Profile, filters?: FiltersInternetS
 
     const api = new osc.InternetServiceApi(config);
     return api.readInternetServices(readParameters)
-        .then((res: osc.ReadInternetServicesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadInternetServicesResponse) => {
             if (res.internetServices === undefined || res.internetServices.length === 0) {
-                return "Listing suceeded but it seems you have no InternetService";
+                return [];
             }
             return res.internetServices;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getInternetService(profile: Profile, resourceId: string): Promis
 
     const api = new osc.InternetServiceApi(config);
     return api.readInternetServices(readParameters)
-        .then((res: osc.ReadInternetServicesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadInternetServicesResponse) => {
             if (res.internetServices === undefined || res.internetServices.length === 0) {
-                return "Listing suceeded but it seems you have no InternetService";
+                return {};
             }
             return res.internetServices[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteInternetService(profile: Profile, resourceId: string): Pro
 
     const api = new osc.InternetServiceApi(config);
     return api.deleteInternetService(deleteParameters)
-        .then((res: osc.DeleteInternetServiceResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

@@ -16,16 +16,13 @@ export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRu
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.readApiAccessRules(readParameters)
-        .then((res: osc.ReadApiAccessRulesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadApiAccessRulesResponse) => {
             if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
-                return "Listing suceeded but it seems you have no ApiAccessRule";
+                return [];
             }
             return res.apiAccessRules;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getApiAccessRule(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.readApiAccessRules(readParameters)
-        .then((res: osc.ReadApiAccessRulesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadApiAccessRulesResponse) => {
             if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
-                return "Listing suceeded but it seems you have no ApiAccessRule";
+                return {};
             }
             return res.apiAccessRules[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteApiAccessRule(profile: Profile, resourceId: string): Promi
 
     const api = new osc.ApiAccessRuleApi(config);
     return api.deleteApiAccessRule(deleteParameters)
-        .then((res: osc.DeleteApiAccessRuleResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

@@ -16,16 +16,13 @@ export function getNetAccessPoints(profile: Profile, filters?: FiltersNetAccessP
 
     const api = new osc.NetAccessPointApi(config);
     return api.readNetAccessPoints(readParameters)
-        .then((res: osc.ReadNetAccessPointsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNetAccessPointsResponse) => {
             if (res.netAccessPoints === undefined || res.netAccessPoints.length === 0) {
-                return "Listing suceeded but it seems you have no NetAccessPoint";
+                return [];
             }
             return res.netAccessPoints;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getNetAccessPoint(profile: Profile, resourceId: string): Promise
 
     const api = new osc.NetAccessPointApi(config);
     return api.readNetAccessPoints(readParameters)
-        .then((res: osc.ReadNetAccessPointsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNetAccessPointsResponse) => {
             if (res.netAccessPoints === undefined || res.netAccessPoints.length === 0) {
-                return "Listing suceeded but it seems you have no NetAccessPoint";
+                return {};
             }
             return res.netAccessPoints[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteNetAccessPoint(profile: Profile, resourceId: string): Prom
 
     const api = new osc.NetAccessPointApi(config);
     return api.deleteNetAccessPoint(deleteParameters)
-        .then((res: osc.DeleteNetAccessPointResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

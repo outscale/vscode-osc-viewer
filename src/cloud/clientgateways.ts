@@ -16,16 +16,13 @@ export function getClientGateways(profile: Profile, filters?: FiltersClientGatew
 
     const api = new osc.ClientGatewayApi(config);
     return api.readClientGateways(readParameters)
-        .then((res: osc.ReadClientGatewaysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadClientGatewaysResponse) => {
             if (res.clientGateways === undefined || res.clientGateways.length === 0) {
-                return "Listing suceeded but it seems you have no ClientGateway";
+                return [];
             }
             return res.clientGateways;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getClientGateway(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.ClientGatewayApi(config);
     return api.readClientGateways(readParameters)
-        .then((res: osc.ReadClientGatewaysResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadClientGatewaysResponse) => {
             if (res.clientGateways === undefined || res.clientGateways.length === 0) {
-                return "Listing suceeded but it seems you have no ClientGateway";
+                return {};
             }
             return res.clientGateways[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteClientGateway(profile: Profile, resourceId: string): Promi
 
     const api = new osc.ClientGatewayApi(config);
     return api.deleteClientGateway(deleteParameters)
-        .then((res: osc.DeleteClientGatewayResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

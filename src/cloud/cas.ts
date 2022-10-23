@@ -16,16 +16,13 @@ export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc
 
     const api = new osc.CaApi(config);
     return api.readCas(readParameters)
-        .then((res: osc.ReadCasResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadCasResponse) => {
             if (res.cas === undefined || res.cas.length === 0) {
-                return "Listing suceeded but it seems you have no Ca";
+                return [];
             }
             return res.cas;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | st
 
     const api = new osc.CaApi(config);
     return api.readCas(readParameters)
-        .then((res: osc.ReadCasResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadCasResponse) => {
             if (res.cas === undefined || res.cas.length === 0) {
-                return "Listing suceeded but it seems you have no Ca";
+                return {};
             }
             return res.cas[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteCa(profile: Profile, resourceId: string): Promise<string |
 
     const api = new osc.CaApi(config);
     return api.deleteCa(deleteParameters)
-        .then((res: osc.DeleteCaResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

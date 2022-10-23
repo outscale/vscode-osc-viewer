@@ -1,8 +1,10 @@
 import * as osc from "outscale-api";
-import { getConfig } from './cloud';
-import { Profile } from "../flat/node";
 import { FiltersVm } from "outscale-api";
+import { getConfig } from '../cloud/cloud';
+import { Profile } from "../flat/node";
 
+
+// Retrieve all items of the resource Vm
 export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc.Vm> | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVmsOperationRequest = {
@@ -13,41 +15,36 @@ export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc
 
     const api = new osc.VmApi(config);
     return api.readVms(readParameters)
-        .then((res: osc.ReadVmsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVmsResponse) => {
             if (res.vms === undefined || res.vms.length === 0) {
-                return "Listing suceeded but it seems you have no vm";
+                return [];
             }
             return res.vms;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
-export function getVm(profile: Profile, vmId: string): Promise<osc.Vm | string> {
+// Retrieve a specific item of the resource Vm
+export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVmsOperationRequest = {
         readVmsRequest: {
             filters: {
-                vmIds: [vmId]
+                vmIds: [resourceId]
             }
         }
     };
 
     const api = new osc.VmApi(config);
     return api.readVms(readParameters)
-        .then((res: osc.ReadVmsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadVmsResponse) => {
             if (res.vms === undefined || res.vms.length === 0) {
-                return "Listing suceeded but it seems you have no vm";
+                return {};
             }
             return res.vms[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -64,27 +61,23 @@ export function getVmName(vm: osc.Vm): string {
     return "";
 }
 
-export function deleteVm(profile: Profile, vmId: string): Promise<string | undefined> {
+// Delete a specific item the resource Vm
+export function deleteVm(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters: osc.DeleteVmsOperationRequest = {
         deleteVmsRequest: {
-            vmIds: [vmId]
+            vmIds: [resourceId]
         }
     };
 
     const api = new osc.VmApi(config);
     return api.deleteVms(deleteParameters)
-        .then((res: osc.DeleteVmsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
-
 }
-
 export function startVm(profile: Profile, vmId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const startParameters: osc.StartVmsOperationRequest = {
@@ -95,14 +88,10 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
 
     const api = new osc.VmApi(config);
     return api.startVms(startParameters)
-        .then((res: osc.StartVmsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
-            console.log(res);
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 
 }
@@ -117,14 +106,10 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
 
     const api = new osc.VmApi(config);
     return api.stopVms(stopParameters)
-        .then((res: osc.StopVmsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
-            console.log(res);
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 
 }
@@ -139,12 +124,7 @@ export async function getLogs(profile: Profile, vmId: string): Promise<string | 
 
     const api = new osc.VmApi(config);
     return api.readConsoleOutput(stopParameters)
-        .then((res: osc.ReadConsoleOutputResponse | string) => {
-            if (typeof res === "string") {
-                console.log(res);
-                return undefined;
-            }
-
+        .then((res: osc.ReadConsoleOutputResponse) => {
             if (typeof res.consoleOutput === "undefined") {
                 return undefined;
             }

@@ -16,16 +16,13 @@ export function getSubnets(profile: Profile, filters?: FiltersSubnet): Promise<A
 
     const api = new osc.SubnetApi(config);
     return api.readSubnets(readParameters)
-        .then((res: osc.ReadSubnetsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSubnetsResponse) => {
             if (res.subnets === undefined || res.subnets.length === 0) {
-                return "Listing suceeded but it seems you have no Subnet";
+                return [];
             }
             return res.subnets;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Sub
 
     const api = new osc.SubnetApi(config);
     return api.readSubnets(readParameters)
-        .then((res: osc.ReadSubnetsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadSubnetsResponse) => {
             if (res.subnets === undefined || res.subnets.length === 0) {
-                return "Listing suceeded but it seems you have no Subnet";
+                return {};
             }
             return res.subnets[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteSubnet(profile: Profile, resourceId: string): Promise<stri
 
     const api = new osc.SubnetApi(config);
     return api.deleteSubnet(deleteParameters)
-        .then((res: osc.DeleteSubnetResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

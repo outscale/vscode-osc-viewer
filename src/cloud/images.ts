@@ -15,16 +15,13 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
 
     const api = new osc.ImageApi(config);
     return api.readImages(readParameters)
-        .then((res: osc.ReadImagesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadImagesResponse) => {
             if (res.images === undefined || res.images.length === 0) {
-                return "Listing suceeded but it seems you have no Image";
+                return [];
             }
             return res.images;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -41,16 +38,13 @@ export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image 
 
     const api = new osc.ImageApi(config);
     return api.readImages(readParameters)
-        .then((res: osc.ReadImagesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadImagesResponse) => {
             if (res.images === undefined || res.images.length === 0) {
-                return "Listing suceeded but it seems you have no Image";
+                return {};
             }
             return res.images[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -65,12 +59,9 @@ export function deleteOMI(profile: Profile, resourceId: string): Promise<string 
 
     const api = new osc.ImageApi(config);
     return api.deleteImage(deleteParameters)
-        .then((res: osc.DeleteImageResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

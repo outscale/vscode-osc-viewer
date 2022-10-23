@@ -16,16 +16,13 @@ export function getNics(profile: Profile, filters?: FiltersNic): Promise<Array<o
 
     const api = new osc.NicApi(config);
     return api.readNics(readParameters)
-        .then((res: osc.ReadNicsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNicsResponse) => {
             if (res.nics === undefined || res.nics.length === 0) {
-                return "Listing suceeded but it seems you have no Nic";
+                return [];
             }
             return res.nics;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | 
 
     const api = new osc.NicApi(config);
     return api.readNics(readParameters)
-        .then((res: osc.ReadNicsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNicsResponse) => {
             if (res.nics === undefined || res.nics.length === 0) {
-                return "Listing suceeded but it seems you have no Nic";
+                return {};
             }
             return res.nics[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteNic(profile: Profile, resourceId: string): Promise<string 
 
     const api = new osc.NicApi(config);
     return api.deleteNic(deleteParameters)
-        .then((res: osc.DeleteNicResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

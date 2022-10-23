@@ -1,10 +1,11 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from './cloud';
-import { Profile } from "../flat/node";
 import { FiltersKeypair } from "outscale-api";
+import { getConfig } from '../cloud/cloud';
+import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource Keypair
 export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise<Array<osc.Keypair> | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadKeypairsOperationRequest = {
@@ -15,60 +16,53 @@ export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise
 
     const api = new osc.KeypairApi(config);
     return api.readKeypairs(readParameters)
-        .then((res: osc.ReadKeypairsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadKeypairsResponse) => {
             if (res.keypairs === undefined || res.keypairs.length === 0) {
-                return "Listing suceeded but it seems you have no Keypairs";
+                return [];
             }
             return res.keypairs;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
-export function getKeypair(profile: Profile, keypairId: string): Promise<osc.Keypair | string> {
+// Retrieve a specific item of the resource Keypair
+export function getKeypair(profile: Profile, resourceId: string): Promise<osc.Keypair | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadKeypairsOperationRequest = {
         readKeypairsRequest: {
             filters: {
-                keypairNames: [keypairId]
+                keypairNames: [resourceId]
             }
         }
     };
 
     const api = new osc.KeypairApi(config);
     return api.readKeypairs(readParameters)
-        .then((res: osc.ReadKeypairsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadKeypairsResponse) => {
             if (res.keypairs === undefined || res.keypairs.length === 0) {
-                return "Listing suceeded but it seems you have no Keypairs";
+                return {};
             }
             return res.keypairs[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
-export function deleteKeypair(profile: Profile, keypairId: string): Promise<string | undefined> {
+// Delete a specific item the resource Keypair
+export function deleteKeypair(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters: osc.DeleteKeypairOperationRequest = {
         deleteKeypairRequest: {
-            keypairName: keypairId
+            keypairName: resourceId
         }
     };
 
     const api = new osc.KeypairApi(config);
     return api.deleteKeypair(deleteParameters)
-        .then((res: osc.DeleteKeypairResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

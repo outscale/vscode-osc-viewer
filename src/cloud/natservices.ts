@@ -16,16 +16,13 @@ export function getNatServices(profile: Profile, filters?: FiltersNatService): P
 
     const api = new osc.NatServiceApi(config);
     return api.readNatServices(readParameters)
-        .then((res: osc.ReadNatServicesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNatServicesResponse) => {
             if (res.natServices === undefined || res.natServices.length === 0) {
-                return "Listing suceeded but it seems you have no NatService";
+                return [];
             }
             return res.natServices;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getNatService(profile: Profile, resourceId: string): Promise<osc
 
     const api = new osc.NatServiceApi(config);
     return api.readNatServices(readParameters)
-        .then((res: osc.ReadNatServicesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNatServicesResponse) => {
             if (res.natServices === undefined || res.natServices.length === 0) {
-                return "Listing suceeded but it seems you have no NatService";
+                return {};
             }
             return res.natServices[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteNatService(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.NatServiceApi(config);
     return api.deleteNatService(deleteParameters)
-        .then((res: osc.DeleteNatServiceResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

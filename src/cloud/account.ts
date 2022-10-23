@@ -12,16 +12,13 @@ export function getAccounts(profile: Profile): Promise<Array<osc.Account> | stri
 
     const api = new osc.AccountApi(config);
     return api.readAccounts(readParameters)
-        .then((res: osc.ReadAccountsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadAccountsResponse) => {
             if (res.accounts === undefined || res.accounts.length === 0) {
-                return "Listing suceeded but it seems you have no Keypairs";
+                return [];
             }
             return res.accounts;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -33,15 +30,12 @@ export function getAccount(profile: Profile, _: string): Promise<osc.Account | s
 
     const api = new osc.AccountApi(config);
     return api.readAccounts(readParameters)
-        .then((res: osc.ReadAccountsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadAccountsResponse) => {
             if (res.accounts === undefined || res.accounts.length === 0) {
-                return "Listing suceeded but it seems you have no Keypairs";
+                return {};
             }
             return res.accounts[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

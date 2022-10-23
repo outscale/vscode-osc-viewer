@@ -16,16 +16,13 @@ export function getRouteTables(profile: Profile, filters?: FiltersRouteTable): P
 
     const api = new osc.RouteTableApi(config);
     return api.readRouteTables(readParameters)
-        .then((res: osc.ReadRouteTablesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadRouteTablesResponse) => {
             if (res.routeTables === undefined || res.routeTables.length === 0) {
-                return "Listing suceeded but it seems you have no RouteTable";
+                return [];
             }
             return res.routeTables;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getRouteTable(profile: Profile, resourceId: string): Promise<osc
 
     const api = new osc.RouteTableApi(config);
     return api.readRouteTables(readParameters)
-        .then((res: osc.ReadRouteTablesResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadRouteTablesResponse) => {
             if (res.routeTables === undefined || res.routeTables.length === 0) {
-                return "Listing suceeded but it seems you have no RouteTable";
+                return {};
             }
             return res.routeTables[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteRouteTable(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.RouteTableApi(config);
     return api.deleteRouteTable(deleteParameters)
-        .then((res: osc.DeleteRouteTableResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

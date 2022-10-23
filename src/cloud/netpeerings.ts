@@ -16,16 +16,13 @@ export function getNetPeerings(profile: Profile, filters?: FiltersNetPeering): P
 
     const api = new osc.NetPeeringApi(config);
     return api.readNetPeerings(readParameters)
-        .then((res: osc.ReadNetPeeringsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNetPeeringsResponse) => {
             if (res.netPeerings === undefined || res.netPeerings.length === 0) {
-                return "Listing suceeded but it seems you have no NetPeering";
+                return [];
             }
             return res.netPeerings;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getNetPeering(profile: Profile, resourceId: string): Promise<osc
 
     const api = new osc.NetPeeringApi(config);
     return api.readNetPeerings(readParameters)
-        .then((res: osc.ReadNetPeeringsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadNetPeeringsResponse) => {
             if (res.netPeerings === undefined || res.netPeerings.length === 0) {
-                return "Listing suceeded but it seems you have no NetPeering";
+                return {};
             }
             return res.netPeerings[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteNetPeering(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.NetPeeringApi(config);
     return api.deleteNetPeering(deleteParameters)
-        .then((res: osc.DeleteNetPeeringResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

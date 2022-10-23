@@ -1,10 +1,11 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from './cloud';
-import { Profile } from "../flat/node";
 import { FiltersLoadBalancer } from "outscale-api";
+import { getConfig } from '../cloud/cloud';
+import { Profile } from "../flat/node";
 
 
+// Retrieve all items of the resource LoadBalancer
 export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer): Promise<Array<osc.LoadBalancer> | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadLoadBalancersOperationRequest = {
@@ -15,60 +16,53 @@ export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer
 
     const api = new osc.LoadBalancerApi(config);
     return api.readLoadBalancers(readParameters)
-        .then((res: osc.ReadLoadBalancersResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadLoadBalancersResponse) => {
             if (res.loadBalancers === undefined || res.loadBalancers.length === 0) {
-                return "Listing suceeded but it seems you have no LoadBalancers";
+                return [];
             }
             return res.loadBalancers;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
-export function getLoadBalancer(profile: Profile, loadBalancerName: string): Promise<osc.LoadBalancer | string> {
+// Retrieve a specific item of the resource LoadBalancer
+export function getLoadBalancer(profile: Profile, resourceId: string): Promise<osc.LoadBalancer | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadLoadBalancersOperationRequest = {
         readLoadBalancersRequest: {
             filters: {
-                loadBalancerNames: [loadBalancerName]
+                loadBalancerNames: [resourceId]
             }
         }
     };
 
     const api = new osc.LoadBalancerApi(config);
     return api.readLoadBalancers(readParameters)
-        .then((res: osc.ReadLoadBalancersResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadLoadBalancersResponse) => {
             if (res.loadBalancers === undefined || res.loadBalancers.length === 0) {
-                return "Listing suceeded but it seems you have no LoadBalancers";
+                return {};
             }
             return res.loadBalancers[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
-export function deleteLoadBalancer(profile: Profile, loadBalancerName: string): Promise<string | undefined> {
+// Delete a specific item the resource LoadBalancer
+export function deleteLoadBalancer(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const deleteParameters: osc.DeleteLoadBalancerOperationRequest = {
         deleteLoadBalancerRequest: {
-            loadBalancerName: loadBalancerName
+            loadBalancerName: resourceId
         }
     };
 
     const api = new osc.LoadBalancerApi(config);
     return api.deleteLoadBalancer(deleteParameters)
-        .then((res: osc.DeleteLoadBalancerResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

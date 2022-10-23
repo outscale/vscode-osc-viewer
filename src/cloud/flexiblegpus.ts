@@ -16,16 +16,13 @@ export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu):
 
     const api = new osc.FlexibleGpuApi(config);
     return api.readFlexibleGpus(readParameters)
-        .then((res: osc.ReadFlexibleGpusResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadFlexibleGpusResponse) => {
             if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
-                return "Listing suceeded but it seems you have no FlexibleGpu";
+                return [];
             }
             return res.flexibleGpus;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<os
 
     const api = new osc.FlexibleGpuApi(config);
     return api.readFlexibleGpus(readParameters)
-        .then((res: osc.ReadFlexibleGpusResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadFlexibleGpusResponse) => {
             if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
-                return "Listing suceeded but it seems you have no FlexibleGpu";
+                return {};
             }
             return res.flexibleGpus[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteFlexibleGpu(profile: Profile, resourceId: string): Promise
 
     const api = new osc.FlexibleGpuApi(config);
     return api.deleteFlexibleGpu(deleteParameters)
-        .then((res: osc.DeleteFlexibleGpuResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }

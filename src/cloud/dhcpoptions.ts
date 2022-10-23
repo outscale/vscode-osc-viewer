@@ -16,16 +16,13 @@ export function getDhcpOptions(profile: Profile, filters?: FiltersDhcpOptions): 
 
     const api = new osc.DhcpOptionApi(config);
     return api.readDhcpOptions(readParameters)
-        .then((res: osc.ReadDhcpOptionsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadDhcpOptionsResponse) => {
             if (res.dhcpOptionsSets === undefined || res.dhcpOptionsSets.length === 0) {
-                return "Listing suceeded but it seems you have no DhcpOption";
+                return [];
             }
             return res.dhcpOptionsSets;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -42,16 +39,13 @@ export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc
 
     const api = new osc.DhcpOptionApi(config);
     return api.readDhcpOptions(readParameters)
-        .then((res: osc.ReadDhcpOptionsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then((res: osc.ReadDhcpOptionsResponse) => {
             if (res.dhcpOptionsSets === undefined || res.dhcpOptionsSets.length === 0) {
-                return "Listing suceeded but it seems you have no DhcpOption";
+                return {};
             }
             return res.dhcpOptionsSets[0];
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
 
@@ -66,12 +60,9 @@ export function deleteDhcpOption(profile: Profile, resourceId: string): Promise<
 
     const api = new osc.DhcpOptionApi(config);
     return api.deleteDhcpOptions(deleteParameters)
-        .then((res: osc.DeleteDhcpOptionsResponse | string) => {
-            if (typeof res === "string") {
-                return res;
-            }
+        .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_;
+            return err_.toString();
         });
 }
