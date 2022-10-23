@@ -96,14 +96,14 @@ export class ProfileNode implements ExplorerProfileNode {
         return "profilenode";
     }
 
-    async getAccountId(): Promise<string> {
+    async getAccountId(): Promise<string | undefined> {
         if (this.profile.accountId.length !== 0) {
             return this.profile.accountId;
         }
         const res = await getAccount(this.profile, "");
         if (typeof res === "string") {
-            vscode.window.showInformationMessage(res);
-            return Promise.resolve("");
+            vscode.window.showErrorMessage(`Error while reading Account ${res}`);
+            return Promise.resolve(undefined);
         }
 
         if (typeof res.accountId === 'undefined') {
