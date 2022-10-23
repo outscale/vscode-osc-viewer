@@ -93,10 +93,12 @@ export class OscVirtualContentProvider implements vscode.TextDocumentContentProv
     async readFileAsync(profile: Profile, resourceType: string, resourceId: string): Promise<string> {
         const resourceEncoding = resourceMap.get(resourceType);
         if (typeof resourceEncoding === 'undefined') {
-            vscode.window.showErrorMessage("Unable to display resource '" + resourceId + "'");
-            throw new Error("failed");
+            throw new Error(`Unable to display resource ${resourceId}: the resource is not implemented.`);
         }
         const res = await resourceEncoding.get(profile, resourceId);
+        if (typeof res === "string") {
+            throw new Error(`Unable to display resource ${resourceId}: ${res}`);
+        }
         return JSON.stringify(resourceEncoding.toString(res), null, 4);
     }
 }
