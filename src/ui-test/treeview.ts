@@ -270,6 +270,28 @@ describe('ActivityBar', () => {
                 visibleItem = await section.findItem("second_profile");
                 expect(visibleItem).not.undefined;
             });
+
+            describe("Context Menu", async () => {
+                let menu: ContextMenu;
+
+                before(async () => {
+                    menu = await firstProfile.openContextMenu();
+                });
+
+                after(async () => {
+                    await menu.close();
+                });
+
+                it('has copy Account Id button', async () => {
+                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.copyAccountId")[0];
+                    expect(await menu.hasItem(expectedCommandName["title"])).equals(true);
+                });
+
+                it('has show Account Info button', async () => {
+                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.showAccountInfo")[0];
+                    expect(await menu.hasItem(expectedCommandName["title"])).equals(true);
+                });
+            });
         });
     });
 });
