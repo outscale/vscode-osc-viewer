@@ -1,8 +1,10 @@
 import { ActivityBar, after, CustomTreeSection, SideBarView, ViewContent, ViewControl, ViewTitlePart, Workbench, TreeItem, ContextMenu, InputBox, TitleActionButton, EditorView, NotificationType } from 'vscode-extension-tester';
 import { expect } from 'chai';
 import * as fs from 'fs';
+import { createConfigFile, getDefaultConfigFilePath } from '../config_file/utils';
 import * as path from 'path';
 import { homedir } from 'os';
+
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pjson = require('../../package.json');
 const resourceTypes = [
@@ -241,6 +243,33 @@ describe('ActivityBar', () => {
                 expect(visibleItem).not.undefined;
             });
 
+        });
+
+        describe('Test with new configuration file path', async () => {
+            let firstProfile: TreeItem;
+            before(async () => {
+                createConfigFile();
+                fs.writeFileSync(getDefaultConfigFilePath(), JSON.stringify(profile));
+                await (new Workbench()).executeCommand("osc-viewer: Refresh");
+            });
+
+            after(async () => {
+                if (fs.existsSync(getDefaultConfigFilePath())) {
+                    fs.rmSync(getDefaultConfigFilePath());
+                }
+                await (new Workbench()).executeCommand("osc-viewer: Refresh");
+            });
+
+            it('Check number of profile', async () => {
+                let visibleItem = await section.findItem("first_profile");
+                expect(visibleItem).not.undefined;
+                if (typeof visibleItem === 'undefined') {
+                    return;
+                }
+                firstProfile = visibleItem;
+                visibleItem = await section.findItem("second_profile");
+                expect(visibleItem).not.undefined;
+            });
         });
     });
 });
