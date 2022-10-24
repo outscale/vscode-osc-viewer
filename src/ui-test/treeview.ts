@@ -292,6 +292,26 @@ describe('ActivityBar', () => {
                     expect(await menu.hasItem(expectedCommandName["title"])).equals(true);
                 });
             });
+
+            describe("Expand Default Profile", () => {
+                let children: TreeItem[];
+                before(async () => {
+                    await firstProfile.expand();
+                    children = await firstProfile.getChildren();
+                });
+
+                after(async () => {
+                    await firstProfile.collapse();
+                });
+
+
+                it("Check all resources are present", async () => {
+                    expect(children.length).equals(resourceTypes.length);
+                    for (const el of children) {
+                        expect(resourceTypes.includes(await el.getLabel()));
+                    }
+                });
+            });
         });
     });
 });
