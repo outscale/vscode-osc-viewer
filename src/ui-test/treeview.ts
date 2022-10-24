@@ -219,6 +219,11 @@ describe('ActivityBar', () => {
 
         });
 
+        it('has Welcome View', async () => {
+            const welcomeContent = await section.findWelcomeContent();
+            expect(welcomeContent).not.undefined;
+        });
+
         it('Has no profile', async () => {
             const visibleItem = await section.getVisibleItems();
             expect(visibleItem.length).equals(0, "Should no have any profile");
