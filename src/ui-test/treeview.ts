@@ -56,6 +56,9 @@ const profile: any = {
         "region": "eu-west-2"
     }
 };
+const settingPath = path.join("test-resources", "settings", "User", "settings.json");
+
+
 // in this test we will look at tree views in the left side bar
 describe('ActivityBar', () => {
     let titlePart: ViewTitlePart;
@@ -310,6 +313,46 @@ describe('ActivityBar', () => {
                     for (const el of children) {
                         expect(resourceTypes.includes(await el.getLabel()));
                     }
+                });
+
+                describe("Hide button", async () => {
+                    let expectedCommandName: any;
+
+                    before(async () => {
+                        expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.disableResourceFolder")[0];
+                    });
+
+                    after(async () => {
+                        // Reset the option for disable folders
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        setting['osc-viewer.disableFolders'] = [];
+                        fs.writeFileSync(settingPath, JSON.stringify(setting));
+                        // Refresh to get up to date
+                        await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                    });
+
+                    it("exists", async () => {
+                        for (const el of children) {
+                            const action = await el.getActionButton(expectedCommandName['title']);
+                            expect(action).not.undefined;
+                        }
+                    });
+
+                    it("hides the folder", async () => {
+                        const el = children[0];
+                        const elLabel = await el.getLabel();
+                        const action = await el.getActionButton(expectedCommandName['title']);
+                        await action?.click();
+
+                        const hideChildren = await firstProfile.getChildren();
+                        expect(hideChildren.length).equals(children.length - 1);
+
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        expect(setting['osc-viewer.disableFolders'].length).equals(1);
+                        expect(setting['osc-viewer.disableFolders'][0]).equals(elLabel);
+                    });
                 });
             });
         });
