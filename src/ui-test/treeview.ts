@@ -136,6 +136,26 @@ describe('ActivityBar', () => {
             await editorView.closeEditor('config.json');
         });
     });
+
+    describe('Open settings button', () => {
+        let action: TitleActionButton;
+        before(async () => {
+            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.openParameter")[0];
+            action = await titlePart.getAction(expectedCommandName["title"]);
+        });
+
+        it('exists', async () => {
+            expect(action).not.undefined;
+        });
+
+        it('open the settings', async () => {
+            await action.click();
+            const editorView = new EditorView();
+            const titles = await editorView.getOpenEditorTitles();
+            expect(titles.includes('Settings')).true;
+            await editorView.closeEditor('Settings');
+        });
+    });
 });
 function delay(milliseconds: number): Promise<number> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
