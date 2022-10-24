@@ -5,6 +5,55 @@ import * as path from 'path';
 import { homedir } from 'os';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pjson = require('../../package.json');
+const resourceTypes = [
+    "Access Keys",
+    "Api Access Rules",
+    "Cas",
+    "Client Gateways",
+    "Dhcp Options",
+    "DirectLinks",
+    "DirectLink Interfaces",
+    "Flexible Gpus",
+    "Images",
+    "Internet Services",
+    "Volumes",
+    "Keypairs",
+    "LoadBalancers",
+    "Nat Services",
+    "Nets",
+    "Net AccessPoints",
+    "Net Peerings",
+    "Nics",
+    "External IPs",
+    "Route tables",
+    "Security Groups",
+    "Snapshots",
+    "Subnets",
+    "Virtual Gateways",
+    "Vms",
+    "Vpn Connections"
+];
+const profile: any = {
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "first_profile": {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "access_key": "access_key",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "secret_key": "secret_key",
+        "region": "eu-west-2"
+    },
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    "second_profile": {
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "access_key": "access_key",
+        // eslint-disable-next-line @typescript-eslint/naming-convention
+        "secret_key": "secret_key",
+        "host": "outscale.com",
+        "https": true,
+        "method": "POST",
+        "region": "eu-west-2"
+    }
+};
 // in this test we will look at tree views in the left side bar
 describe('ActivityBar', () => {
     let titlePart: ViewTitlePart;
@@ -168,6 +217,30 @@ describe('ActivityBar', () => {
         it('Has no profile', async () => {
             const visibleItem = await section.getVisibleItems();
             expect(visibleItem.length).equals(0, "Should no have any profile");
+        });
+
+        describe('Test with old configuration file path', async () => {
+            const OLD_FILE_PATH = path.join(homedir(), ".osc_sdk", "config.json");
+            before(async () => {
+                fs.mkdirSync(path.dirname(OLD_FILE_PATH), { recursive: true });
+                fs.writeFileSync(OLD_FILE_PATH, JSON.stringify(profile));
+                await (new Workbench()).executeCommand("osc-viewer: Refresh");
+            });
+
+            after(async () => {
+                if (fs.existsSync(OLD_FILE_PATH)) {
+                    fs.rmSync(OLD_FILE_PATH);
+                }
+                await (new Workbench()).executeCommand("osc-viewer: Refresh");
+            });
+
+            it('Check number of profile', async () => {
+                let visibleItem = await section.findItem("first_profile");
+                expect(visibleItem).not.undefined;
+                visibleItem = await section.findItem("second_profile");
+                expect(visibleItem).not.undefined;
+            });
+
         });
     });
 });
