@@ -156,6 +156,20 @@ describe('ActivityBar', () => {
             await editorView.closeEditor('Settings');
         });
     });
+
+    describe('Content', async () => {
+        let section: CustomTreeSection;
+        before(async () => {
+            const sectionTitle = pjson["contributes"]["views"]["package-explorer"][0]["name"];
+            section = (await content.getSection(sectionTitle)) as CustomTreeSection;
+
+        });
+
+        it('Has no profile', async () => {
+            const visibleItem = await section.getVisibleItems();
+            expect(visibleItem.length).equals(0, "Should no have any profile");
+        });
+    });
 });
 function delay(milliseconds: number): Promise<number> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
