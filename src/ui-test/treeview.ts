@@ -416,6 +416,50 @@ describe('ActivityBar', () => {
 
 
                 });
+
+                describe("Reset filters button", async () => {
+                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.resetFilters")[0];
+                    let firstResource: string;
+
+                    before(async () => {
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        firstResource = await children[0].getLabel();
+                        setting['osc-viewer.filters'] = {};
+                        setting['osc-viewer.filters'][firstResource] = {
+                            'check': {}
+                        };
+                        fs.writeFileSync(settingPath, JSON.stringify(setting));
+                        await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                    });
+
+                    after(async () => {
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        delete setting['osc-viewer.filters'];
+                        fs.writeFileSync(settingPath, JSON.stringify(setting));
+                        await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                    });
+
+                    it("exists", async () => {
+                        const action = await children[0].getActionButton(expectedCommandName['title']);
+                        expect(action).not.undefined;
+                    });
+
+                    it("delete the filters", async () => {
+                        const action = await children[0].getActionButton(expectedCommandName['title']);
+                        await action?.click();
+
+                        await delay(1000);
+
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+
+                        const filters = setting['osc-viewer.filters'][firstResource];
+                        expect(filters).undefined;
+                    });
+
+                });
             });
         });
     });
