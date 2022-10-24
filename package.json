@@ -257,7 +257,7 @@
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "docker-build-ui-test": "docker build -f src/ui-test/Dockerfile  -t vscode-osc-viewer-test:latest .",
-    "docker-start-ui-test": "docker run --rm --name ui-test -v $(pwd):/workspace vscode-osc-viewer-test:latest /workspace/src/ui-test/entrypoint.sh",
+    "docker-start-ui-test": "npm run docker-build-ui-test && docker run --rm --name ui-test -v $(pwd):/workspace vscode-osc-viewer-test:latest /workspace/src/ui-test/entrypoint.sh",
     "ui-test": "npm run compile && extest setup-and-run -c 1.69.0 'tsc/ui-test/*.js' -o settings.json",
     "package": "vsce package",
     "compile": "tsc -p ./",
