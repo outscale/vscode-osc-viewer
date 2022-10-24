@@ -354,6 +354,68 @@ describe('ActivityBar', () => {
                         expect(setting['osc-viewer.disableFolders'][0]).equals(elLabel);
                     });
                 });
+
+                describe("Filters button", async () => {
+                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.editFilters")[0];
+
+                    after(async () => {
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        delete setting['osc-viewer.filters'];
+                        fs.writeFileSync(settingPath, JSON.stringify(setting));
+                    });
+
+                    it("exists", async () => {
+                        for (const el of children) {
+                            const action = await el.getActionButton(expectedCommandName['title']);
+                            // Images is not filtered right now
+                            if ((await el.getLabel()) !== "Images") {
+                                expect(action).not.undefined;
+                            } else {
+                                expect(action).undefined;
+                            }
+                        }
+                    });
+
+                    it("add a filters to the resource", async () => {
+                        const el = children[0];
+                        const elLabel = await el.getLabel();
+                        // Click on the button
+                        const action = await el.getActionButton(expectedCommandName['title']);
+                        await action?.click();
+
+                        // Check that a dialog open
+                        const input = new InputBox();
+                        const title = await input.getTitle();
+                        expect(title).equals(`Edit Filters of ${elLabel} (1/2)`);
+
+                        const quickPicks = await input.getQuickPicks();
+                        expect(quickPicks.length).greaterThan(0);
+
+                        const pick = quickPicks[0];
+                        const pickLabel = await pick.getLabel();
+                        await input.selectQuickPick(0);
+
+                        // Get next one value
+                        const message = await input.getMessage();
+                        expect(message.startsWith("Enter Filter Value")).true;
+                        await input.setText("{}");
+                        await input.confirm();
+
+                        await delay(1000);
+                        // Check that thet filters is now in the settings
+                        const rawData = fs.readFileSync(settingPath);
+                        const setting = JSON.parse(rawData.toString());
+                        const value = setting['osc-viewer.filters'];
+                        expect(value).not.undefined;
+                        const resourceFilters = value[elLabel];
+                        expect(resourceFilters).not.undefined;
+                        expect(Object.keys(resourceFilters[pickLabel]).length).equals(0, "The filters value shoudl be '{}'");
+                    });
+
+
+
+                });
             });
         });
     });
