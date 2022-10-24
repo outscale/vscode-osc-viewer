@@ -1,5 +1,8 @@
 import { ActivityBar, after, CustomTreeSection, SideBarView, ViewContent, ViewControl, ViewTitlePart, Workbench, TreeItem, ContextMenu, InputBox, TitleActionButton, EditorView, NotificationType } from 'vscode-extension-tester';
 import { expect } from 'chai';
+import * as fs from 'fs';
+import * as path from 'path';
+import { homedir } from 'os';
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pjson = require('../../package.json');
 // in this test we will look at tree views in the left side bar
@@ -108,6 +111,30 @@ describe('ActivityBar', () => {
         const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.refreshEntry")[0];
         const action = await titlePart.getAction(expectedCommandName["title"]);
         expect(action).not.undefined;
+    });
+
+    describe('Open config button', async () => {
+        let action: TitleActionButton;
+        before(async () => {
+            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.configure")[0];
+            action = await titlePart.getAction(expectedCommandName["title"]);
+        });
+
+        after(async () => {
+            fs.rmSync(path.join(homedir(), ".osc", "config.json"));
+        });
+
+        it('exists', async () => {
+            expect(action).not.undefined;
+        });
+
+        it('open the profile', async () => {
+            await action.click();
+            const editorView = new EditorView();
+            const titles = await editorView.getOpenEditorTitles();
+            expect(titles.includes('config.json')).true;
+            await editorView.closeEditor('config.json');
+        });
     });
 });
 function delay(milliseconds: number): Promise<number> {
