@@ -103,8 +103,13 @@ describe('ActivityBar', () => {
             expect(await notification.getType()).equals(NotificationType.Error);
         });
     });
-});
 
+    it('has refresh button', async () => {
+        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.refreshEntry")[0];
+        const action = await titlePart.getAction(expectedCommandName["title"]);
+        expect(action).not.undefined;
+    });
+});
 function delay(milliseconds: number): Promise<number> {
     return new Promise((resolve) => setTimeout(resolve, milliseconds));
 }
