@@ -484,6 +484,27 @@ describe('ActivityBar', () => {
                     it("has two values", async () => {
                         expect(resourceChildren.length).equals(2);
                     });
+
+                    describe("Context menu", () => {
+                        let contextMenu: ContextMenu;
+                        before(async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                        });
+
+                        after(async () => {
+                            await contextMenu.close();
+                        });
+
+                        it("has Copy resource Id button", async () => {
+                            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.copyResourceId")[0];
+                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                        });
+
+                        it("has Delete button", async () => {
+                            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.deleteResource")[0];
+                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                        });
+                    });
                 });
             });
         });
