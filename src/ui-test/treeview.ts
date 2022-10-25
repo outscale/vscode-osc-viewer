@@ -465,6 +465,26 @@ describe('ActivityBar', () => {
                     });
 
                 });
+
+                describe("Resource Data", async () => {
+                    let resource: TreeItem;
+                    let resourceChildren: TreeItem[];
+
+                    before(async () => {
+                        resource = children[0];
+                        expect(await resource.getLabel()).equals("Access Keys");
+                        await resource.expand();
+                        resourceChildren = await resource.getChildren();
+                    });
+
+                    after(async () => {
+                        await resource.collapse();
+                    });
+
+                    it("has two values", async () => {
+                        expect(resourceChildren.length).equals(2);
+                    });
+                });
             });
         });
     });
