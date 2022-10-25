@@ -570,6 +570,52 @@ describe('ActivityBar', () => {
                         });
                     });
                 });
+
+                describe("Special Case: VMs", async () => {
+                    let resource: TreeItem;
+                    let resourceChildren: TreeItem[];
+
+                    before(async () => {
+                        for (const item of children) {
+                            const label = await item.getLabel();
+                            if (label === "Vms") {
+                                resource = item;
+                                break;
+                            }
+                        }
+                        expect(await resource.getLabel()).equals("Vms");
+                        await resource.expand();
+                        resourceChildren = await resource.getChildren();
+                    });
+
+                    after(async () => {
+                        await resource.collapse();
+                    });
+
+                    describe("Start button", async () => {
+                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.startVm")[0];
+                        let contextMenu: ContextMenu;
+
+                        before(async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                        });
+
+                        after(async () => {
+                            await contextMenu.close();
+                        });
+
+                        it("exists", async () => {
+                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                        });
+
+                        it("starts the vm", async () => {
+                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            await action?.select();
+                        });
+
+                    });
+
+                });
             });
         });
     });
