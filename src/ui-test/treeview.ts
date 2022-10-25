@@ -1,9 +1,10 @@
-import { ActivityBar, after, CustomTreeSection, SideBarView, ViewContent, ViewControl, ViewTitlePart, Workbench, TreeItem, ContextMenu, InputBox, TitleActionButton, EditorView, NotificationType } from 'vscode-extension-tester';
+import { ActivityBar, after, CustomTreeSection, SideBarView, ViewContent, ViewControl, ViewTitlePart, Workbench, TreeItem, ContextMenu, InputBox, TitleActionButton, EditorView, NotificationType, TextEditor } from 'vscode-extension-tester';
 import { expect } from 'chai';
 import * as fs from 'fs';
 import { createConfigFile, getDefaultConfigFilePath } from '../config_file/utils';
 import * as path from 'path';
 import { homedir } from 'os';
+import * as osc from 'outscale-api';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const pjson = require('../../package.json');
@@ -483,6 +484,20 @@ describe('ActivityBar', () => {
 
                     it("has two values", async () => {
                         expect(resourceChildren.length).equals(2);
+                    });
+
+                    it("shows resource detail when clicking", async () => {
+                        await resourceChildren[0].click();
+
+                        await delay(500);
+
+                        // New titles in editor
+                        const editor = new TextEditor();
+                        expect(await editor.getTitle()).equals("AK");
+                        const data = await editor.getText();
+                        const accessKey = osc.AccessKeyFromJSON(JSON.parse(data));
+                        expect(accessKey.accessKeyId).equals("AK");
+                        expect(accessKey.state).equals("ACTIVE");
                     });
 
                     describe("Context menu", () => {
