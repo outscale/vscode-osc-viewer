@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import { createConfigFile, getDefaultConfigFilePath } from '../config_file/utils';
 import * as path from 'path';
 import { homedir } from 'os';
+import * as clipboard from 'clipboardy';
 import * as osc from 'outscale-api';
 
 // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -502,22 +503,70 @@ describe('ActivityBar', () => {
 
                     describe("Context menu", () => {
                         let contextMenu: ContextMenu;
-                        before(async () => {
-                            contextMenu = await resourceChildren[0].openContextMenu();
-                        });
 
-                        after(async () => {
-                            await contextMenu.close();
-                        });
-
-                        it("has Copy resource Id button", async () => {
+                        describe("Copy Resource Id button", () => {
                             const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.copyResourceId")[0];
-                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+
+                            before(async () => {
+                                contextMenu = await resourceChildren[0].openContextMenu();
+                            });
+
+                            after(async () => {
+                                await contextMenu.close();
+                            });
+
+                            it("exists", async () => {
+                                expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                            });
+
+                            it("copies the resource id into clipboard", async () => {
+                                const action = await contextMenu.getItem(expectedCommandName['title']);
+                                await action?.select();
+
+                                expect(clipboard.readSync()).equals("AK");
+
+                            });
                         });
 
-                        it("has Delete button", async () => {
+                        describe("Delete button", async () => {
                             const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.deleteResource")[0];
-                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+
+                            before(async () => {
+                                contextMenu = await resourceChildren[0].openContextMenu();
+                            });
+
+                            after(async () => {
+                                await contextMenu.close();
+                            });
+
+                            it("exists", async () => {
+                                expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                            });
+
+                            it("deletes the resource", async () => {
+                                const action = await contextMenu.getItem(expectedCommandName['title']);
+                                await action?.select();
+
+                                // Got notification to confirm deletion
+                                const notifications = await new Workbench().getNotifications();
+                                const notification = notifications[0];
+                                const message = await notification.getMessage();
+                                expect(message).equals("Do you want to delete the resource AK ?");
+                                const buttons = await notification.getActions();
+                                expect(buttons.length).equals(2);
+
+                                // Confirm the action
+                                await notification.takeAction("Yes");
+
+                                // Refresh because no yet implemented
+                                await (new Workbench()).executeCommand("osc-viewer: Refresh");
+
+                                // Check that the resource is now deleted
+                                const resulting = await resource.getChildren();
+                                expect(resulting.length).equals(1);
+                                expect(await resulting[0].getLabel()).equals("AK2");
+                            });
+
                         });
                     });
                 });
