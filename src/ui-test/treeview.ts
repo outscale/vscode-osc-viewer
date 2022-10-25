@@ -615,6 +615,29 @@ describe('ActivityBar', () => {
 
                     });
 
+                    describe("Stop button", async () => {
+                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.stopVm")[0];
+                        let contextMenu: ContextMenu;
+
+                        before(async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                        });
+
+                        after(async () => {
+                            await contextMenu.close();
+                        });
+
+                        it("exists", async () => {
+                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                        });
+
+                        it("stop the vm", async () => {
+                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            await action?.select();
+                        });
+
+                    });
+
                 });
             });
         });
