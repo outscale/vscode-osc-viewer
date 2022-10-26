@@ -19,6 +19,10 @@ let vms: osc.Vm[] = [
             {
                 key: "name",
                 value: "vm2"
+            },
+            {
+                key: "Filtered",
+                value: "true"
             }
         ]
     }
@@ -34,6 +38,24 @@ export function initMock() {
                     return false;
                 }
                 return arg.readVmsRequest?.filters?.vmIds?.includes(vm.vmId);
+            });
+        }
+
+        const filteredTags = arg.readVmsRequest?.filters?.tagKeys;
+        if (typeof filteredTags !== 'undefined') {
+            responseVms = responseVms.filter(vm => {
+                if (typeof vm.tags === 'undefined') {
+                    return false;
+                }
+
+                const vmKeyTags = vm.tags.map(tag => tag.key);
+
+                for (const filteredTag of filteredTags) {
+                    if (!vmKeyTags.includes(filteredTag)) {
+                        return false;
+                    }
+                }
+                return true;
             });
         }
         const resp: osc.ReadVmsResponse = {
