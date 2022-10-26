@@ -641,11 +641,12 @@ describe('ActivityBar', () => {
                         let contextMenu: ContextMenu;
 
                         before(async () => {
-                            contextMenu = await resourceChildren[0].openContextMenu();
+                            contextMenu = await resourceChildren[1].openContextMenu();
                         });
 
                         after(async () => {
                             await contextMenu.close();
+                            await (new EditorView()).closeAllEditors();
                         });
 
                         it("exists", async () => {
@@ -655,6 +656,26 @@ describe('ActivityBar', () => {
                         it("stop the vm", async () => {
                             const action = await contextMenu.getItem(expectedCommandName['title']);
                             await action?.select();
+
+                            // Got notification to confirm deletion
+                            const notifications = await new Workbench().getNotifications();
+                            const notification = notifications[0];
+                            const message = await notification.getMessage();
+                            expect(message).equals("Do you want to stop the resource vm2 ?");
+                            const type = await notification.getType();
+                            expect(type).equals(NotificationType.Warning);
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+
+                            await resourceChildren[1].select();
+                            await delay(500);
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            const vm = osc.VmFromJSON(JSON.parse(data));
+                            expect(vm.state).equals("stopped");
                         });
 
                     });
