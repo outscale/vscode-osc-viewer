@@ -333,10 +333,11 @@ describe('ActivityBar', () => {
                         // Reset the option for disable folders
                         const rawData = fs.readFileSync(settingPath);
                         const setting = JSON.parse(rawData.toString());
-                        setting['osc-viewer.disableFolders'] = [];
+                        delete setting['osc-viewer.disableFolders'];
                         fs.writeFileSync(settingPath, JSON.stringify(setting));
                         // Refresh to get up to date
                         await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                        children = await firstProfile.getChildren();
                     });
 
                     it("exists", async () => {
@@ -370,6 +371,7 @@ describe('ActivityBar', () => {
                         const setting = JSON.parse(rawData.toString());
                         delete setting['osc-viewer.filters'];
                         fs.writeFileSync(settingPath, JSON.stringify(setting));
+                        await (new Workbench()).executeCommand("osc-viewer: Refresh");
                     });
 
                     it("exists", async () => {
@@ -562,6 +564,7 @@ describe('ActivityBar', () => {
 
                             after(async () => {
                                 await contextMenu.close();
+                                children = await firstProfile.getChildren();
                             });
 
                             it("exists", async () => {
@@ -592,6 +595,81 @@ describe('ActivityBar', () => {
                                 expect(await resulting[0].getLabel()).equals("AK2");
                             });
 
+                        });
+                    });
+                });
+
+                describe("Api Access Rules (error handling)", async () => {
+                    let resource: TreeItem;
+
+                    before(async () => {
+                        resource = children[1];
+                        expect(await resource.getLabel()).equals("Api Access Rules");
+                    });
+
+                    after(async () => {
+                        await resource.collapse();
+                        await (new EditorView()).closeAllEditors();
+                    });
+
+                    afterEach(async () => {
+                        await resource.collapse();
+                        await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                    });
+
+                    it("Listing error", async () => {
+                        await resource.expand();
+
+                        // Got notification to confirm deletion
+                        const notifications = await new Workbench().getNotifications();
+                        expect(notifications.length).equals(1);
+                        const notification = notifications[0];
+                        const message = await notification.getMessage();
+                        expect(message).equals("Error while reading Api Access Rules: 403 Error");
+                        const type = await notification.getType();
+                        expect(type).equals(NotificationType.Error);
+                    });
+
+                    it("Listing empty", async () => {
+                        await resource.expand();
+                        expect(((await resource.getChildren()).length)).equals(0);
+                    });
+
+                    describe("Delete error", async () => {
+                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.deleteResource")[0];
+                        let resourceChildren: TreeItem[];
+                        let contextMenu: ContextMenu;
+
+                        before(async () => {
+                            await resource.expand();
+                            resourceChildren = await resource.getChildren();
+                            expect(resourceChildren.length).greaterThan(0);
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                        });
+
+                        after(async () => {
+                            await contextMenu.close();
+                        });
+
+                        it("occurs", async () => {
+                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            await action?.select();
+
+                            // Got notification to confirm deletion
+                            let notifications = await new Workbench().getNotifications();
+                            let notification = notifications[0];
+                            let message = await notification.getMessage();
+                            expect(message).equals("Do you want to delete the resource api1 ?");
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+
+                            notifications = await new Workbench().getNotifications();
+                            notification = notifications[0];
+                            message = await notification.getMessage();
+                            expect(message).equals("Error while deleting the resource api1: 403 Error");
                         });
                     });
                 });
