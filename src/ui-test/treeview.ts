@@ -638,6 +638,41 @@ describe('ActivityBar', () => {
 
                     });
 
+                    describe("Filter Vms", async () => {
+                        before(async () => {
+                            // Reset the option for disable folders
+                            const rawData = fs.readFileSync(settingPath);
+                            const setting = JSON.parse(rawData.toString());
+                            setting['osc-viewer.filters'] = {
+                                // eslint-disable-next-line @typescript-eslint/naming-convention
+                                "Vms": {
+                                    // eslint-disable-next-line @typescript-eslint/naming-convention
+                                    "TagKeys": ["Filtered"]
+                                }
+                            };
+                            fs.writeFileSync(settingPath, JSON.stringify(setting));
+                            // Refresh to get up to date
+                            await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                        });
+
+                        after(async () => {
+                            // Reset the option for disable folders
+                            const rawData = fs.readFileSync(settingPath);
+                            const setting = JSON.parse(rawData.toString());
+                            setting['osc-viewer.filters'] = [];
+                            fs.writeFileSync(settingPath, JSON.stringify(setting));
+                            // Refresh to get up to date
+                            await (new Workbench()).executeCommand("osc-viewer: Refresh");
+                        });
+
+                        it("has only one VM", async () => {
+                            const filteredChildren = await resource.getChildren();
+                            expect(filteredChildren.length).equals(1);
+                            expect(await filteredChildren[0].getLabel()).equals("vmId2");
+                        });
+
+                    });
+
                 });
             });
         });
