@@ -470,7 +470,7 @@ describe('ActivityBar', () => {
 
                 });
 
-                describe("Resource Data (Access Keys)", async () => {
+                describe("Access Keys (good mock)", async () => {
                     let resource: TreeItem;
                     let resourceChildren: TreeItem[];
 
