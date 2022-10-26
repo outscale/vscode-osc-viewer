@@ -28,6 +28,17 @@ export function initMock() {
                 return arg.readAccessKeysRequest?.filters?.accessKeyIds?.includes(ak.accessKeyId);
             });
         }
+
+        // Update last modification
+        responseAccessKeys = responseAccessKeys.map(ak => {
+            if (typeof ak.lastModificationDate === 'undefined') {
+                ak.lastModificationDate = "0";
+            } else {
+                ak.lastModificationDate = `${parseInt(ak.lastModificationDate) + 1}`;
+            }
+            return ak;
+        });
+
         const resp: osc.ReadAccessKeysResponse = {
             accessKeys: responseAccessKeys
         };

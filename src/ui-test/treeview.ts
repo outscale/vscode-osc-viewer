@@ -468,7 +468,7 @@ describe('ActivityBar', () => {
 
                 });
 
-                describe("Resource Data", async () => {
+                describe("Resource Data (Access Keys)", async () => {
                     let resource: TreeItem;
                     let resourceChildren: TreeItem[];
 
@@ -481,6 +481,7 @@ describe('ActivityBar', () => {
 
                     after(async () => {
                         await resource.collapse();
+                        await (new EditorView()).closeAllEditors();
                     });
 
                     it("has two values", async () => {
@@ -499,6 +500,30 @@ describe('ActivityBar', () => {
                         const accessKey = osc.AccessKeyFromJSON(JSON.parse(data));
                         expect(accessKey.accessKeyId).equals("AK");
                         expect(accessKey.state).equals("ACTIVE");
+
+                        const editorView = new EditorView();
+                        await editorView.closeEditor("AK");
+                    });
+
+                    it("refresh the state", async () => {
+                        await resourceChildren[0].click();
+                        await delay(500);
+
+                        const editor = new TextEditor();
+                        let data = await editor.getText();
+                        const accessKey = osc.AccessKeyFromJSON(JSON.parse(data));
+
+                        const editorView = new EditorView();
+                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.refreshResourceData")[0];
+                        const refreshButton = await editorView.getAction(expectedCommandName['title']);
+
+                        await refreshButton?.click();
+
+                        data = await editor.getText();
+                        const accessKey2 = osc.AccessKeyFromJSON(JSON.parse(data));
+
+                        expect(accessKey.lastModificationDate).not.equals(accessKey2.lastModificationDate);
+                        await editorView.closeEditor("AK");
                     });
 
                     describe("Context menu", () => {
