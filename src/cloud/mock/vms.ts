@@ -4,7 +4,7 @@ import { ImportMock } from 'ts-mock-imports';
 let vms: osc.Vm[] = [
     {
         vmId: "vmId1",
-        state: "running",
+        state: "stopped",
         tags: [
             {
                 key: "name",
