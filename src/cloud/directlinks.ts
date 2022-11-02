@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersDirectLink } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getDirectLinks(profile: Profile, filters?: FiltersDirectLink): P
             }
             return res.directLinks;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getDirectLink(profile: Profile, resourceId: string): Promise<osc
             }
             return res.directLinks[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteDirectLink(profile: Profile, resourceId: string): Promise<
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

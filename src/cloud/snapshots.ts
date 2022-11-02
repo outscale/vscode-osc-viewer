@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersSnapshot } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getSnapshots(profile: Profile, filters?: FiltersSnapshot): Promi
             }
             return res.snapshots;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.S
             }
             return res.snapshots[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteSnapshot(profile: Profile, resourceId: string): Promise<st
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

@@ -1,6 +1,6 @@
 import * as osc from "outscale-api";
 import { FiltersVm } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -21,7 +21,7 @@ export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc
             }
             return res.vms;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -44,7 +44,7 @@ export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | st
             }
             return res.vms[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -75,7 +75,7 @@ export function deleteVm(profile: Profile, resourceId: string): Promise<string |
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 export function startVm(profile: Profile, vmId: string): Promise<string | undefined> {
@@ -91,7 +91,7 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 
 }
@@ -109,12 +109,12 @@ export function stopVm(profile: Profile, vmId: string): Promise<string | undefin
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 
 }
 
-export async function getLogs(profile: Profile, vmId: string): Promise<string | undefined> {
+export function getLogs(profile: Profile, vmId: string): Promise<string | undefined> {
     const config = getConfig(profile);
     const stopParameters: osc.ReadConsoleOutputOperationRequest = {
         readConsoleOutputRequest: {
@@ -129,5 +129,7 @@ export async function getLogs(profile: Profile, vmId: string): Promise<string | 
                 return undefined;
             }
             return res.consoleOutput;
+        }, (err_: any) => {
+            return handleRejection(err_);
         });
 }

@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersRouteTable } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getRouteTables(profile: Profile, filters?: FiltersRouteTable): P
             }
             return res.routeTables;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getRouteTable(profile: Profile, resourceId: string): Promise<osc
             }
             return res.routeTables[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteRouteTable(profile: Profile, resourceId: string): Promise<
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

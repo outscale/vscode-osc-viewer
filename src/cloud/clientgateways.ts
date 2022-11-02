@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersClientGateway } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getClientGateways(profile: Profile, filters?: FiltersClientGatew
             }
             return res.clientGateways;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getClientGateway(profile: Profile, resourceId: string): Promise<
             }
             return res.clientGateways[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteClientGateway(profile: Profile, resourceId: string): Promi
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

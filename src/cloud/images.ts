@@ -1,6 +1,6 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -21,7 +21,7 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
             }
             return res.images;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -44,7 +44,7 @@ export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image 
             }
             return res.images[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -62,6 +62,6 @@ export function deleteOMI(profile: Profile, resourceId: string): Promise<string 
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

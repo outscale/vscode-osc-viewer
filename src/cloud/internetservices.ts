@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersInternetService } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getInternetServices(profile: Profile, filters?: FiltersInternetS
             }
             return res.internetServices;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getInternetService(profile: Profile, resourceId: string): Promis
             }
             return res.internetServices[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteInternetService(profile: Profile, resourceId: string): Pro
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

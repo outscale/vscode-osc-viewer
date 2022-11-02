@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersCa } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc
             }
             return res.cas;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | st
             }
             return res.cas[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteCa(profile: Profile, resourceId: string): Promise<string |
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

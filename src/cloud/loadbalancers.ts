@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersLoadBalancer } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer
             }
             return res.loadBalancers;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getLoadBalancer(profile: Profile, resourceId: string): Promise<o
             }
             return res.loadBalancers[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteLoadBalancer(profile: Profile, resourceId: string): Promis
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

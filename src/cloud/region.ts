@@ -1,5 +1,5 @@
 import * as osc from "outscale-api";
-import { getCloudUnauthenticatedConfig } from "./cloud";
+import { getCloudUnauthenticatedConfig, handleRejection } from "./cloud";
 
 export function getRegions(): Promise<osc.Region[] | string> {
     const cloudConfig = getCloudUnauthenticatedConfig();
@@ -13,7 +13,7 @@ export function getRegions(): Promise<osc.Region[] | string> {
         }
         return res.regions;
     }, (err_: any) => {
-        return err_.toString();
+        return handleRejection(err_);
     });
 
 }

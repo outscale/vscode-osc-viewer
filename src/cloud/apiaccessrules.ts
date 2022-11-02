@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersApiAccessRule } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRu
             }
             return res.apiAccessRules;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getApiAccessRule(profile: Profile, resourceId: string): Promise<
             }
             return res.apiAccessRules[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteApiAccessRule(profile: Profile, resourceId: string): Promi
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

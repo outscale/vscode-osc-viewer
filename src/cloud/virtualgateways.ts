@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersVirtualGateway } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getVirtualGateways(profile: Profile, filters?: FiltersVirtualGat
             }
             return res.virtualGateways;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getVirtualGateway(profile: Profile, resourceId: string): Promise
             }
             return res.virtualGateways[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteVirtualGateway(profile: Profile, resourceId: string): Prom
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

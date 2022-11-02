@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersNetAccessPoint } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getNetAccessPoints(profile: Profile, filters?: FiltersNetAccessP
             }
             return res.netAccessPoints;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getNetAccessPoint(profile: Profile, resourceId: string): Promise
             }
             return res.netAccessPoints[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteNetAccessPoint(profile: Profile, resourceId: string): Prom
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
