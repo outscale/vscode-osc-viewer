@@ -822,6 +822,33 @@ describe('ActivityBar', () => {
 
                     });
 
+                    describe("Show Console Logs", async () => {
+                        const expectedCommandName = getButtonTitle("osc.showConsoleLogs");
+                        let contextMenu: ContextMenu;
+
+                        before(async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                        });
+
+                        after(async () => {
+                            await contextMenu.close();
+                            await (new EditorView()).closeAllEditors();
+                        });
+
+                        it("exists", async () => {
+                            expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
+                        });
+
+                        it("shows logs of the Vms", async () => {
+                            const action = await contextMenu.getItem(expectedCommandName);
+                            await action?.select();
+
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            expect(data).equals("Hello World");
+                        });
+                    });
+
                 });
             });
         });
