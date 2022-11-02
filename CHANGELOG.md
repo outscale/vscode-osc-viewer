@@ -1,4 +1,15 @@
 # Change Log
+
+## [v0.4.0]
+### Features
+  - Add resources (Access Key, Api Access Rule, Ca, Client Gateway, DHCP Options, DirectLink, DirectLink Interface, Flexible GPU, Internet Service, Nat Service, Net Acess Peering, Nic, Snapshots, RouteTable, Subnet, VpnConnection)
+  - Add the ability to hide some resources from the view
+  - Add the ability to filter some resources
+  - Add WelcomeView for first installation
+  - Add Open Settings button
+### Changes
+  - Error messages are now clearer
+  - Read Console default interval is now set to 30s and randomness is added to avoid throttling
 ## [v0.3.4]
 ### Bugfixes
   - Check type of interval for automatic reload
