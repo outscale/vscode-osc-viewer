@@ -61,6 +61,10 @@ const profile: any = {
 const settingPath = path.join("test-resources", "settings", "User", "settings.json");
 
 
+function getButtonTitle(action: string): string {
+    return pjson["contributes"]["commands"].filter((x: any) => x["command"] === action)[0]['title'];
+}
+
 // in this test we will look at tree views in the left side bar
 describe('ActivityBar', () => {
     let titlePart: ViewTitlePart;
@@ -99,8 +103,8 @@ describe('ActivityBar', () => {
         let action: TitleActionButton;
 
         before(async () => {
-            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.addEntry")[0];
-            action = await titlePart.getAction(expectedCommandName["title"]);
+            const expectedCommandName = getButtonTitle("profile.addEntry");
+            action = await titlePart.getAction(expectedCommandName);
         });
 
         it('exists', async () => {
@@ -164,16 +168,16 @@ describe('ActivityBar', () => {
     });
 
     it('has refresh button', async () => {
-        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.refreshEntry")[0];
-        const action = await titlePart.getAction(expectedCommandName["title"]);
+        const expectedCommandName = getButtonTitle("profile.refreshEntry");
+        const action = await titlePart.getAction(expectedCommandName);
         expect(action).not.undefined;
     });
 
     describe('Open config button', async () => {
         let action: TitleActionButton;
         before(async () => {
-            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "profile.configure")[0];
-            action = await titlePart.getAction(expectedCommandName["title"]);
+            const expectedCommandName = getButtonTitle("profile.configure");
+            action = await titlePart.getAction(expectedCommandName);
         });
 
         after(async () => {
@@ -196,8 +200,8 @@ describe('ActivityBar', () => {
     describe('Open settings button', () => {
         let action: TitleActionButton;
         before(async () => {
-            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.openParameter")[0];
-            action = await titlePart.getAction(expectedCommandName["title"]);
+            const expectedCommandName = getButtonTitle("osc.openParameter");
+            action = await titlePart.getAction(expectedCommandName);
         });
 
         it('exists', async () => {
@@ -293,13 +297,13 @@ describe('ActivityBar', () => {
                 });
 
                 it('has copy Account Id button', async () => {
-                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.copyAccountId")[0];
-                    expect(await menu.hasItem(expectedCommandName["title"])).equals(true);
+                    const expectedCommandName = getButtonTitle("osc.copyAccountId");
+                    expect(await menu.hasItem(expectedCommandName)).equals(true);
                 });
 
                 it('has show Account Info button', async () => {
-                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.showAccountInfo")[0];
-                    expect(await menu.hasItem(expectedCommandName["title"])).equals(true);
+                    const expectedCommandName = getButtonTitle("osc.showAccountInfo");
+                    expect(await menu.hasItem(expectedCommandName)).equals(true);
                 });
             });
 
@@ -326,7 +330,7 @@ describe('ActivityBar', () => {
                     let expectedCommandName: any;
 
                     before(async () => {
-                        expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.disableResourceFolder")[0];
+                        expectedCommandName = getButtonTitle("osc.disableResourceFolder");
                     });
 
                     after(async () => {
@@ -342,7 +346,7 @@ describe('ActivityBar', () => {
 
                     it("exists", async () => {
                         for (const el of children) {
-                            const action = await el.getActionButton(expectedCommandName['title']);
+                            const action = await el.getActionButton(expectedCommandName);
                             expect(action).not.undefined;
                         }
                     });
@@ -350,7 +354,7 @@ describe('ActivityBar', () => {
                     it("hides the folder", async () => {
                         const el = children[0];
                         const elLabel = await el.getLabel();
-                        const action = await el.getActionButton(expectedCommandName['title']);
+                        const action = await el.getActionButton(expectedCommandName);
                         await action?.click();
 
                         const hideChildren = await firstProfile.getChildren();
@@ -364,7 +368,7 @@ describe('ActivityBar', () => {
                 });
 
                 describe("Filters button", async () => {
-                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.editFilters")[0];
+                    const expectedCommandName = getButtonTitle("osc.editFilters");
 
                     after(async () => {
                         const rawData = fs.readFileSync(settingPath);
@@ -376,7 +380,7 @@ describe('ActivityBar', () => {
 
                     it("exists", async () => {
                         for (const el of children) {
-                            const action = await el.getActionButton(expectedCommandName['title']);
+                            const action = await el.getActionButton(expectedCommandName);
                             // Images is not filtered right now
                             if ((await el.getLabel()) !== "Images") {
                                 expect(action).not.undefined;
@@ -390,7 +394,7 @@ describe('ActivityBar', () => {
                         const el = children[0];
                         const elLabel = await el.getLabel();
                         // Click on the button
-                        const action = await el.getActionButton(expectedCommandName['title']);
+                        const action = await el.getActionButton(expectedCommandName);
                         await action?.click();
 
                         // Check that a dialog open
@@ -427,7 +431,7 @@ describe('ActivityBar', () => {
                 });
 
                 describe("Reset filters button", async () => {
-                    const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.resetFilters")[0];
+                    const expectedCommandName = getButtonTitle("osc.resetFilters");
                     let firstResource: string;
 
                     before(async () => {
@@ -451,12 +455,12 @@ describe('ActivityBar', () => {
                     });
 
                     it("exists", async () => {
-                        const action = await children[0].getActionButton(expectedCommandName['title']);
+                        const action = await children[0].getActionButton(expectedCommandName);
                         expect(action).not.undefined;
                     });
 
                     it("delete the filters", async () => {
-                        const action = await children[0].getActionButton(expectedCommandName['title']);
+                        const action = await children[0].getActionButton(expectedCommandName);
                         await action?.click();
 
                         await delay(1000);
@@ -516,8 +520,8 @@ describe('ActivityBar', () => {
                         const accessKey = osc.AccessKeyFromJSON(JSON.parse(data));
 
                         const editorView = new EditorView();
-                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.refreshResourceData")[0];
-                        const refreshButton = await editorView.getAction(expectedCommandName['title']);
+                        const expectedCommandName = getButtonTitle("osc.refreshResourceData");
+                        const refreshButton = await editorView.getAction(expectedCommandName);
 
                         await refreshButton?.click();
 
@@ -532,7 +536,7 @@ describe('ActivityBar', () => {
                         let contextMenu: ContextMenu;
 
                         describe("Copy Resource Id button", () => {
-                            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.copyResourceId")[0];
+                            const expectedCommandName = getButtonTitle("osc.copyResourceId");
 
                             before(async () => {
                                 contextMenu = await resourceChildren[0].openContextMenu();
@@ -543,11 +547,11 @@ describe('ActivityBar', () => {
                             });
 
                             it("exists", async () => {
-                                expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                                expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                             });
 
                             it("copies the resource id into clipboard", async () => {
-                                const action = await contextMenu.getItem(expectedCommandName['title']);
+                                const action = await contextMenu.getItem(expectedCommandName);
                                 await action?.select();
 
                                 expect(clipboard.readSync()).equals("AK");
@@ -556,7 +560,7 @@ describe('ActivityBar', () => {
                         });
 
                         describe("Delete button", async () => {
-                            const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.deleteResource")[0];
+                            const expectedCommandName = getButtonTitle("osc.deleteResource");
 
                             before(async () => {
                                 contextMenu = await resourceChildren[0].openContextMenu();
@@ -568,11 +572,11 @@ describe('ActivityBar', () => {
                             });
 
                             it("exists", async () => {
-                                expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                                expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                             });
 
                             it("deletes the resource", async () => {
-                                const action = await contextMenu.getItem(expectedCommandName['title']);
+                                const action = await contextMenu.getItem(expectedCommandName);
                                 await action?.select();
 
                                 // Got notification to confirm deletion
@@ -636,7 +640,7 @@ describe('ActivityBar', () => {
                     });
 
                     describe("Delete error", async () => {
-                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.deleteResource")[0];
+                        const expectedCommandName = getButtonTitle("osc.deleteResource");
                         let resourceChildren: TreeItem[];
                         let contextMenu: ContextMenu;
 
@@ -652,7 +656,7 @@ describe('ActivityBar', () => {
                         });
 
                         it("occurs", async () => {
-                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            const action = await contextMenu.getItem(expectedCommandName);
                             await action?.select();
 
                             // Got notification to confirm deletion
@@ -696,7 +700,7 @@ describe('ActivityBar', () => {
                     });
 
                     describe("Start button", async () => {
-                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.startVm")[0];
+                        const expectedCommandName = getButtonTitle("osc.startVm");
                         let contextMenu: ContextMenu;
 
                         before(async () => {
@@ -709,11 +713,11 @@ describe('ActivityBar', () => {
                         });
 
                         it("exists", async () => {
-                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                            expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                         });
 
                         it("starts the vm", async () => {
-                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            const action = await contextMenu.getItem(expectedCommandName);
                             await action?.select();
 
                             // Got notification to confirm deletion
@@ -740,7 +744,7 @@ describe('ActivityBar', () => {
                     });
 
                     describe("Stop button", async () => {
-                        const expectedCommandName = pjson["contributes"]["commands"].filter((x: any) => x["command"] === "osc.stopVm")[0];
+                        const expectedCommandName = getButtonTitle("osc.stopVm");
                         let contextMenu: ContextMenu;
 
                         before(async () => {
@@ -753,11 +757,11 @@ describe('ActivityBar', () => {
                         });
 
                         it("exists", async () => {
-                            expect(await contextMenu.hasItem(expectedCommandName['title'])).equals(true);
+                            expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                         });
 
                         it("stop the vm", async () => {
-                            const action = await contextMenu.getItem(expectedCommandName['title']);
+                            const action = await contextMenu.getItem(expectedCommandName);
                             await action?.select();
 
                             // Got notification to confirm deletion
