@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersPublicIp } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -21,7 +21,7 @@ export function getExternalIPs(profile: Profile, filters?: FiltersPublicIp): Pro
             }
             return res.publicIps;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -43,7 +43,7 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
             }
             return res.publicIps[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -60,6 +60,6 @@ export function deleteExternalIP(profile: Profile, resourceId: string): Promise<
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

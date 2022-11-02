@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersNic } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getNics(profile: Profile, filters?: FiltersNic): Promise<Array<o
             }
             return res.nics;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | 
             }
             return res.nics[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteNic(profile: Profile, resourceId: string): Promise<string 
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersKeypair } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise
             }
             return res.keypairs;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getKeypair(profile: Profile, resourceId: string): Promise<osc.Ke
             }
             return res.keypairs[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteKeypair(profile: Profile, resourceId: string): Promise<str
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

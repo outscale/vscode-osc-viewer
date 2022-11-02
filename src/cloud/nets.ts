@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersNet } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getNets(profile: Profile, filters?: FiltersNet): Promise<Array<o
             }
             return res.nets;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getNet(profile: Profile, resourceId: string): Promise<osc.Net | 
             }
             return res.nets[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteNet(profile: Profile, resourceId: string): Promise<string 
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

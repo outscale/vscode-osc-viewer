@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersVpnConnection } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getVpnConnections(profile: Profile, filters?: FiltersVpnConnecti
             }
             return res.vpnConnections;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getVpnConnection(profile: Profile, resourceId: string): Promise<
             }
             return res.vpnConnections[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteVpnConnection(profile: Profile, resourceId: string): Promi
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersDirectLinkInterface } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getDirectLinkInterfaces(profile: Profile, filters?: FiltersDirec
             }
             return res.directLinkInterfaces;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getDirectLinkInterface(profile: Profile, resourceId: string): Pr
             }
             return res.directLinkInterfaces[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteDirectLinkInterface(profile: Profile, resourceId: string):
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

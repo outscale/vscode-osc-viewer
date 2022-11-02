@@ -3,7 +3,7 @@ import * as vscode from 'vscode';
 import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
 import { Profile } from "../flat/node";
-import { ResponseContext } from "outscale-api";
+import { ResponseError } from "outscale-api";
 
 global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;
@@ -20,15 +20,14 @@ function getUserAgent(): string {
     return "vscode-osc-viewer/" + getVersion();
 }
 
-async function returnError(context: ResponseContext): Promise<Response | void> {
-    const status = context.response.status;
-    if (context.response.ok) {
-        return Promise.resolve(context.response);
+export async function handleRejection(err: any): Promise<string> {
+    if (err instanceof ResponseError) {
+        const status = err.response.status;
+        const value = await err.response.json();
+        console.error("[osc-viewer]", err.response.url, JSON.stringify(value));
+        return `${status} ${err.response.statusText}`;
     }
-    const value = await context.response.json();
-    console.error("[osc-viewer]", context.url, JSON.stringify(value));
-    // eslint-disable-next-line no-throw-literal
-    throw `${status} ${context.response.statusText}`;
+    return err.toString();
 }
 
 export function getConfig(profile: Profile): osc.Configuration {
@@ -45,12 +44,7 @@ export function getConfig(profile: Profile): osc.Configuration {
         headers: {
             // eslint-disable-next-line @typescript-eslint/naming-convention
             "User-Agent": getUserAgent()
-        },
-        middleware: [
-            {
-                post: returnError,
-            }
-        ]
+        }
     });
 }
 

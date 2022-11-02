@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersSubnet } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getSubnets(profile: Profile, filters?: FiltersSubnet): Promise<A
             }
             return res.subnets;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Sub
             }
             return res.subnets[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteSubnet(profile: Profile, resourceId: string): Promise<stri
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

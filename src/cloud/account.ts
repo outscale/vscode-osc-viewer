@@ -1,6 +1,6 @@
 
 import * as osc from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -18,7 +18,7 @@ export function getAccounts(profile: Profile): Promise<Array<osc.Account> | stri
             }
             return res.accounts;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -36,6 +36,6 @@ export function getAccount(profile: Profile, _: string): Promise<osc.Account | s
             }
             return res.accounts[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }

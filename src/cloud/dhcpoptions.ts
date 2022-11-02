@@ -1,7 +1,7 @@
 
 import * as osc from "outscale-api";
 import { FiltersDhcpOptions } from "outscale-api";
-import { getConfig } from '../cloud/cloud';
+import { getConfig, handleRejection } from '../cloud/cloud';
 import { Profile } from "../flat/node";
 
 
@@ -22,7 +22,7 @@ export function getDhcpOptions(profile: Profile, filters?: FiltersDhcpOptions): 
             }
             return res.dhcpOptionsSets;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -45,7 +45,7 @@ export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc
             }
             return res.dhcpOptionsSets[0];
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
 
@@ -63,6 +63,6 @@ export function deleteDhcpOption(profile: Profile, resourceId: string): Promise<
         .then(() => {
             return undefined;
         }, (err_: any) => {
-            return err_.toString();
+            return handleRejection(err_);
         });
 }
