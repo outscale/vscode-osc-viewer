@@ -114,4 +114,16 @@ export function initMock() {
         });
         return Promise.resolve(undefined);
     });
+
+    const readConsoleLogsMock = ImportMock.mockFunction(osc.VmApi.prototype, 'readConsoleOutput');
+    readConsoleLogsMock.callsFake((arg: osc.ReadConsoleOutputOperationRequest) => {
+        const vmId = arg.readConsoleOutputRequest?.vmId;
+        if (typeof vmId === 'undefined') {
+            return Promise.reject("403");
+        }
+        const response: osc.ReadConsoleOutputResponse = {
+            consoleOutput: Buffer.from("Hello World").toString('base64')
+        };
+        return Promise.resolve(response);
+    });
 }
