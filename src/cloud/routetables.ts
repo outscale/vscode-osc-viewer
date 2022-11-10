@@ -66,3 +66,21 @@ export function deleteRouteTable(profile: Profile, resourceId: string): Promise<
             return handleRejection(err_);
         });
 }
+
+// Unlink a specific item the resource RouteTable
+export function unlinkRouteTable(profile: Profile, linkId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkRouteTableOperationRequest = {
+        unlinkRouteTableRequest: {
+            linkRouteTableId: linkId
+        }
+    };
+
+    const api = new osc.RouteTableApi(config);
+    return api.unlinkRouteTable(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
