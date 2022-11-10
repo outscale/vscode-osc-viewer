@@ -1,17 +1,18 @@
 import { ThemeIcon } from 'vscode';
-import { deleteVolume } from '../../cloud/volumes';
+import { deleteVolume, unlinkVolume } from '../../cloud/volumes';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
+import { LinkResourceNode } from './types/node.resources.link';
 
 
-export class VolumeResourceNode extends ResourceNode {
+export class VolumeResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
         super(profile, resourceName, resourceId, "volumes", deleteVolume);
     }
 
     getContextValue(): string {
-        return "volumeresourcenode";
+        return "volumeresourcenode;linkresourcenode";
     }
 
     getIconPath(): ThemeIcon {
@@ -32,6 +33,10 @@ export class VolumeResourceNode extends ResourceNode {
                 return new ThemeIcon("dash");
         }
 
+    }
+
+    unlinkResource(): Promise<string | undefined> {
+        return unlinkVolume(this.profile, this.resourceId);
     }
 
 }

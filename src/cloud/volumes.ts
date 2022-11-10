@@ -66,3 +66,21 @@ export function deleteVolume(profile: Profile, resourceId: string): Promise<stri
             return handleRejection(err_);
         });
 }
+
+// Unlink a specific item the resource Volume
+export function unlinkVolume(profile: Profile, resourceId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkVolumeOperationRequest = {
+        unlinkVolumeRequest: {
+            volumeId: resourceId
+        }
+    };
+
+    const api = new osc.VolumeApi(config);
+    return api.unlinkVolume(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
