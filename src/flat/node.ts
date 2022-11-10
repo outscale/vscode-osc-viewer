@@ -17,6 +17,7 @@ export interface ExplorerResourceNode extends ExplorerProfileNode {
     deleteResource(): Promise<string | undefined>
     getResourceId(): Promise<string | undefined>
     getIconPath(): vscode.ThemeIcon;
+    getResourceName(): string;
 }
 
 export interface ExplorerFolderNode extends ExplorerProfileNode {

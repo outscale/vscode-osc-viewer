@@ -147,6 +147,10 @@
         "command": "osc.resetFilters",
         "title": "Reset Filters",
         "icon": "$(clear-all)"
+      },
+      {
+        "command": "osc.unlinkResource",
+        "title": "Unlink"
       }
     ],
     "viewsContainers": {
@@ -221,6 +225,11 @@
           "command": "osc.stopVm",
           "when": "view == profile && viewItem == vmresourcenode",
           "group": "oscinteract@2"
+        },
+        {
+          "command": "osc.unlinkResource",
+          "when": "view == profile && viewItem =~ /linkresourcenode/",
+          "group": "oscinteract@4"
         },
         {
           "command": "osc.showConsoleLogs",

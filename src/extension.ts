@@ -14,6 +14,7 @@ import { FolderNode } from './flat/folders/node.folder';
 import { FiltersFolderNode } from './flat/folders/node.filterfolder';
 import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
 import { editFilters } from './config_file/action.editFilters';
+import { LinkResourceNode } from './flat/resources/types/node.resources.link';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -129,6 +130,17 @@ export function activate(context: vscode.ExtensionContext) {
                 }
             });
         }
+    });
+
+    vscode.commands.registerCommand('osc.unlinkResource', async (arg: LinkResourceNode) => {
+        showYesOrNoWindow(`Do you want to unlink the resource ${arg.getResourceName()} ?`, async () => {
+            const res = await arg.unlinkResource();
+            if (typeof res === "undefined") {
+                vscode.window.showInformationMessage(`The resource ${arg.getResourceName()} has been unlinked`);
+            } else {
+                vscode.window.showErrorMessage(`Error while unlinking the resource ${arg.getResourceName()}: ${res}`);
+            }
+        });
     });
 
     vscode.commands.registerCommand('osc.showConsoleLogs', async (arg: VmResourceNode) => {
