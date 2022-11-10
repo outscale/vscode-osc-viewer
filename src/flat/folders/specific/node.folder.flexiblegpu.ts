@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
-import { ResourceNode } from '../../resources/node.resources';
-import { deleteFlexibleGpu, getFlexibleGpus } from '../../../cloud/flexiblegpus';
+import { getFlexibleGpus } from '../../../cloud/flexiblegpus';
 import { FiltersFlexibleGpu, FiltersFlexibleGpuFromJSON } from 'outscale-api';
+import { FlexibleGpuResourceNode } from '../../resources/node.resources.flexiblegpus';
 
 export const FLEXIBLEGPUS_FOLDER_NAME = "Flexible Gpus";
 export class FlexibleGpusFolderNode extends FiltersFolderNode<FiltersFlexibleGpu> implements ExplorerFolderNode {
@@ -26,7 +26,11 @@ export class FlexibleGpusFolderNode extends FiltersFolderNode<FiltersFlexibleGpu
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.flexibleGpuId, "FlexibleGpu", deleteFlexibleGpu));
+                if (typeof item.state === 'undefined') {
+                    continue;
+                }
+
+                resources.push(new FlexibleGpuResourceNode(this.profile, "", item.flexibleGpuId, item.state));
 
             }
             return Promise.resolve(resources);

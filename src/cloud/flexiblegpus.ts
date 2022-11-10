@@ -66,3 +66,20 @@ export function deleteFlexibleGpu(profile: Profile, resourceId: string): Promise
             return handleRejection(err_);
         });
 }
+
+export function unlinkFlexibleGpu(profile: Profile, resourceId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkFlexibleGpuOperationRequest = {
+        unlinkFlexibleGpuRequest: {
+            flexibleGpuId: resourceId
+        }
+    };
+
+    const api = new osc.FlexibleGpuApi(config);
+    return api.unlinkFlexibleGpu(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
