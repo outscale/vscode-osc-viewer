@@ -66,3 +66,22 @@ export function deleteVirtualGateway(profile: Profile, resourceId: string): Prom
             return handleRejection(err_);
         });
 }
+
+// Delete a specific item the resource VirtualGateway
+export function unlinkVirtualGateway(profile: Profile, resourceId: string, netId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkVirtualGatewayOperationRequest = {
+        unlinkVirtualGatewayRequest: {
+            virtualGatewayId: resourceId,
+            netId: netId,
+        }
+    };
+
+    const api = new osc.VirtualGatewayApi(config);
+    return api.unlinkVirtualGateway(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
