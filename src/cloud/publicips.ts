@@ -63,3 +63,20 @@ export function deleteExternalIP(profile: Profile, resourceId: string): Promise<
             return handleRejection(err_);
         });
 }
+
+export function unlinkExternalIP(profile: Profile, publicIp: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkPublicIpOperationRequest = {
+        unlinkPublicIpRequest: {
+            publicIp: publicIp
+        }
+    };
+
+    const api = new osc.PublicIpApi(config);
+    return api.unlinkPublicIp(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
