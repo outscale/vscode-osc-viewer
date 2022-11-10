@@ -66,3 +66,21 @@ export function deleteNic(profile: Profile, resourceId: string): Promise<string 
             return handleRejection(err_);
         });
 }
+
+export function unlinkNic(profile: Profile, linkId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+
+    const parameters: osc.UnlinkNicOperationRequest = {
+        unlinkNicRequest: {
+            linkNicId: linkId
+        }
+    };
+
+    const api = new osc.NicApi(config);
+    return api.unlinkNic(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}

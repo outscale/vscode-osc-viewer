@@ -23,7 +23,7 @@ import { InternetServicesFolderNode, INTERNETSERVICES_FOLDER_NAME } from './fold
 import { NatServicesFolderNode, NATSERVICES_FOLDER_NAME } from './folders/simple/node.folder.natservice';
 import { NetAccessPointsFolderNode, NETACCESSPOINTS_FOLDER_NAME } from './folders/simple/node.folder.netaccesspoint';
 import { NetPeeringsFolderNode, NETPEERINGS_FOLDER_NAME } from './folders/simple/node.folder.netpeering';
-import { NicsFolderNode, NICS_FOLDER_NAME } from './folders/simple/node.folder.nic';
+import { NicsFolderNode, NICS_FOLDER_NAME } from './folders/specific/node.folder.nic';
 import { SubnetsFolderNode, SUBNETS_FOLDER_NAME } from './folders/simple/node.folder.subnet';
 import { VirtualGatewaysFolderNode, VIRTUALGATEWAYS_FOLDER_NAME } from './folders/simple/node.folder.virtualgateway';
 import { VpnConnectionsFolderNode, VPNCONNECTIONS_FOLDER_NAME } from './folders/simple/node.folder.vpnconnection';
