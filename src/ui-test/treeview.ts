@@ -850,6 +850,108 @@ describe('ActivityBar', () => {
                     });
 
                 });
+
+                describe("Link Resouce", async () => {
+                    let resource: TreeItem;
+                    let resourceChildren: TreeItem[];
+
+                    before(async () => {
+                        for (const item of children) {
+                            const label = await item.getLabel();
+                            if (label === "Route tables") {
+                                resource = item;
+                                break;
+                            }
+                        }
+                        expect(await resource.getLabel()).equals("Route tables");
+                        await resource.expand();
+                        resourceChildren = await resource.getChildren();
+                        expect(resourceChildren.length).equals(2);
+                    });
+
+                    after(async () => {
+                        await resource.collapse();
+                    });
+
+                    describe("Unlink button", async () => {
+                        const expectedCommandName = getButtonTitle("osc.unlinkResource");
+                        let contextMenu: ContextMenu;
+
+                        afterEach(async () => {
+                            await contextMenu.close();
+                            await (new EditorView()).closeAllEditors();
+                        });
+
+                        it("exists", async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                            expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
+                        });
+
+                        it("unlink with multiple choices", async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                            const action = await contextMenu.getItem(expectedCommandName);
+                            await action?.select();
+
+                            // Got notification to confirm deletion
+                            const notifications = await new Workbench().getNotifications();
+                            const notification = notifications[0];
+                            const message = await notification.getMessage();
+                            expect(message).equals("Do you want to unlink the resource rtb1 ?");
+                            const type = await notification.getType();
+                            expect(type).equals(NotificationType.Warning);
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+
+                            // Get the dialog to choose between two rt association
+                            const input = new InputBox();
+
+                            // Select rtbassoc
+                            const quickPick = await input.getQuickPicks();
+                            expect(quickPick.length).equals(2);
+                            expect(await quickPick[0].getText()).equals("rtbassoc1");
+                            expect(await quickPick[1].getText()).equals("rtbassoc2");
+                            await input.selectQuickPick('rtbassoc1');
+
+                            await resourceChildren[0].select();
+                            await delay(500);
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            const rt = osc.RouteTableFromJSON(JSON.parse(data));
+                            expect(rt.linkRouteTables?.length).equals(1);
+                        });
+
+                        it("unlink with one choice", async () => {
+                            contextMenu = await resourceChildren[1].openContextMenu();
+                            const action = await contextMenu.getItem(expectedCommandName);
+                            await action?.select();
+
+                            // Got notification to confirm deletion
+                            const notifications = await new Workbench().getNotifications();
+                            const notification = notifications[0];
+                            const message = await notification.getMessage();
+                            expect(message).equals("Do you want to unlink the resource rtb2 ?");
+                            const type = await notification.getType();
+                            expect(type).equals(NotificationType.Warning);
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+
+                            await resourceChildren[1].select();
+                            await delay(500);
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            const rt = osc.RouteTableFromJSON(JSON.parse(data));
+                            expect(rt.linkRouteTables?.length).equals(0);
+                        });
+
+                    });
+
+                });
             });
         });
     });
