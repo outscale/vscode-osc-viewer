@@ -66,3 +66,22 @@ export function deleteInternetService(profile: Profile, resourceId: string): Pro
             return handleRejection(err_);
         });
 }
+
+// Unlink a specific item the resource InternetService
+export function unlinkInternetService(profile: Profile, resourceId: string, netId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.UnlinkInternetServiceOperationRequest = {
+        unlinkInternetServiceRequest: {
+            internetServiceId: resourceId,
+            netId: netId
+        }
+    };
+
+    const api = new osc.InternetServiceApi(config);
+    return api.unlinkInternetService(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}

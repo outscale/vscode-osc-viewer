@@ -19,7 +19,7 @@ import { DhcpOptionsFolderNode, DHCPOPTIONS_FOLDER_NAME } from './folders/simple
 import { DirectLinkInterfacesFolderNode, DIRECTLINKINTERFACES_FOLDER_NAME } from './folders/simple/node.folder.directlinkinterface';
 import { DirectLinksFolderNode, DIRECTLINKS_FOLDER_NAME } from './folders/simple/node.folder.directlink';
 import { FlexibleGpusFolderNode, FLEXIBLEGPUS_FOLDER_NAME } from './folders/specific/node.folder.flexiblegpu';
-import { InternetServicesFolderNode, INTERNETSERVICES_FOLDER_NAME } from './folders/simple/node.folder.internetservice';
+import { InternetServicesFolderNode, INTERNETSERVICES_FOLDER_NAME } from './folders/specific/node.folder.internetservice';
 import { NatServicesFolderNode, NATSERVICES_FOLDER_NAME } from './folders/simple/node.folder.natservice';
 import { NetAccessPointsFolderNode, NETACCESSPOINTS_FOLDER_NAME } from './folders/simple/node.folder.netaccesspoint';
 import { NetPeeringsFolderNode, NETPEERINGS_FOLDER_NAME } from './folders/simple/node.folder.netpeering';
