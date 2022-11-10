@@ -9,7 +9,7 @@ import { LoadBalancerFolderNode, LOADBALANCER_FOLDER_NAME } from './folders/simp
 import { ExternalIPsFolderNode, PUBLICIP_FOLDER_NAME } from './folders/specific/node.folder.publicip';
 import { IMAGES_FOLDER_NAME, OMIsFolderNode } from './folders/simple/node.folder.image';
 import { SnapshotsFolderNode, SNAPSHOTS_FOLDER_NAME } from './folders/simple/node.folder.snapshot';
-import { RouteTablesFolderNode, ROUTETABLES_FOLDER_NAME } from './folders/simple/node.folder.routetable';
+import { RouteTablesFolderNode, ROUTETABLES_FOLDER_NAME } from './folders/specific/node.folder.routetable';
 import { getAccount } from '../cloud/account';
 import { AccessKeysFolderNode, ACCESSKEY_FOLDER_NAME } from './folders/simple/node.folder.accesskey';
 import { ApiAccessRulesFolderNode, APIACCESSRULES_FOLDER_NAME } from './folders/simple/node.folder.apiaccessrule';
