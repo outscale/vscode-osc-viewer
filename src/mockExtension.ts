@@ -4,12 +4,14 @@ import * as mockAccount from './cloud/mock/account';
 import * as mockVms from './cloud/mock/vms';
 import * as mockAccessKeys from './cloud/mock/accesskeys';
 import * as mockApiAccessRules from './cloud/mock/apiaccessrules';
+import * as mockRouteTables from './cloud/mock/routetable';
 
 
 mockAccount.initMock();
 mockVms.initMock();
 mockAccessKeys.initMock();
 mockApiAccessRules.initMock();
+mockRouteTables.initMock();
 
 
 export function activate(context: vscode.ExtensionContext) {
