@@ -130,6 +130,14 @@
         "title": "Show Account Info"
       },
       {
+        "command": "osc.copyAccessKey",
+        "title": "Copy Access Key"
+      },
+      {
+        "command": "osc.copySecretKey",
+        "title": "Copy Secret Key"
+      },
+      {
         "command": "osc.copyAccountId",
         "title": "Copy Account Id"
       },
@@ -239,12 +247,22 @@
         {
           "command": "osc.showAccountInfo",
           "when": "view == profile && viewItem == profilenode",
-          "group": "oscprofile@2"
+          "group": "oscprofile@0"
         },
         {
           "command": "osc.copyAccountId",
           "when": "view == profile && viewItem == profilenode",
-          "group": "oscprofile@1"
+          "group": "oscprofileCopy@1"
+        },
+        {
+          "command": "osc.copyAccessKey",
+          "when": "view == profile && viewItem == profilenode",
+          "group": "oscprofileCopy@2"
+        },
+        {
+          "command": "osc.copySecretKey",
+          "when": "view == profile && viewItem == profilenode",
+          "group": "oscprofileCopy@3"
         },
         {
           "command": "osc.disableResourceFolder",

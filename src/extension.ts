@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
 import * as vscode from 'vscode';
-import { write } from './components/clipboard';
+import * as clipboard from './components/clipboard';
 import { multiStepInput } from './config_file/action.addprofile';
 import { OscExplorer } from "./explorer";
 import { ExplorerResourceNode } from './flat/node';
@@ -93,7 +93,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('osc.copyResourceId', async (arg: ResourceNode) => {
         const res = await arg.getResourceId();
         if (typeof res === 'string') {
-            await write(res);
+            await clipboard.write(res);
         }
     });
 
@@ -173,7 +173,7 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('osc.copyAccountId', async (arg: ProfileNode) => {
         const res = await arg.getAccountId();
         if (typeof res === 'string') {
-            await write(res);
+            await clipboard.write(res);
         }
     });
 
@@ -214,6 +214,20 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.commands.registerCommand('osc.openParameter', async () => {
         vscode.commands.executeCommand('workbench.action.openSettings', '@ext:outscale.osc-viewer');
+    });
+
+    vscode.commands.registerCommand('osc.copyAccessKey', async (arg: ProfileNode) => {
+        const res = arg.profile.accessKey;
+        if (typeof res === 'string') {
+            await clipboard.write(res);
+        }
+    });
+
+    vscode.commands.registerCommand('osc.copySecretKey', async (arg: ProfileNode) => {
+        const res = arg.profile.secretKey;
+        if (typeof res === 'string') {
+            await clipboard.write(res);
+        }
     });
 
 }
