@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
-import { ResourceNode } from '../../resources/node.resources';
-import { deleteSecurityGroup, getSecurityGroups } from '../../../cloud/securitygroups';
+import { getSecurityGroups } from '../../../cloud/securitygroups';
 import { FiltersSecurityGroup, FiltersSecurityGroupFromJSON } from 'outscale-api';
+import { SecurityGroupResourceNode } from '../../resources/node.resources.securitygroups';
 
 export const SECURITYGROUPS_FOLDER_NAME = "Security Groups";
 export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityGroup> implements ExplorerFolderNode {
@@ -23,7 +23,7 @@ export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityG
                 if (typeof sg.securityGroupId === 'undefined' || typeof sg.securityGroupName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId, "securitygroups", deleteSecurityGroup));
+                resources.push(new SecurityGroupResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId));
             }
             return Promise.resolve(resources);
         });
