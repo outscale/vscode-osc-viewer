@@ -952,6 +952,112 @@ describe('ActivityBar', () => {
                     });
 
                 });
+
+                describe("Subresource Resouce", async () => {
+                    let resource: TreeItem;
+                    let resourceChildren: TreeItem[];
+
+                    before(async () => {
+                        for (const item of children) {
+                            const label = await item.getLabel();
+                            if (label === "Security Groups") {
+                                resource = item;
+                                break;
+                            }
+                        }
+                        expect(await resource.getLabel()).equals("Security Groups");
+                        await resource.expand();
+                        resourceChildren = await resource.getChildren();
+                        expect(resourceChildren.length).equals(2);
+                    });
+
+                    after(async () => {
+                        await resource.collapse();
+                    });
+
+                    describe("Delete button", async () => {
+                        const expectedCommandName = getButtonTitle("osc.deleteSubresource");
+                        let contextMenu: ContextMenu;
+
+                        afterEach(async () => {
+                            await contextMenu.close();
+                            await (new EditorView()).closeAllEditors();
+                        });
+
+                        it("exists", async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                            expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
+                        });
+
+                        it("delete with multiple choices", async () => {
+                            contextMenu = await resourceChildren[0].openContextMenu();
+                            const action = await contextMenu.getItem(expectedCommandName);
+                            await action?.select();
+
+                            // Got notification to confirm deletion
+                            const notifications = await new Workbench().getNotifications();
+                            const notification = notifications[0];
+                            const message = await notification.getMessage();
+                            expect(message).equals("Do you want to remove the subresource of first-sg ?");
+                            const type = await notification.getType();
+                            expect(type).equals(NotificationType.Warning);
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+
+                            // Get the dialog to choose between Inbound or Outbound
+                            let input = new InputBox();
+
+                            // Select Inbound
+                            let quickPick = await input.getQuickPicks();
+                            expect(quickPick.length).equals(2);
+                            expect(await quickPick[0].getText()).equals("Inbound");
+                            expect(await quickPick[1].getText()).equals("Outbound");
+                            await input.selectQuickPick('Inbound');
+
+                            input = new InputBox();
+                            quickPick = await input.getQuickPicks();
+                            expect(quickPick.length).equals(2);
+                            expect(await quickPick[0].getText()).equals("From 0.0.0.0/0:[-1 -> -1] via -1");
+                            expect(await quickPick[1].getText()).equals("From sg-12345:[22 -> 23] via tcp");
+                            await input.selectQuickPick(1);
+
+                            await resourceChildren[0].select();
+                            await delay(500);
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            const sg = osc.SecurityGroupFromJSON(JSON.parse(data));
+                            expect(sg.inboundRules?.length).equals(1);
+                        });
+
+                        it("delete with one choice", async () => {
+                            contextMenu = await resourceChildren[1].openContextMenu();
+                            const action = await contextMenu.getItem(expectedCommandName);
+                            await action?.select();
+
+                            // Got notification to confirm deletion
+                            const notifications = await new Workbench().getNotifications();
+                            const notification = notifications[0];
+                            const message = await notification.getMessage();
+                            expect(message).equals("Do you want to remove the subresource of second-sg ?");
+                            const type = await notification.getType();
+                            expect(type).equals(NotificationType.Warning);
+                            const buttons = await notification.getActions();
+                            expect(buttons.length).equals(2);
+
+                            // Confirm the action
+                            await notification.takeAction("Yes");
+                            await resourceChildren[1].select();
+                            await delay(500);
+                            const editor = new TextEditor();
+                            const data = await editor.getText();
+                            const sg = osc.SecurityGroupFromJSON(JSON.parse(data));
+                            expect(sg.outboundRules?.length).equals(0);
+                        });
+                    });
+                });
             });
         });
     });
