@@ -66,3 +66,59 @@ export function deleteSecurityGroup(profile: Profile, resourceId: string): Promi
             return handleRejection(err_);
         });
 }
+
+export function ruleToString(flow: string, resource: osc.SecurityGroupRule): string {
+    let service = "";
+
+    if (typeof resource.ipRanges !== 'undefined' && resource.ipRanges.length > 0) {
+        service = `${resource.ipRanges}`;
+    } else if (typeof resource.securityGroupsMembers !== 'undefined' && resource.securityGroupsMembers.length > 0) {
+        service = `${resource.securityGroupsMembers.map((element) => element.securityGroupId)}`;
+    }
+
+    let stringBuilder = "";
+    if (flow === "Inbound") {
+        stringBuilder = `From ${service}:[${resource.fromPortRange} -> ${resource.toPortRange}] via ${resource.ipProtocol}`;
+    } else if (flow === "Outbound") {
+        stringBuilder = `To ${service}:[${resource.fromPortRange} -> ${resource.toPortRange}] via ${resource.ipProtocol}`;
+    }
+
+    return stringBuilder;
+}
+
+export function removeRule(profile: Profile, resourceId: string, flow: string, rule: osc.SecurityGroupRule): Promise<string | undefined> {
+    const config = getConfig(profile);
+
+    // Sanityze the request
+    if (typeof rule.securityGroupsMembers !== "undefined" && rule.securityGroupsMembers.length > 0) {
+        const targetSecurityGroupsMembers: osc.SecurityGroupsMember[] = rule.securityGroupsMembers.map((sgMember) => {
+            if (typeof sgMember.securityGroupId !== 'undefined' && typeof sgMember.securityGroupName !== 'undefined') {
+                return {
+                    securityGroupId: sgMember.securityGroupId,
+                };
+            } else {
+                return {
+                    securityGroupId: sgMember.securityGroupId,
+                    securityGroupName: sgMember.securityGroupName,
+                };
+            }
+        });
+        rule.securityGroupsMembers = targetSecurityGroupsMembers;
+    }
+
+    const parameter: osc.DeleteSecurityGroupRuleOperationRequest = {
+        deleteSecurityGroupRuleRequest: {
+            flow: flow,
+            rules: [rule],
+            securityGroupId: resourceId,
+        }
+    };
+
+    const api = new osc.SecurityGroupRuleApi(config);
+    return api.deleteSecurityGroupRule(parameter)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
