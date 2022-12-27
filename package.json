@@ -79,55 +79,67 @@
       {
         "command": "profile.configure",
         "title": "View Profile configuration",
-        "icon": "$(organization)"
+        "icon": "$(organization)",
+        "category": "osc-viewer"
       },
       {
         "command": "profile.addEntry",
         "title": "Add",
-        "icon": "$(person-add)"
+        "icon": "$(person-add)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.openParameter",
         "title": "Open Parameter",
-        "icon": "$(gear)"
+        "icon": "$(gear)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.showResource",
-        "title": "Get"
+        "title": "Get",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.refreshResourceData",
         "title": "Refresh Resource Data",
-        "icon": "$(refresh)"
+        "icon": "$(refresh)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.deleteResource",
-        "title": "Delete"
+        "title": "Delete",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.stopVm",
-        "title": "Stop"
+        "title": "Stop",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.startVm",
-        "title": "Start"
+        "title": "Start",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.copyResourceId",
-        "title": "Copy Resource Id"
+        "title": "Copy Resource Id",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.showConsoleLogs",
-        "title": "Show Console Logs"
+        "title": "Show Console Logs",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.refreshConsoleLogs",
         "title": "Refresh Console Logs",
-        "icon": "$(refresh)"
+        "icon": "$(refresh)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.showAccountInfo",
-        "title": "Show Account Info"
+        "title": "Show Account Info",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.copyAccessKey",
@@ -139,26 +151,31 @@
       },
       {
         "command": "osc.copyAccountId",
-        "title": "Copy Account Id"
+        "title": "Copy Account Id",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.disableResourceFolder",
         "title": "Hide",
-        "icon": "$(eye-closed)"
+        "icon": "$(eye-closed)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.editFilters",
         "title": "Edit Filters",
-        "icon": "$(filter)"
+        "icon": "$(filter)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.resetFilters",
         "title": "Reset Filters",
-        "icon": "$(clear-all)"
+        "icon": "$(clear-all)",
+        "category": "osc-viewer"
       },
       {
         "command": "osc.unlinkResource",
-        "title": "Unlink"
+        "title": "Unlink",
+        "category": "osc-viewer"
       }
     ],
     "viewsContainers": {
