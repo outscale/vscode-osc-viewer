@@ -84,3 +84,37 @@ export function unlinkRouteTable(profile: Profile, linkId: string): Promise<stri
             return handleRejection(err_);
         });
 }
+
+export function routeToString(route: osc.Route): string {
+    let stringBuilder = `destinationIpRange: ${route.destinationIpRange}`;
+
+    for (const field of Object.entries(route)) {
+        if (!field[0].endsWith("Id")) {
+            continue;
+        }
+        if (typeof field[1] === 'undefined') {
+            continue;
+        }
+
+        stringBuilder = `${stringBuilder}, ${field[0]}: ${field[1]}`;
+    }
+    return stringBuilder;
+}
+
+export function removeRoute(profile: Profile, resourceId: string, subresourceId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.DeleteRouteOperationRequest = {
+        deleteRouteRequest: {
+            destinationIpRange: subresourceId,
+            routeTableId: resourceId
+        }
+    };
+
+    const api = new osc.RouteApi(config);
+    return api.deleteRoute(parameters)
+        .then(() => {
+            return undefined;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
