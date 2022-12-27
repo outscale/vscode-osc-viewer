@@ -15,6 +15,7 @@ import { FiltersFolderNode } from './flat/folders/node.filterfolder';
 import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from './configuration/utils';
 import { editFilters } from './config_file/action.editFilters';
 import { LinkResourceNode } from './flat/resources/types/node.resources.link';
+import { SubResourceNode } from './flat/resources/types/node.resources.subresource';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -228,6 +229,17 @@ export function activate(context: vscode.ExtensionContext) {
         if (typeof res === 'string') {
             await clipboard.write(res);
         }
+    });
+
+    vscode.commands.registerCommand('osc.deleteSubresource', async (arg: SubResourceNode) => {
+        showYesOrNoWindow(`Do you want to remove the subresource of ${arg.getResourceName()} ?`, async () => {
+            const res = await arg.removeSubresource();
+            if (typeof res === "undefined") {
+                vscode.window.showInformationMessage(`The subresource of ${arg.getResourceName()} has been deleted`);
+            } else {
+                vscode.window.showErrorMessage(`Error while deleting the subresource of ${arg.getResourceName()}: ${res}`);
+            }
+        });
     });
 
 }

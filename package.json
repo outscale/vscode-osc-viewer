@@ -176,6 +176,11 @@
         "command": "osc.unlinkResource",
         "title": "Unlink",
         "category": "osc-viewer"
+      },
+      {
+        "command": "osc.deleteSubresource",
+        "title": "Delete Subresource",
+        "category": "osc-viewer"
       }
     ],
     "viewsContainers": {
@@ -255,6 +260,11 @@
           "command": "osc.unlinkResource",
           "when": "view == profile && viewItem =~ /linkresourcenode/",
           "group": "oscinteract@4"
+        },
+        {
+          "command": "osc.deleteSubresource",
+          "when": "view == profile && viewItem =~ /subresourcenode/",
+          "group": "oscinteract@5"
         },
         {
           "command": "osc.showConsoleLogs",
