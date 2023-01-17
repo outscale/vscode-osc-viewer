@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.5.0]
+### Features
+  - Add the ability to unlink resources such as RouteTable, Internet Services
+  - Add the ability to copy AK/SK directly from the UI
+  - Add the ability to remove subresources such as Security Group rules for Security Groups
+  - Sort the list of resources
 ## [v0.4.0]
 ### Features
   - Add resources (Access Key, Api Access Rule, Ca, Client Gateway, DHCP Options, DirectLink, DirectLink Interface, Flexible GPU, Internet Service, Nat Service, Net Acess Peering, Nic, Snapshots, RouteTable, Subnet, VpnConnection)
