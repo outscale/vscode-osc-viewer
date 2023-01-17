@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getRouteTables } from '../../../cloud/routetables';
 import { FiltersRouteTable, FiltersRouteTableFromJSON } from 'outscale-api';
@@ -25,7 +25,7 @@ export class RouteTablesFolderNode extends FiltersFolderNode<FiltersRouteTable> 
                 }
                 resources.push(new RouteTableResourceNode(this.profile, "", routeTable.routeTableId, (typeof routeTable.linkRouteTables === 'undefined') || routeTable.linkRouteTables.length === 0 ? 'unlink' : 'link'));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

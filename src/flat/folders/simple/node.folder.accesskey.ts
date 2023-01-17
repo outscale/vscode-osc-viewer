@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteAccessKey, getAccessKeys } from '../../../cloud/accesskeys';
@@ -29,7 +29,7 @@ export class AccessKeysFolderNode extends FiltersFolderNode<FiltersAccessKeys> i
                 resources.push(new ResourceNode(this.profile, "", item.accessKeyId, "AccessKey", deleteAccessKey));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

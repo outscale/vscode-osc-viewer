@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { getExternalIPs } from '../../../cloud/publicips';
 import { PublicIpResourceNode } from '../../resources/node.resources.eip';
 import { FiltersPublicIp, FiltersPublicIpFromJSON } from 'outscale-api';
@@ -25,7 +25,7 @@ export class ExternalIPsFolderNode extends FiltersFolderNode<FiltersPublicIp> im
                 }
                 resources.push(new PublicIpResourceNode(this.profile, publicIp.publicIp, publicIp.publicIpId, (typeof publicIp.linkPublicIpId === "undefined" || publicIp.linkPublicIpId.length === 0) ? "unlink" : "link"));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getInternetServices } from '../../../cloud/internetservices';
 import { FiltersInternetService, FiltersInternetServiceFromJSON } from 'outscale-api';
@@ -29,7 +29,7 @@ export class InternetServicesFolderNode extends FiltersFolderNode<FiltersInterne
                 resources.push(new InternetServiceResourceNode(this.profile, "", item.internetServiceId, item.netId === "undefined" ? "unlink" : "link"));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

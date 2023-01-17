@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getVirtualGateways } from '../../../cloud/virtualgateways';
 import { FiltersVirtualGateway, FiltersVirtualGatewayFromJSON } from 'outscale-api';
@@ -29,7 +29,7 @@ export class VirtualGatewaysFolderNode extends FiltersFolderNode<FiltersVirtualG
                 resources.push(new VirtualGatewayResourceNode(this.profile, "", item.virtualGatewayId));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

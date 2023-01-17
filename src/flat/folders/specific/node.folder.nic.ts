@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getNics } from '../../../cloud/nics';
 import { FiltersNic, FiltersNicFromJSON } from 'outscale-api';
@@ -33,7 +33,7 @@ export class NicsFolderNode extends FiltersFolderNode<FiltersNic> implements Exp
                 resources.push(new NicResourceNode(this.profile, "", item.nicId, item.state));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }
