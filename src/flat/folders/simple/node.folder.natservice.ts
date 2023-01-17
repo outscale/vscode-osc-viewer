@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNatService, getNatServices } from '../../../cloud/natservices';
@@ -29,7 +29,7 @@ export class NatServicesFolderNode extends FiltersFolderNode<FiltersNatService> 
                 resources.push(new ResourceNode(this.profile, "", item.natServiceId, "NatService", deleteNatService));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { getVmName, getVms } from '../../../cloud/vms';
 import { VmResourceNode } from '../../resources/node.resources.vms';
 import { FiltersVm, FiltersVmFromJSON } from 'outscale-api';
@@ -37,7 +37,7 @@ export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements Explo
 
                 resources.push(new VmResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), vm.state));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

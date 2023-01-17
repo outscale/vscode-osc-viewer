@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getSecurityGroups } from '../../../cloud/securitygroups';
 import { FiltersSecurityGroup, FiltersSecurityGroupFromJSON } from 'outscale-api';
@@ -25,7 +25,7 @@ export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityG
                 }
                 resources.push(new SecurityGroupResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

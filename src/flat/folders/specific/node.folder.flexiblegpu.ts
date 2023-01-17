@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { getFlexibleGpus } from '../../../cloud/flexiblegpus';
 import { FiltersFlexibleGpu, FiltersFlexibleGpuFromJSON } from 'outscale-api';
@@ -33,7 +33,7 @@ export class FlexibleGpusFolderNode extends FiltersFolderNode<FiltersFlexibleGpu
                 resources.push(new FlexibleGpuResourceNode(this.profile, "", item.flexibleGpuId, item.state));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

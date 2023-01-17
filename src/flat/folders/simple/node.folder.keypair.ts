@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteKeypair, getKeypairs } from '../../../cloud/keypairs';
@@ -25,7 +25,7 @@ export class KeypairsFolderNode extends FiltersFolderNode<FiltersKeypair> implem
                 }
                 resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

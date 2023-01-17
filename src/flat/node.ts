@@ -78,3 +78,17 @@ export class Profile {
         this.accountId = "";
     }
 }
+
+export function resourceNodeCompare(r1: ExplorerResourceNode, r2: ExplorerResourceNode): number {
+    const n1 = r1.resourceId;
+    const n2 = r2.resourceId;
+    if (n1 > n2) {
+        return 1;
+    }
+
+    if (n1 < n2) {
+        return -1;
+    }
+
+    return 0;
+}

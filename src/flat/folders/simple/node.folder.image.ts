@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import * as osc from "outscale-api";
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FolderNode } from '../node.folder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteOMI, getOMIs } from '../../../cloud/images';
@@ -34,7 +34,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
                     }
                     resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI));
                 }
-                return Promise.resolve(resources);
+                return Promise.resolve(resources.sort(resourceNodeCompare));
             });
         });
 

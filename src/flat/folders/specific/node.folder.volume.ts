@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { getVolumes } from '../../../cloud/volumes';
 import { VolumeResourceNode } from '../../resources/node.resources.volumes';
 import { FiltersVolume, FiltersVolumeFromJSON } from 'outscale-api';
@@ -26,7 +26,7 @@ export class VolumeFolderNode extends FiltersFolderNode<FiltersVolume> implement
                 }
                 resources.push(new VolumeResourceNode(this.profile, "", volume.volumeId, volume.state));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

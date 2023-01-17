@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteSubnet, getSubnets } from '../../../cloud/subnets';
@@ -29,7 +29,7 @@ export class SubnetsFolderNode extends FiltersFolderNode<FiltersSubnet> implemen
                 resources.push(new ResourceNode(this.profile, "", item.subnetId, "Subnet", deleteSubnet));
 
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

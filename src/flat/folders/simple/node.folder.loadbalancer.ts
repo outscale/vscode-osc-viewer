@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { deleteLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { FiltersLoadBalancer, FiltersLoadBalancerFromJSON } from 'outscale-api';
@@ -25,7 +25,7 @@ export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalance
                 }
                 resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }

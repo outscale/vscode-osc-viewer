@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { ExplorerNode, ExplorerFolderNode, Profile } from '../../node';
+import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
 import { deleteNet, getNets } from '../../../cloud/nets';
@@ -25,7 +25,7 @@ export class VpcFolderNode extends FiltersFolderNode<FiltersNet> implements Expl
                 }
                 resources.push(new ResourceNode(this.profile, "", net.netId?.toString(), "vpc", deleteNet));
             }
-            return Promise.resolve(resources);
+            return Promise.resolve(resources.sort(resourceNodeCompare));
         });
 
     }
