@@ -102,7 +102,7 @@ export class ProfileNode implements ExplorerProfileNode {
         }
         const res = await getAccount(this.profile, "");
         if (typeof res === "string") {
-            vscode.window.showErrorMessage(`Error while reading Account ${res}`);
+            vscode.window.showErrorMessage(vscode.l10n.t(`Error while reading {0}: {1}`, "Account", res));
             return Promise.resolve(undefined);
         }
 

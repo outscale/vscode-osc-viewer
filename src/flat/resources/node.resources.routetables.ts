@@ -34,7 +34,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         }
 
         if (typeof rt.linkRouteTables === "undefined" || rt.linkRouteTables.length === 0) {
-            return Promise.resolve("The RouteTable is not attached");
+            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
         }
 
         let link: osc.LinkRouteTable;
@@ -50,7 +50,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
             const value = await vscode.window.showQuickPick(pickItems);
 
             if (!value) {
-                return Promise.resolve("Unlink cancelled");
+                return Promise.resolve(vscode.l10n.t("Unlink cancelled"));
             }
             link = value.item;
         } else {
@@ -58,7 +58,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         }
 
         if (typeof link.linkRouteTableId === "undefined") {
-            return Promise.resolve("The Link has no LinkId");
+            return Promise.resolve(vscode.l10n.t("The link is incomplete"));
         }
 
         return unlinkRouteTable(this.profile, link.linkRouteTableId);
@@ -71,7 +71,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         }
 
         if (typeof rt.routes === "undefined" || rt.routes.length === 0) {
-            return Promise.resolve("The RouteTable does not have routes");
+            return Promise.resolve(vscode.l10n.t("The resource has no subresources"));
         }
 
         let route: osc.Route;
@@ -87,7 +87,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
             const value = await vscode.window.showQuickPick(pickItems);
 
             if (!value) {
-                return Promise.resolve("Deletion of route cancelled");
+                return Promise.resolve(vscode.l10n.t("Deletion of subresource cancelled"));
             }
             route = value.item;
         } else {
@@ -95,7 +95,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         }
 
         if (typeof route.destinationIpRange === "undefined") {
-            return Promise.resolve("The Route does not have a destinationIpRange");
+            return Promise.resolve(vscode.l10n.t("The subresource is incomplete"));
         }
 
         return removeRoute(this.profile, this.resourceId, route.destinationIpRange);

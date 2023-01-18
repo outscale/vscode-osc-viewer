@@ -43,9 +43,9 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         let rules: osc.SecurityGroupRule[];
         let flow: string;
         if (pickItems.length > 1) {
-            const value = await vscode.window.showQuickPick(pickItems, { title: "Choose the rule category to remove" });
+            const value = await vscode.window.showQuickPick(pickItems, { title: vscode.l10n.t("Choose the rule category to remove") });
             if (!value) {
-                return Promise.resolve("Deletion of security group rules cancelled");
+                return Promise.resolve(vscode.l10n.t("Deletion of subresource cancelled"));
             }
             rules = value.item;
             flow = value.label;
@@ -67,7 +67,7 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
             const value = await vscode.window.showQuickPick(pickItems);
 
             if (!value) {
-                return Promise.resolve("Deletion of rule cancelled");
+                return Promise.resolve(vscode.l10n.t("Deletion of subresource cancelled"));
             }
             rule = value.item;
         } else {
@@ -75,7 +75,7 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         }
 
         if (typeof rule === "undefined") {
-            return Promise.resolve("The rule is undefined");
+            return Promise.resolve(vscode.l10n.t("The subresource is incomplete"));
         }
 
         return removeRule(this.profile, this.resourceId, flow, rule);

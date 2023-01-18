@@ -62,7 +62,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.commands.registerCommand('osc.refreshResourceData', async (arg: any) => {
         oscProvider.onDidChangeEmitter.fire(arg);
-        vscode.window.showInformationMessage(`Refreshed`);
+        vscode.window.showInformationMessage(vscode.l10n.t(`Refreshed`));
     });
 
     // register a command that opens a cowsay-document
@@ -80,12 +80,12 @@ export function activate(context: vscode.ExtensionContext) {
             if (!(folder instanceof ResourceNode)) {
                 continue;
             }
-            showYesOrNoWindow(`Do you want to delete the resource ${folder.getResourceName()} ?`, async () => {
+            showYesOrNoWindow(vscode.l10n.t(`Do you want to delete the resource {0} ?`, folder.getResourceName()), async () => {
                 const res = await folder.deleteResource();
                 if (typeof res === "undefined") {
-                    vscode.window.showInformationMessage(`The resource ${folder.getResourceName()} has been deleted`);
+                    vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been deleted`, folder.getResourceName()));
                 } else {
-                    vscode.window.showErrorMessage(`Error while deleting the resource ${folder.getResourceName()}: ${res}`);
+                    vscode.window.showErrorMessage(vscode.l10n.t(`Error while deleting the resource {0}: {1}`, folder.getResourceName(), res));
                 }
             });
         }
@@ -104,12 +104,12 @@ export function activate(context: vscode.ExtensionContext) {
             if (!(resource instanceof VmResourceNode)) {
                 continue;
             }
-            showYesOrNoWindow(`Do you want to stop the resource ${resource.getResourceName()} ?`, async () => {
+            showYesOrNoWindow(vscode.l10n.t(`Do you want to stop the resource {0} ?`, resource.getResourceName()), async () => {
                 const res = await resource.stopResource();
                 if (typeof res === "undefined") {
-                    vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been stopped`);
+                    vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been stopped`, resource.getResourceName()));
                 } else {
-                    vscode.window.showErrorMessage(`Error while stopping the resource ${resource.resourceName}: ${res}`);
+                    vscode.window.showErrorMessage(vscode.l10n.t(`Error while stopping the resource {0}: {1}`, resource.resourceName, res));
                 }
             });
         }
@@ -122,24 +122,24 @@ export function activate(context: vscode.ExtensionContext) {
             if (!(resource instanceof VmResourceNode)) {
                 continue;
             }
-            showYesOrNoWindow(`Do you want to start the resource ${resource.getResourceName()} ?`, async () => {
+            showYesOrNoWindow(vscode.l10n.t(`Do you want to start the resource {0} ?`, resource.getResourceName()), async () => {
                 const res = await resource.startResource();
                 if (typeof res === "undefined") {
-                    vscode.window.showInformationMessage(`The resource ${resource.getResourceName()} has been started`);
+                    vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been started`, resource.getResourceName()));
                 } else {
-                    vscode.window.showErrorMessage(`Error while starting the resource ${resource.resourceName}: ${res}`);
+                    vscode.window.showErrorMessage(vscode.l10n.t(`Error while starting the resource {0}: {1}`, resource.resourceName, res));
                 }
             });
         }
     });
 
     vscode.commands.registerCommand('osc.unlinkResource', async (arg: LinkResourceNode) => {
-        showYesOrNoWindow(`Do you want to unlink the resource ${arg.getResourceName()} ?`, async () => {
+        showYesOrNoWindow(vscode.l10n.t(`Do you want to unlink the resource {0} ?`, arg.getResourceName()), async () => {
             const res = await arg.unlinkResource();
             if (typeof res === "undefined") {
-                vscode.window.showInformationMessage(`The resource ${arg.getResourceName()} has been unlinked`);
+                vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been unlinked`, arg.getResourceName()));
             } else {
-                vscode.window.showErrorMessage(`Error while unlinking the resource ${arg.getResourceName()}: ${res}`);
+                vscode.window.showErrorMessage(vscode.l10n.t(`Error while unlinking the resource {0}: {1}`, arg.getResourceName(), res));
             }
         });
     });
@@ -157,7 +157,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     vscode.commands.registerCommand('osc.refreshConsoleLogs', async (arg: any) => {
         logsProvider.onDidChangeEmitter.fire(arg);
-        vscode.window.showInformationMessage(`Refreshed`);
+        vscode.window.showInformationMessage(vscode.l10n.t(`Refreshed`));
     });
 
     vscode.commands.registerCommand('osc.showAccountInfo', async (arg: ProfileNode) => {
@@ -232,12 +232,12 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.commands.registerCommand('osc.deleteSubresource', async (arg: SubResourceNode) => {
-        showYesOrNoWindow(`Do you want to remove the subresource of ${arg.getResourceName()} ?`, async () => {
+        showYesOrNoWindow(vscode.l10n.t(`Do you want to remove the subresource of {0} ?`, arg.getResourceName()), async () => {
             const res = await arg.removeSubresource();
             if (typeof res === "undefined") {
-                vscode.window.showInformationMessage(`The subresource of ${arg.getResourceName()} has been deleted`);
+                vscode.window.showInformationMessage(vscode.l10n.t(`The subresource of {0} has been deleted`, arg.getResourceName()));
             } else {
-                vscode.window.showErrorMessage(`Error while deleting the subresource of ${arg.getResourceName()}: ${res}`);
+                vscode.window.showErrorMessage(vscode.l10n.t(`Error while deleting the subresource of {0}: {1}`, arg.getResourceName(), res));
             }
         });
     });
@@ -249,9 +249,9 @@ export function deactivate() {
 }
 
 function showYesOrNoWindow(question: string, cb: () => void) {
-    vscode.window.showWarningMessage(question, "Yes", "No")
+    vscode.window.showWarningMessage(question, vscode.l10n.t("Yes"), vscode.l10n.t("No"))
         .then(async (answer) => {
-            if (answer === "Yes") {
+            if (answer === vscode.l10n.t("Yes")) {
                 cb();
             }
         });

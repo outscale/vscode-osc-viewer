@@ -24,7 +24,7 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
         }
 
         if (typeof vgw.netToVirtualGatewayLinks === "undefined" || vgw.netToVirtualGatewayLinks.length === 0) {
-            return Promise.resolve("The Virtual Gateway is not attached");
+            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
         }
 
         let link: osc.NetToVirtualGatewayLink;
@@ -40,7 +40,7 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
             const value = await vscode.window.showQuickPick(pickItems);
 
             if (!value) {
-                return Promise.resolve("Unlink cancelled");
+                return Promise.resolve(vscode.l10n.t("Unlink cancelled"));
             }
             link = value.item;
         } else {
@@ -48,7 +48,7 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
         }
 
         if (typeof link.netId === "undefined") {
-            return Promise.resolve("The Link has no NetId");
+            return Promise.resolve(vscode.l10n.t("The link is incomplete"));
         }
 
         return unlinkVirtualGateway(this.profile, this.resourceId, link.netId);

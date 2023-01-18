@@ -38,7 +38,7 @@ export class ResourceNode implements ExplorerResourceNode {
         treeItem.description = this.resourceName;
         treeItem.iconPath = this.getIconPath();
         treeItem.command = {
-            "title": "Get",
+            "title": vscode.l10n.t("Get"),
             "command": "osc.showResource",
             "arguments": [this]
         };
