@@ -2,6 +2,7 @@ import { MultiStepInput } from './multistep';
 import { QuickPickItem } from 'vscode';
 import { FiltersFolderNode } from '../flat/folders/node.filterfolder';
 import { FILTERS_PARAMETER, getConfigurationParameter, updateConfigurationParameter } from '../configuration/utils';
+import * as vscode from 'vscode';
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
@@ -24,7 +25,7 @@ export async function editFilters(resource: FiltersFolderNode<any>) {
         await MultiStepInput.run(input => inputFilterName(input, state));
     }
 
-    const title = `Edit Filters of ${resource.folderName}`;
+    const title = vscode.l10n.t(`Edit Filters of {0}`, resource.folderName);
     const resourceName = resource.folderName;
     const steps = 2;
 
@@ -45,7 +46,7 @@ export async function editFilters(resource: FiltersFolderNode<any>) {
             totalSteps: steps,
             items: quickPickItems,
             activeItem: quickPickItems[0],
-            placeholder: "Which filter to select ?",
+            placeholder: vscode.l10n.t("Which filter to select ?"),
             shouldResume: shouldResume
         });
         state.filterName = item.label;
@@ -95,7 +96,7 @@ export async function editFilters(resource: FiltersFolderNode<any>) {
             JSON.parse(params);
             return undefined;
         } catch (e) {
-            return 'The value is incorrect. It should be a valid JSON';
+            return vscode.l10n.t('The value is incorrect. It should be a valid JSON');
         }
     }
 

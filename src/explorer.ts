@@ -28,7 +28,7 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
             const oscConfigObject = readConfigFile();
             if (typeof oscConfigObject === 'undefined') {
-                vscode.window.showErrorMessage('No config file found');
+                vscode.window.showErrorMessage(vscode.l10n.t('No config file found'));
                 return Promise.resolve([]);
             }
             const explorerNodes = Object.keys(oscConfigObject).map(dep => toExplorerNode(dep, oscConfigObject[dep]));

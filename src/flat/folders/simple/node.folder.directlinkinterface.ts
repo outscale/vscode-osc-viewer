@@ -15,7 +15,7 @@ export class DirectLinkInterfacesFolderNode extends FiltersFolderNode<FiltersDir
         this.updateFilters();
         return getDirectLinkInterfaces(this.profile, this.filters).then(results => {
             if (typeof results === "string") {
-                vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${results}`);
+                vscode.window.showErrorMessage(vscode.l10n.t(`Error while reading {0}: {1}`, this.folderName, results));
                 return Promise.resolve([]);
             }
             const resources = [];

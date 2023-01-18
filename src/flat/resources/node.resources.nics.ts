@@ -1,4 +1,4 @@
-import { ThemeIcon } from 'vscode';
+import * as vscode from 'vscode';
 import { deleteNic, getNic, unlinkNic } from '../../cloud/nics';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
@@ -15,18 +15,18 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
         return super.getContextValue() + ";nicresourcenode;linkresourcenode";
     }
 
-    getIconPath(): ThemeIcon {
+    getIconPath(): vscode.ThemeIcon {
         switch (this.resourceState) {
             case "available":
-                return new ThemeIcon("check");
+                return new vscode.ThemeIcon("check");
             case "attaching":
-                return new ThemeIcon("sync");
+                return new vscode.ThemeIcon("sync");
             case "in-use":
-                return new ThemeIcon("plug");
+                return new vscode.ThemeIcon("plug");
             case "detaching":
-                return new ThemeIcon("sync");
+                return new vscode.ThemeIcon("sync");
             default:
-                return new ThemeIcon("dash");
+                return new vscode.ThemeIcon("dash");
         }
 
     }
@@ -38,13 +38,13 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
         }
 
         if (typeof nic.linkNic === "undefined") {
-            return Promise.resolve("The Nic is not attached");
+            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
         }
 
         const link = nic.linkNic;
 
         if (typeof link.linkNicId === "undefined") {
-            return Promise.resolve("The Link has no LinkId");
+            return Promise.resolve(vscode.l10n.t("The link is incomplete"));
         }
 
         return unlinkNic(this.profile, link.linkNicId);

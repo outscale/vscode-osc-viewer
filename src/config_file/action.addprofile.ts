@@ -3,6 +3,7 @@ import { readConfigFile, writeConfigFile } from './utils';
 import { window } from 'vscode';
 import { getAccounts } from '../cloud/account';
 import { Profile } from '../flat/node';
+import * as vscode from 'vscode';
 
 /**
  * A multi-step input using window.createQuickPick() and window.createInputBox().
@@ -30,7 +31,7 @@ export async function multiStepInput() {
         return state as State;
     }
 
-    const title = 'Add a profile';
+    const title = vscode.l10n.t('Add a profile');
     const steps = 6;
 
     async function inputProfileName(input: MultiStepInput, state: Partial<State>) {
@@ -39,7 +40,7 @@ export async function multiStepInput() {
             step: 1,
             totalSteps: steps,
             value: '',
-            prompt: 'Choose a unique name for the profile',
+            prompt: vscode.l10n.t('Choose a unique name for the profile'),
             validate: validateNameIsUnique,
             shouldResume: shouldResume
         });
@@ -52,7 +53,7 @@ export async function multiStepInput() {
             step: 2,
             totalSteps: steps,
             value: '',
-            prompt: 'Enter your Access Key',
+            prompt: vscode.l10n.t('Enter your Access Key'),
             validate: valideIsNotNull,
             shouldResume: shouldResume
         });
@@ -65,7 +66,7 @@ export async function multiStepInput() {
             step: 3,
             totalSteps: steps,
             value: '',
-            prompt: 'Enter your Secret Key',
+            prompt: vscode.l10n.t('Enter your Secret Key'),
             validate: valideIsNotNull,
             shouldResume: shouldResume
         });
@@ -78,7 +79,7 @@ export async function multiStepInput() {
             step: 4,
             totalSteps: steps,
             value: 'eu-west-2',
-            prompt: 'Pick a region',
+            prompt: vscode.l10n.t('Pick a region'),
             validate: valideIsNotNull,
             shouldResume: shouldResume
         });
@@ -92,7 +93,7 @@ export async function multiStepInput() {
             step: 5,
             totalSteps: steps,
             value: 'outscale.com',
-            prompt: 'Enter the host',
+            prompt: vscode.l10n.t('Enter the host'),
             validate: valideIsNotNull,
             shouldResume: shouldResume
         });
@@ -122,23 +123,23 @@ export async function multiStepInput() {
     async function validateNameIsUnique(name: string) {
         const oscConfObject = readConfigFile();
         if (typeof oscConfObject === 'undefined') {
-            window.showErrorMessage('No config file found');
+            window.showErrorMessage(vscode.l10n.t('No config file found'));
             return undefined;
         }
 
         const found = Object.keys(oscConfObject).find(key => key === name);
-        return typeof found === 'string' ? 'The name is not unique' : undefined;
+        return typeof found === 'string' ? vscode.l10n.t('The name is not unique') : undefined;
     }
 
     async function valideIsNotNull(params: string) {
-        return params.length === 0 ? 'Cannot be empty' : undefined;
+        return params.length === 0 ? vscode.l10n.t('Cannot be empty') : undefined;
     }
 
     function writeProfile(state: Partial<State>) {
         // Found a config file
         const configJson = readConfigFile();
         if (typeof configJson === 'undefined') {
-            window.showErrorMessage('No config file found');
+            window.showErrorMessage(vscode.l10n.t('No config file found'));
             return undefined;
         }
 
@@ -167,7 +168,7 @@ export async function multiStepInput() {
     // Validate the account
     const profileIsValid = await getAccounts(new Profile(state.name, state.accessKey, state.secretKey, state.region, state.host, state.https)).then((result) => {
         if (typeof result === "string") {
-            window.showErrorMessage(`The account '${state.name}' is invalid. Please retry !`);
+            window.showErrorMessage(vscode.l10n.t(`The account '{0}' is invalid. Please retry !`, state.name));
             return false;
         }
         return true;

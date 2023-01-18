@@ -18,7 +18,7 @@ export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements Explo
         this.updateFilters();
         return getVms(this.profile, this.filters).then(vmsResult => {
             if (typeof vmsResult === "string") {
-                vscode.window.showErrorMessage(`Error while reading ${this.folderName}: ${vmsResult}`);
+                vscode.window.showErrorMessage(vscode.l10n.t(`Error while reading {0}: {1}`, this.folderName, vmsResult));
                 return Promise.resolve([]);
             }
             const resources = [];

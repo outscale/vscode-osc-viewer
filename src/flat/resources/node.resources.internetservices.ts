@@ -1,4 +1,4 @@
-import { ThemeIcon } from 'vscode';
+import * as vscode from 'vscode';
 import { deleteInternetService, getInternetService, unlinkInternetService } from '../../cloud/internetservices';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
@@ -15,12 +15,12 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
         return "internetserviceresourcenode;linkresourcenode";
     }
 
-    getIconPath(): ThemeIcon {
+    getIconPath(): vscode.ThemeIcon {
         switch (this.resourceState) {
             case "link":
-                return new ThemeIcon("plug");
+                return new vscode.ThemeIcon("plug");
             default:
-                return new ThemeIcon("dash");
+                return new vscode.ThemeIcon("dash");
         }
 
     }
@@ -32,7 +32,7 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
         }
 
         if (typeof internetService.netId === "undefined") {
-            return Promise.resolve("The Internet Service is not attached");
+            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
         }
 
 
