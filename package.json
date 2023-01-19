@@ -16,7 +16,7 @@
       "url": "https://github.com/outscale-dev/vscode-osc-viewer/issues"
   },
   "engines": {
-    "vscode": "^1.69.0"
+    "vscode": "^1.73.0"
   },
   "categories": [
     "Other"
@@ -325,7 +325,7 @@
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "docker-build-ui-test": "docker build -f src/ui-test/Dockerfile  -t vscode-osc-viewer-test:latest .",
     "docker-start-ui-test": "npm run docker-build-ui-test && docker run --rm --name ui-test -v $(pwd):/workspace vscode-osc-viewer-test:latest /workspace/src/ui-test/entrypoint.sh",
-    "ui-test": "npm run compile && MOCK='mock-' extest setup-and-run -c 1.69.0 'tsc/ui-test/*.js' -o settings.json",
+    "ui-test": "npm run compile && MOCK='mock-' extest setup-and-run -c 1.73.0 'tsc/ui-test/*.js' -o settings.json",
     "package": "vsce package",
     "compile": "tsc -p ./",
     "lint": "eslint . --ext .ts,.tsx",
@@ -355,7 +355,7 @@
     "ts-mock-imports": "^1.3.8",
     "typescript": "^4.8.4",
     "vsce": "^2.8.0",
-    "vscode-extension-tester": "4.4.0",
+    "vscode-extension-tester": "5.2.1",
     "typescript-formatter": "^7.2.2"
   },
   "dependencies": {
