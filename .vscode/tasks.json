@@ -6,8 +6,6 @@
 		{
 			"type": "npm",
 			"script": "vscode:prepublish",
-			"problemMatcher": "$tsc-watch",
-			"isBackground": true,
 			"presentation": {
 				"reveal": "never"
 			},
@@ -15,6 +13,22 @@
 				"kind": "build",
 				"isDefault": true
 			}
+		},
+		{
+			"type": "npm",
+			"script": "vscode:prepublish",
+			"presentation": {
+				"reveal": "never"
+			},
+			"group": {
+				"kind": "build",
+			},
+			"options": {
+				"env": {
+					"MOCK": "mock-"
+				}
+			},
+			"label": "build-mock"
 		}
 	]
 }
