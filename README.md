@@ -1,5 +1,5 @@
 # 3DS Outscale Viewer
-[![Project Graduated](https://docs.outscale.com/fr/userguide/_images/Project-Graduated-green.svg)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
+[![Project Graduated](docs/Project-Graduated-green.png)](https://docs.outscale.com/en/userguide/Open-Source-Projects.html)
 
 This extension provides a vscode integrated viewer of cloud resources. It relies on widely use configuration file (~/.osc/config.json or ~/.osc_sdk/config.json).
 
