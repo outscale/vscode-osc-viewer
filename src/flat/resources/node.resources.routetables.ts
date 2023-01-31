@@ -85,7 +85,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         }
 
         if (typeof rt.routes === "undefined" || rt.routes.length === 0) {
-            return Promise.resolve(vscode.l10n.t("The resource has no subresources"));
+            return undefined;
         }
 
         let route: osc.Route;
