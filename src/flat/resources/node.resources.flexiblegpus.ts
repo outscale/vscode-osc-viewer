@@ -30,6 +30,15 @@ export class FlexibleGpuResourceNode extends ResourceNode implements LinkResourc
 
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.unlinkAllResource();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async unlinkResource(): Promise<string | undefined> {
         const fgpu = await getFlexibleGpu(this.profile, this.resourceId);
         if (typeof fgpu === 'string' || typeof fgpu === "undefined") {

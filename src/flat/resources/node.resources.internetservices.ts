@@ -25,6 +25,15 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
 
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.unlinkAllResource();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async unlinkResource(): Promise<string | undefined> {
         const internetService = await getInternetService(this.profile, this.resourceId);
         if (typeof internetService === "string" || typeof internetService === 'undefined') {

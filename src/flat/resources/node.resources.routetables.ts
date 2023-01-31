@@ -27,6 +27,20 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
 
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        let res = await this.unlinkAllResource();
+        if (res === 'string') {
+            return res;
+        }
+
+        res = await this.removeAllSubresources();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async unlinkResource(): Promise<string | undefined> {
         const rt = await getRouteTable(this.profile, this.resourceId);
         if (typeof rt === "string" || typeof rt === 'undefined') {
