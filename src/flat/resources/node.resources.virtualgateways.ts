@@ -16,6 +16,15 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
         return "virtualgatewayresourcenode;linkresourcenode";
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.unlinkAllResource();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
 
     async unlinkResource(): Promise<string | undefined> {
         const vgw = await getVirtualGateway(this.profile, this.resourceId);

@@ -31,6 +31,15 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
 
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.unlinkAllResource();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async unlinkResource(): Promise<string | undefined> {
         const nic = await getNic(this.profile, this.resourceId);
         if (typeof nic === "string" || typeof nic === "undefined") {

@@ -25,6 +25,15 @@ export class PublicIpResourceNode extends ResourceNode implements LinkResourceNo
 
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.unlinkAllResource();
+        if (typeof res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async unlinkResource(): Promise<string | undefined> {
         const ip = await getExternalIP(this.profile, this.resourceId);
         if (typeof ip === "string" || typeof ip === "undefined") {

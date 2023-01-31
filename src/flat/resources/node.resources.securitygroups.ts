@@ -16,6 +16,15 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         return "securitygroupresourcenode;subresourcenode";
     }
 
+    async deleteResource(): Promise<string | undefined> {
+        const res = await this.removeAllSubresources();
+        if (res === 'string') {
+            return res;
+        }
+
+        return super.deleteResource();
+    }
+
     async removeSubresource(): Promise<string | undefined> {
         const sg = await getSecurityGroup(this.profile, this.resourceId);
         if (typeof sg === "string" || typeof sg === 'undefined') {
