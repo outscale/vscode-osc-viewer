@@ -81,6 +81,34 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         return removeRule(this.profile, this.resourceId, flow, rule);
     }
 
+    async removeAllSubresources(): Promise<string | undefined> {
+        const sg = await getSecurityGroup(this.profile, this.resourceId);
+        if (typeof sg === "string" || typeof sg === 'undefined') {
+            return sg;
+        }
+
+        // Inbound
+        if (typeof sg.inboundRules !== 'undefined' && sg.inboundRules.length > 0) {
+            for (const rule of sg.inboundRules) {
+                const res = await removeRule(this.profile, this.resourceId, "Inbound", rule);
+                if (typeof res === 'string') {
+                    return res;
+                }
+            }
+        }
+
+        // Outbound
+        if (typeof sg.outboundRules !== 'undefined' && sg.outboundRules.length > 0) {
+            for (const rule of sg.outboundRules) {
+                const res = await removeRule(this.profile, this.resourceId, "Outbound", rule);
+                if (typeof res === 'string') {
+                    return res;
+                }
+            }
+        }
+
+        return Promise.resolve(undefined);
+    }
 
 
 }
