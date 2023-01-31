@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteCa, getCas } from '../../../cloud/cas';
+import { deleteCa, getCa, getCas } from '../../../cloud/cas';
 import { FiltersCa, FiltersCaFromJSON } from 'outscale-api';
 
 export const CA_FOLDER_NAME = "Cas";
@@ -26,7 +26,7 @@ export class CasFolderNode extends FiltersFolderNode<FiltersCa> implements Explo
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.caId, "Ca", deleteCa));
+                resources.push(new ResourceNode(this.profile, "", item.caId, "Ca", deleteCa, getCa));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

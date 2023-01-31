@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteClientGateway, getClientGateways } from '../../../cloud/clientgateways';
+import { deleteClientGateway, getClientGateway, getClientGateways } from '../../../cloud/clientgateways';
 import { FiltersClientGateway, FiltersClientGatewayFromJSON } from 'outscale-api';
 
 export const CLIENTGATEWAYS_FOLDER_NAME = "Client Gateways";
@@ -26,7 +26,7 @@ export class ClientGatewaysFolderNode extends FiltersFolderNode<FiltersClientGat
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.clientGatewayId, "ClientGateway", deleteClientGateway));
+                resources.push(new ResourceNode(this.profile, "", item.clientGatewayId, "ClientGateway", deleteClientGateway, getClientGateway));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

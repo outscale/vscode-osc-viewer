@@ -8,7 +8,7 @@ import { LinkResourceNode } from './types/node.resources.link';
 export class InternetServiceResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "InternetService", deleteInternetService);
+        super(profile, resourceName, resourceId, "InternetService", deleteInternetService, getInternetService);
     }
 
     getContextValue(): string {
@@ -27,7 +27,7 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
 
     async unlinkResource(): Promise<string | undefined> {
         const internetService = await getInternetService(this.profile, this.resourceId);
-        if (typeof internetService === "string") {
+        if (typeof internetService === "string" || typeof internetService === 'undefined') {
             return internetService;
         }
 

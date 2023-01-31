@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteSubnet, getSubnets } from '../../../cloud/subnets';
+import { deleteSubnet, getSubnet, getSubnets } from '../../../cloud/subnets';
 import { FiltersSubnet, FiltersSubnetFromJSON } from 'outscale-api';
 
 export const SUBNETS_FOLDER_NAME = "Subnets";
@@ -26,7 +26,7 @@ export class SubnetsFolderNode extends FiltersFolderNode<FiltersSubnet> implemen
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.subnetId, "Subnet", deleteSubnet));
+                resources.push(new ResourceNode(this.profile, "", item.subnetId, "Subnet", deleteSubnet, getSubnet));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

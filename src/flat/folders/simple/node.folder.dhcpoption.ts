@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteDhcpOption, getDhcpOptions } from '../../../cloud/dhcpoptions';
+import { deleteDhcpOption, getDhcpOption, getDhcpOptions } from '../../../cloud/dhcpoptions';
 import { FiltersDhcpOptions, FiltersDhcpOptionsFromJSON } from 'outscale-api';
 
 export const DHCPOPTIONS_FOLDER_NAME = "Dhcp Options";
@@ -26,7 +26,7 @@ export class DhcpOptionsFolderNode extends FiltersFolderNode<FiltersDhcpOptions>
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.dhcpOptionsSetId, "DhcpOption", deleteDhcpOption));
+                resources.push(new ResourceNode(this.profile, "", item.dhcpOptionsSetId, "DhcpOption", deleteDhcpOption, getDhcpOption));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

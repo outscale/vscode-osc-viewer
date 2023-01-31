@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteNetAccessPoint, getNetAccessPoints } from '../../../cloud/netaccesspoints';
+import { deleteNetAccessPoint, getNetAccessPoint, getNetAccessPoints } from '../../../cloud/netaccesspoints';
 import { FiltersNetAccessPoint, FiltersNetAccessPointFromJSON } from 'outscale-api';
 
 export const NETACCESSPOINTS_FOLDER_NAME = "Net AccessPoints";
@@ -26,7 +26,7 @@ export class NetAccessPointsFolderNode extends FiltersFolderNode<FiltersNetAcces
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint));
+                resources.push(new ResourceNode(this.profile, "", item.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint, getNetAccessPoint));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

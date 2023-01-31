@@ -8,7 +8,7 @@ import { LinkResourceNode } from './types/node.resources.link';
 export class NicResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "Nic", deleteNic);
+        super(profile, resourceName, resourceId, "Nic", deleteNic, getNic);
     }
 
     getContextValue(): string {
@@ -33,7 +33,7 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
 
     async unlinkResource(): Promise<string | undefined> {
         const nic = await getNic(this.profile, this.resourceId);
-        if (typeof nic === "string") {
+        if (typeof nic === "string" || typeof nic === "undefined") {
             return nic;
         }
 

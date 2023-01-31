@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteKeypair, getKeypairs } from '../../../cloud/keypairs';
+import { deleteKeypair, getKeypair, getKeypairs } from '../../../cloud/keypairs';
 import { FiltersKeypair, FiltersKeypairFromJSON } from 'outscale-api';
 
 export const KEYPAIRS_FOLDER_NAME = "Keypairs";
@@ -23,7 +23,7 @@ export class KeypairsFolderNode extends FiltersFolderNode<FiltersKeypair> implem
                 if (typeof keypair.keypairName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair));
+                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair, getKeypair));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

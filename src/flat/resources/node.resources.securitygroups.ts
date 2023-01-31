@@ -9,7 +9,7 @@ import { SubResourceNode } from "./types/node.resources.subresource";
 export class SecurityGroupResourceNode extends ResourceNode implements SubResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string) {
-        super(profile, resourceName, resourceId, "securitygroups", deleteSecurityGroup);
+        super(profile, resourceName, resourceId, "securitygroups", deleteSecurityGroup, getSecurityGroup);
     }
 
     getContextValue(): string {
@@ -18,7 +18,7 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
 
     async removeSubresource(): Promise<string | undefined> {
         const sg = await getSecurityGroup(this.profile, this.resourceId);
-        if (typeof sg === "string") {
+        if (typeof sg === "string" || typeof sg === 'undefined') {
             return sg;
         }
 

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteApiAccessRule, getApiAccessRules } from '../../../cloud/apiaccessrules';
+import { deleteApiAccessRule, getApiAccessRule, getApiAccessRules } from '../../../cloud/apiaccessrules';
 import { FiltersApiAccessRule, FiltersApiAccessRuleFromJSON } from 'outscale-api';
 
 export const APIACCESSRULES_FOLDER_NAME = "Api Access Rules";
@@ -26,7 +26,7 @@ export class ApiAccessRulesFolderNode extends FiltersFolderNode<FiltersApiAccess
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.apiAccessRuleId, "ApiAccessRule", deleteApiAccessRule));
+                resources.push(new ResourceNode(this.profile, "", item.apiAccessRuleId, "ApiAccessRule", deleteApiAccessRule, getApiAccessRule));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

@@ -1,5 +1,5 @@
 import { ThemeIcon } from 'vscode';
-import { deleteVm, startVm, stopVm } from '../../cloud/vms';
+import { deleteVm, getVm, startVm, stopVm } from '../../cloud/vms';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 
@@ -7,7 +7,7 @@ import { ResourceNode } from './node.resources';
 export class VmResourceNode extends ResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "vms", deleteVm);
+        super(profile, resourceName, resourceId, "vms", deleteVm, getVm);
     }
 
     startResource(): Promise<string | undefined> {

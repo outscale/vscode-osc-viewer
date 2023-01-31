@@ -1,5 +1,5 @@
 import { ThemeIcon } from 'vscode';
-import { deleteVolume, unlinkVolume } from '../../cloud/volumes';
+import { deleteVolume, getVolume, unlinkVolume } from '../../cloud/volumes';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { LinkResourceNode } from './types/node.resources.link';
@@ -8,7 +8,7 @@ import { LinkResourceNode } from './types/node.resources.link';
 export class VolumeResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "volumes", deleteVolume);
+        super(profile, resourceName, resourceId, "volumes", deleteVolume, getVolume);
     }
 
     getContextValue(): string {
