@@ -27,7 +27,7 @@ export function getAccessKeys(profile: Profile, filters?: FiltersAccessKeys): Pr
 }
 
 // Retrieve a specific item of the resource AccessKey
-export function getAccessKey(profile: Profile, resourceId: string): Promise<osc.AccessKey | string> {
+export function getAccessKey(profile: Profile, resourceId: string): Promise<osc.AccessKey | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadAccessKeysOperationRequest = {
         readAccessKeysRequest: {
@@ -41,7 +41,7 @@ export function getAccessKey(profile: Profile, resourceId: string): Promise<osc.
     return api.readAccessKeys(readParameters)
         .then((res: osc.ReadAccessKeysResponse) => {
             if (res.accessKeys === undefined || res.accessKeys.length === 0) {
-                return {};
+                return undefined;
             }
             return res.accessKeys[0];
         }, (err_: any) => {

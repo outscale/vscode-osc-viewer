@@ -27,7 +27,7 @@ export function getSecurityGroups(profile: Profile, filters?: FiltersSecurityGro
 }
 
 // Retrieve a specific item of the resource SecurityGroup
-export function getSecurityGroup(profile: Profile, resourceId: string): Promise<osc.SecurityGroup | string> {
+export function getSecurityGroup(profile: Profile, resourceId: string): Promise<osc.SecurityGroup | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadSecurityGroupsOperationRequest = {
         readSecurityGroupsRequest: {
@@ -41,7 +41,7 @@ export function getSecurityGroup(profile: Profile, resourceId: string): Promise<
     return api.readSecurityGroups(readParameters)
         .then((res: osc.ReadSecurityGroupsResponse) => {
             if (res.securityGroups === undefined || res.securityGroups.length === 0) {
-                return {};
+                return undefined;
             }
             return res.securityGroups[0];
         }, (err_: any) => {

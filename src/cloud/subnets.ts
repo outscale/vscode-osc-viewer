@@ -27,7 +27,7 @@ export function getSubnets(profile: Profile, filters?: FiltersSubnet): Promise<A
 }
 
 // Retrieve a specific item of the resource Subnet
-export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Subnet | string> {
+export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Subnet | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadSubnetsOperationRequest = {
         readSubnetsRequest: {
@@ -41,7 +41,7 @@ export function getSubnet(profile: Profile, resourceId: string): Promise<osc.Sub
     return api.readSubnets(readParameters)
         .then((res: osc.ReadSubnetsResponse) => {
             if (res.subnets === undefined || res.subnets.length === 0) {
-                return {};
+                return undefined;
             }
             return res.subnets[0];
         }, (err_: any) => {

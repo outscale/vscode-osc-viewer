@@ -27,7 +27,7 @@ export function getVolumes(profile: Profile, filters?: FiltersVolume): Promise<A
 }
 
 // Retrieve a specific item of the resource Volume
-export function getVolume(profile: Profile, resourceId: string): Promise<osc.Volume | string> {
+export function getVolume(profile: Profile, resourceId: string): Promise<osc.Volume | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVolumesOperationRequest = {
         readVolumesRequest: {
@@ -41,7 +41,7 @@ export function getVolume(profile: Profile, resourceId: string): Promise<osc.Vol
     return api.readVolumes(readParameters)
         .then((res: osc.ReadVolumesResponse) => {
             if (res.volumes === undefined || res.volumes.length === 0) {
-                return {};
+                return undefined;
             }
             return res.volumes[0];
         }, (err_: any) => {

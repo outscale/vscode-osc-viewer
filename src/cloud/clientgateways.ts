@@ -27,7 +27,7 @@ export function getClientGateways(profile: Profile, filters?: FiltersClientGatew
 }
 
 // Retrieve a specific item of the resource ClientGateway
-export function getClientGateway(profile: Profile, resourceId: string): Promise<osc.ClientGateway | string> {
+export function getClientGateway(profile: Profile, resourceId: string): Promise<osc.ClientGateway | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadClientGatewaysOperationRequest = {
         readClientGatewaysRequest: {
@@ -41,7 +41,7 @@ export function getClientGateway(profile: Profile, resourceId: string): Promise<
     return api.readClientGateways(readParameters)
         .then((res: osc.ReadClientGatewaysResponse) => {
             if (res.clientGateways === undefined || res.clientGateways.length === 0) {
-                return {};
+                return undefined;
             }
             return res.clientGateways[0];
         }, (err_: any) => {

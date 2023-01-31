@@ -27,7 +27,7 @@ export function getApiAccessRules(profile: Profile, filters?: FiltersApiAccessRu
 }
 
 // Retrieve a specific item of the resource ApiAccessRule
-export function getApiAccessRule(profile: Profile, resourceId: string): Promise<osc.ApiAccessRule | string> {
+export function getApiAccessRule(profile: Profile, resourceId: string): Promise<osc.ApiAccessRule | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadApiAccessRulesOperationRequest = {
         readApiAccessRulesRequest: {
@@ -41,7 +41,7 @@ export function getApiAccessRule(profile: Profile, resourceId: string): Promise<
     return api.readApiAccessRules(readParameters)
         .then((res: osc.ReadApiAccessRulesResponse) => {
             if (res.apiAccessRules === undefined || res.apiAccessRules.length === 0) {
-                return {};
+                return undefined;
             }
             return res.apiAccessRules[0];
         }, (err_: any) => {

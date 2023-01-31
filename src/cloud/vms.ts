@@ -26,7 +26,7 @@ export function getVms(profile: Profile, filters?: FiltersVm): Promise<Array<osc
 }
 
 // Retrieve a specific item of the resource Vm
-export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | string> {
+export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVmsOperationRequest = {
         readVmsRequest: {
@@ -40,7 +40,7 @@ export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | st
     return api.readVms(readParameters)
         .then((res: osc.ReadVmsResponse) => {
             if (res.vms === undefined || res.vms.length === 0) {
-                return {};
+                return undefined;
             }
             return res.vms[0];
         }, (err_: any) => {

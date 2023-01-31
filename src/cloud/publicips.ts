@@ -25,7 +25,7 @@ export function getExternalIPs(profile: Profile, filters?: FiltersPublicIp): Pro
         });
 }
 
-export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc.PublicIp | string> {
+export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc.PublicIp | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadPublicIpsOperationRequest = {
         readPublicIpsRequest: {
@@ -39,7 +39,7 @@ export function getExternalIP(profile: Profile, publicIpId: string): Promise<osc
     return api.readPublicIps(readParameters)
         .then((res: osc.ReadPublicIpsResponse) => {
             if (res.publicIps === undefined || res.publicIps.length === 0) {
-                return {};
+                return undefined;
             }
             return res.publicIps[0];
         }, (err_: any) => {

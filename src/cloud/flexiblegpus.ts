@@ -27,7 +27,7 @@ export function getFlexibleGpus(profile: Profile, filters?: FiltersFlexibleGpu):
 }
 
 // Retrieve a specific item of the resource FlexibleGpu
-export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<osc.FlexibleGpu | string> {
+export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<osc.FlexibleGpu | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadFlexibleGpusOperationRequest = {
         readFlexibleGpusRequest: {
@@ -41,7 +41,7 @@ export function getFlexibleGpu(profile: Profile, resourceId: string): Promise<os
     return api.readFlexibleGpus(readParameters)
         .then((res: osc.ReadFlexibleGpusResponse) => {
             if (res.flexibleGpus === undefined || res.flexibleGpus.length === 0) {
-                return {};
+                return undefined;
             }
             return res.flexibleGpus[0];
         }, (err_: any) => {

@@ -27,7 +27,7 @@ export function getDhcpOptions(profile: Profile, filters?: FiltersDhcpOptions): 
 }
 
 // Retrieve a specific item of the resource DhcpOption
-export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc.DhcpOptionsSet | string> {
+export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc.DhcpOptionsSet | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadDhcpOptionsOperationRequest = {
         readDhcpOptionsRequest: {
@@ -41,7 +41,7 @@ export function getDhcpOption(profile: Profile, resourceId: string): Promise<osc
     return api.readDhcpOptions(readParameters)
         .then((res: osc.ReadDhcpOptionsResponse) => {
             if (res.dhcpOptionsSets === undefined || res.dhcpOptionsSets.length === 0) {
-                return {};
+                return undefined;
             }
             return res.dhcpOptionsSets[0];
         }, (err_: any) => {

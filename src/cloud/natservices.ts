@@ -27,7 +27,7 @@ export function getNatServices(profile: Profile, filters?: FiltersNatService): P
 }
 
 // Retrieve a specific item of the resource NatService
-export function getNatService(profile: Profile, resourceId: string): Promise<osc.NatService | string> {
+export function getNatService(profile: Profile, resourceId: string): Promise<osc.NatService | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNatServicesOperationRequest = {
         readNatServicesRequest: {
@@ -41,7 +41,7 @@ export function getNatService(profile: Profile, resourceId: string): Promise<osc
     return api.readNatServices(readParameters)
         .then((res: osc.ReadNatServicesResponse) => {
             if (res.natServices === undefined || res.natServices.length === 0) {
-                return {};
+                return undefined;
             }
             return res.natServices[0];
         }, (err_: any) => {

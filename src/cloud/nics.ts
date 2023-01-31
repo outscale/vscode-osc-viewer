@@ -27,7 +27,7 @@ export function getNics(profile: Profile, filters?: FiltersNic): Promise<Array<o
 }
 
 // Retrieve a specific item of the resource Nic
-export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | string> {
+export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNicsOperationRequest = {
         readNicsRequest: {
@@ -41,7 +41,7 @@ export function getNic(profile: Profile, resourceId: string): Promise<osc.Nic | 
     return api.readNics(readParameters)
         .then((res: osc.ReadNicsResponse) => {
             if (res.nics === undefined || res.nics.length === 0) {
-                return {};
+                return undefined;
             }
             return res.nics[0];
         }, (err_: any) => {

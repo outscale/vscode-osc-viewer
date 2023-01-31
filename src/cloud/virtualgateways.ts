@@ -27,7 +27,7 @@ export function getVirtualGateways(profile: Profile, filters?: FiltersVirtualGat
 }
 
 // Retrieve a specific item of the resource VirtualGateway
-export function getVirtualGateway(profile: Profile, resourceId: string): Promise<osc.VirtualGateway | string> {
+export function getVirtualGateway(profile: Profile, resourceId: string): Promise<osc.VirtualGateway | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVirtualGatewaysOperationRequest = {
         readVirtualGatewaysRequest: {
@@ -41,7 +41,7 @@ export function getVirtualGateway(profile: Profile, resourceId: string): Promise
     return api.readVirtualGateways(readParameters)
         .then((res: osc.ReadVirtualGatewaysResponse) => {
             if (res.virtualGateways === undefined || res.virtualGateways.length === 0) {
-                return {};
+                return undefined;
             }
             return res.virtualGateways[0];
         }, (err_: any) => {
