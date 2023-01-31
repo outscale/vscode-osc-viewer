@@ -29,4 +29,9 @@ export class PublicIpResourceNode extends ResourceNode implements LinkResourceNo
         return unlinkExternalIP(this.profile, this.resourceName);
     }
 
+    unlinkAllResource(): Promise<string | undefined> {
+        // One link possible
+        return this.unlinkResource();
+    }
+
 }

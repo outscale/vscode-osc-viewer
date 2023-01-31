@@ -39,4 +39,8 @@ export class VolumeResourceNode extends ResourceNode implements LinkResourceNode
         return unlinkVolume(this.profile, this.resourceId);
     }
 
+    unlinkAllResource(): Promise<string | undefined> {
+        return this.unlinkResource();
+    }
+
 }

@@ -34,4 +34,8 @@ export class FlexibleGpuResourceNode extends ResourceNode implements LinkResourc
         return unlinkFlexibleGpu(this.profile, this.resourceId);
     }
 
+    unlinkAllResource(): Promise<string | undefined> {
+        return this.unlinkResource();
+    }
+
 }

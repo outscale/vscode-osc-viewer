@@ -55,4 +55,27 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
 
     }
 
+    async unlinkAllResource(): Promise<string | undefined> {
+        const vgw = await getVirtualGateway(this.profile, this.resourceId);
+        if (typeof vgw === "string" || typeof vgw === 'undefined') {
+            return vgw;
+        }
+
+        if (typeof vgw.netToVirtualGatewayLinks === "undefined" || vgw.netToVirtualGatewayLinks.length === 0) {
+            return undefined;
+        }
+
+        for (const link of vgw.netToVirtualGatewayLinks) {
+            if (typeof link.netId === "undefined") {
+                return Promise.resolve(vscode.l10n.t("The link is incomplete"));
+            }
+            const res = await unlinkVirtualGateway(this.profile, this.resourceId, link.netId);
+            if (typeof res === 'string') {
+                return res;
+            }
+        }
+
+        return undefined;
+    }
+
 }

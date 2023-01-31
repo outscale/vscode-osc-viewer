@@ -100,4 +100,24 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
 
         return removeRoute(this.profile, this.resourceId, route.destinationIpRange);
     }
+
+    async unlinkAllResource(): Promise<string | undefined> {
+        const rt = await getRouteTable(this.profile, this.resourceId);
+        if (typeof rt === "string" || typeof rt === 'undefined') {
+            return rt;
+        }
+
+        if (typeof rt.linkRouteTables === "undefined" || rt.linkRouteTables.length === 0) {
+            return undefined;
+        }
+
+        for (const link of rt.linkRouteTables) {
+            if (typeof link.linkRouteTableId === "undefined") {
+                return Promise.resolve(vscode.l10n.t("The link is incomplete"));
+            }
+
+            return unlinkRouteTable(this.profile, link.linkRouteTableId);
+        }
+    }
+
 }
