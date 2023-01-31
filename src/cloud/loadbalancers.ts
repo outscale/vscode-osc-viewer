@@ -27,7 +27,7 @@ export function getLoadBalancers(profile: Profile, filters?: FiltersLoadBalancer
 }
 
 // Retrieve a specific item of the resource LoadBalancer
-export function getLoadBalancer(profile: Profile, resourceId: string): Promise<osc.LoadBalancer | string> {
+export function getLoadBalancer(profile: Profile, resourceId: string): Promise<osc.LoadBalancer | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadLoadBalancersOperationRequest = {
         readLoadBalancersRequest: {
@@ -41,7 +41,7 @@ export function getLoadBalancer(profile: Profile, resourceId: string): Promise<o
     return api.readLoadBalancers(readParameters)
         .then((res: osc.ReadLoadBalancersResponse) => {
             if (res.loadBalancers === undefined || res.loadBalancers.length === 0) {
-                return {};
+                return undefined;
             }
             return res.loadBalancers[0];
         }, (err_: any) => {

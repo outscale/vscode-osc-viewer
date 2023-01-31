@@ -27,7 +27,7 @@ export function getDirectLinkInterfaces(profile: Profile, filters?: FiltersDirec
 }
 
 // Retrieve a specific item of the resource DirectLinkInterface
-export function getDirectLinkInterface(profile: Profile, resourceId: string): Promise<osc.DirectLinkInterfaces | string> {
+export function getDirectLinkInterface(profile: Profile, resourceId: string): Promise<osc.DirectLinkInterfaces | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadDirectLinkInterfacesOperationRequest = {
         readDirectLinkInterfacesRequest: {
@@ -41,7 +41,7 @@ export function getDirectLinkInterface(profile: Profile, resourceId: string): Pr
     return api.readDirectLinkInterfaces(readParameters)
         .then((res: osc.ReadDirectLinkInterfacesResponse) => {
             if (res.directLinkInterfaces === undefined || res.directLinkInterfaces.length === 0) {
-                return {};
+                return undefined;
             }
             return res.directLinkInterfaces[0];
         }, (err_: any) => {

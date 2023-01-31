@@ -27,7 +27,7 @@ export function getKeypairs(profile: Profile, filters?: FiltersKeypair): Promise
 }
 
 // Retrieve a specific item of the resource Keypair
-export function getKeypair(profile: Profile, resourceId: string): Promise<osc.Keypair | string> {
+export function getKeypair(profile: Profile, resourceId: string): Promise<osc.Keypair | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadKeypairsOperationRequest = {
         readKeypairsRequest: {
@@ -41,7 +41,7 @@ export function getKeypair(profile: Profile, resourceId: string): Promise<osc.Ke
     return api.readKeypairs(readParameters)
         .then((res: osc.ReadKeypairsResponse) => {
             if (res.keypairs === undefined || res.keypairs.length === 0) {
-                return {};
+                return undefined;
             }
             return res.keypairs[0];
         }, (err_: any) => {

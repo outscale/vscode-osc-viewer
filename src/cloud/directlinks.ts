@@ -27,7 +27,7 @@ export function getDirectLinks(profile: Profile, filters?: FiltersDirectLink): P
 }
 
 // Retrieve a specific item of the resource DirectLink
-export function getDirectLink(profile: Profile, resourceId: string): Promise<osc.DirectLink | string> {
+export function getDirectLink(profile: Profile, resourceId: string): Promise<osc.DirectLink | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadDirectLinksOperationRequest = {
         readDirectLinksRequest: {
@@ -41,7 +41,7 @@ export function getDirectLink(profile: Profile, resourceId: string): Promise<osc
     return api.readDirectLinks(readParameters)
         .then((res: osc.ReadDirectLinksResponse) => {
             if (res.directLinks === undefined || res.directLinks.length === 0) {
-                return {};
+                return undefined;
             }
             return res.directLinks[0];
         }, (err_: any) => {

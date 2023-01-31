@@ -27,7 +27,7 @@ export function getNetPeerings(profile: Profile, filters?: FiltersNetPeering): P
 }
 
 // Retrieve a specific item of the resource NetPeering
-export function getNetPeering(profile: Profile, resourceId: string): Promise<osc.NetPeering | string> {
+export function getNetPeering(profile: Profile, resourceId: string): Promise<osc.NetPeering | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNetPeeringsOperationRequest = {
         readNetPeeringsRequest: {
@@ -41,7 +41,7 @@ export function getNetPeering(profile: Profile, resourceId: string): Promise<osc
     return api.readNetPeerings(readParameters)
         .then((res: osc.ReadNetPeeringsResponse) => {
             if (res.netPeerings === undefined || res.netPeerings.length === 0) {
-                return {};
+                return undefined;
             }
             return res.netPeerings[0];
         }, (err_: any) => {

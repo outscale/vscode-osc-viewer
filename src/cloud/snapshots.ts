@@ -27,7 +27,7 @@ export function getSnapshots(profile: Profile, filters?: FiltersSnapshot): Promi
 }
 
 // Retrieve a specific item of the resource Snapshot
-export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.Snapshot | string> {
+export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.Snapshot | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadSnapshotsOperationRequest = {
         readSnapshotsRequest: {
@@ -41,7 +41,7 @@ export function getSnapshot(profile: Profile, resourceId: string): Promise<osc.S
     return api.readSnapshots(readParameters)
         .then((res: osc.ReadSnapshotsResponse) => {
             if (res.snapshots === undefined || res.snapshots.length === 0) {
-                return {};
+                return undefined;
             }
             return res.snapshots[0];
         }, (err_: any) => {

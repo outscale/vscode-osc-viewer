@@ -27,7 +27,7 @@ export function getVpnConnections(profile: Profile, filters?: FiltersVpnConnecti
 }
 
 // Retrieve a specific item of the resource VpnConnection
-export function getVpnConnection(profile: Profile, resourceId: string): Promise<osc.VpnConnection | string> {
+export function getVpnConnection(profile: Profile, resourceId: string): Promise<osc.VpnConnection | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadVpnConnectionsOperationRequest = {
         readVpnConnectionsRequest: {
@@ -41,7 +41,7 @@ export function getVpnConnection(profile: Profile, resourceId: string): Promise<
     return api.readVpnConnections(readParameters)
         .then((res: osc.ReadVpnConnectionsResponse) => {
             if (res.vpnConnections === undefined || res.vpnConnections.length === 0) {
-                return {};
+                return undefined;
             }
             return res.vpnConnections[0];
         }, (err_: any) => {

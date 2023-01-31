@@ -27,7 +27,7 @@ export function getNets(profile: Profile, filters?: FiltersNet): Promise<Array<o
 }
 
 // Retrieve a specific item of the resource Net
-export function getNet(profile: Profile, resourceId: string): Promise<osc.Net | string> {
+export function getNet(profile: Profile, resourceId: string): Promise<osc.Net | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNetsOperationRequest = {
         readNetsRequest: {
@@ -41,7 +41,7 @@ export function getNet(profile: Profile, resourceId: string): Promise<osc.Net | 
     return api.readNets(readParameters)
         .then((res: osc.ReadNetsResponse) => {
             if (res.nets === undefined || res.nets.length === 0) {
-                return {};
+                return undefined;
             }
             return res.nets[0];
         }, (err_: any) => {

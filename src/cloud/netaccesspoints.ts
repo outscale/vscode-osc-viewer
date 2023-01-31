@@ -27,7 +27,7 @@ export function getNetAccessPoints(profile: Profile, filters?: FiltersNetAccessP
 }
 
 // Retrieve a specific item of the resource NetAccessPoint
-export function getNetAccessPoint(profile: Profile, resourceId: string): Promise<osc.NetAccessPoint | string> {
+export function getNetAccessPoint(profile: Profile, resourceId: string): Promise<osc.NetAccessPoint | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadNetAccessPointsOperationRequest = {
         readNetAccessPointsRequest: {
@@ -41,7 +41,7 @@ export function getNetAccessPoint(profile: Profile, resourceId: string): Promise
     return api.readNetAccessPoints(readParameters)
         .then((res: osc.ReadNetAccessPointsResponse) => {
             if (res.netAccessPoints === undefined || res.netAccessPoints.length === 0) {
-                return {};
+                return undefined;
             }
             return res.netAccessPoints[0];
         }, (err_: any) => {

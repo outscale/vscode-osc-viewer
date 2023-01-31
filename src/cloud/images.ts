@@ -26,7 +26,7 @@ export function getOMIs(profile: Profile, filters?: osc.FiltersImage): Promise<A
 }
 
 // Retrieve a specific item of the resource Image
-export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image | string> {
+export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadImagesOperationRequest = {
         readImagesRequest: {
@@ -40,7 +40,7 @@ export function getOMI(profile: Profile, resourceId: string): Promise<osc.Image 
     return api.readImages(readParameters)
         .then((res: osc.ReadImagesResponse) => {
             if (res.images === undefined || res.images.length === 0) {
-                return {};
+                return undefined;
             }
             return res.images[0];
         }, (err_: any) => {

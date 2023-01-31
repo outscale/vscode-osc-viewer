@@ -27,7 +27,7 @@ export function getInternetServices(profile: Profile, filters?: FiltersInternetS
 }
 
 // Retrieve a specific item of the resource InternetService
-export function getInternetService(profile: Profile, resourceId: string): Promise<osc.InternetService | string> {
+export function getInternetService(profile: Profile, resourceId: string): Promise<osc.InternetService | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadInternetServicesOperationRequest = {
         readInternetServicesRequest: {
@@ -41,7 +41,7 @@ export function getInternetService(profile: Profile, resourceId: string): Promis
     return api.readInternetServices(readParameters)
         .then((res: osc.ReadInternetServicesResponse) => {
             if (res.internetServices === undefined || res.internetServices.length === 0) {
-                return {};
+                return undefined;
             }
             return res.internetServices[0];
         }, (err_: any) => {

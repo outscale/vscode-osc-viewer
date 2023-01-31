@@ -27,7 +27,7 @@ export function getRouteTables(profile: Profile, filters?: FiltersRouteTable): P
 }
 
 // Retrieve a specific item of the resource RouteTable
-export function getRouteTable(profile: Profile, resourceId: string): Promise<osc.RouteTable | string> {
+export function getRouteTable(profile: Profile, resourceId: string): Promise<osc.RouteTable | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadRouteTablesOperationRequest = {
         readRouteTablesRequest: {
@@ -41,7 +41,7 @@ export function getRouteTable(profile: Profile, resourceId: string): Promise<osc
     return api.readRouteTables(readParameters)
         .then((res: osc.ReadRouteTablesResponse) => {
             if (res.routeTables === undefined || res.routeTables.length === 0) {
-                return {};
+                return undefined;
             }
             return res.routeTables[0];
         }, (err_: any) => {

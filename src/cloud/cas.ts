@@ -27,7 +27,7 @@ export function getCas(profile: Profile, filters?: FiltersCa): Promise<Array<osc
 }
 
 // Retrieve a specific item of the resource Ca
-export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | string> {
+export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadCasOperationRequest = {
         readCasRequest: {
@@ -41,7 +41,7 @@ export function getCa(profile: Profile, resourceId: string): Promise<osc.Ca | st
     return api.readCas(readParameters)
         .then((res: osc.ReadCasResponse) => {
             if (res.cas === undefined || res.cas.length === 0) {
-                return {};
+                return undefined;
             }
             return res.cas[0];
         }, (err_: any) => {
