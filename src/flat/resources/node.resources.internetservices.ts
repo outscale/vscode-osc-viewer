@@ -32,7 +32,7 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
         }
 
         if (typeof internetService.netId === "undefined") {
-            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
+            return undefined;
         }
 
 
