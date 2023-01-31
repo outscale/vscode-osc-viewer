@@ -38,7 +38,7 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
         }
 
         if (typeof nic.linkNic === "undefined") {
-            return Promise.resolve(vscode.l10n.t("The resource is not linked"));
+            return undefined;
         }
 
         const link = nic.linkNic;

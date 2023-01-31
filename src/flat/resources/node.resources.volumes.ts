@@ -35,7 +35,15 @@ export class VolumeResourceNode extends ResourceNode implements LinkResourceNode
 
     }
 
-    unlinkResource(): Promise<string | undefined> {
+    async unlinkResource(): Promise<string | undefined> {
+        const volume = await getVolume(this.profile, this.resourceId);
+        if (typeof volume === "string" || typeof volume === 'undefined') {
+            return volume;
+        }
+
+        if (typeof volume.linkedVolumes === "undefined" || volume.linkedVolumes.length === 0) {
+            return undefined;
+        }
         return unlinkVolume(this.profile, this.resourceId);
     }
 
