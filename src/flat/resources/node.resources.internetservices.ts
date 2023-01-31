@@ -39,4 +39,8 @@ export class InternetServiceResourceNode extends ResourceNode implements LinkRes
         return unlinkInternetService(this.profile, this.resourceId, internetService.netId);
     }
 
+    unlinkAllResource(): Promise<string | undefined> {
+        return this.unlinkResource();
+    }
+
 }

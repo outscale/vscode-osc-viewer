@@ -50,4 +50,9 @@ export class NicResourceNode extends ResourceNode implements LinkResourceNode {
         return unlinkNic(this.profile, link.linkNicId);
     }
 
+    unlinkAllResource(): Promise<string | undefined> {
+        // Only one link possible
+        return this.unlinkResource();
+    }
+
 }
