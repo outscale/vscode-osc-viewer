@@ -6,7 +6,7 @@ import { ExplorerNode, ExplorerResourceNode, Profile, ResourceNodeType } from '.
 export class ResourceNode implements ExplorerResourceNode {
 
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType, readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string | undefined>) {
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType, readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string | undefined>, readonly getFunc: (profile: Profile, resourceid: string) => Promise<any | string | undefined>) {
     }
 
     getResourceId(): Promise<string | undefined> {
@@ -21,7 +21,13 @@ export class ResourceNode implements ExplorerResourceNode {
         return "resourcenode";
     }
 
-    deleteResource(): Promise<string | undefined> {
+
+    async deleteResource(): Promise<string | undefined> {
+        const resource = await this.getFunc(this.profile, this.resourceId);
+        if (typeof resource === 'undefined' || typeof resource === 'string') {
+            return resource;
+        }
+
         return this.deleteFunc(this.profile, this.resourceId);
     }
 

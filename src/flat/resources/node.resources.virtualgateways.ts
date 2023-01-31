@@ -9,7 +9,7 @@ import { LinkResourceNode } from './types/node.resources.link';
 export class VirtualGatewayResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string) {
-        super(profile, resourceName, resourceId, "VirtualGateway", deleteVirtualGateway);
+        super(profile, resourceName, resourceId, "VirtualGateway", deleteVirtualGateway, getVirtualGateway);
     }
 
     getContextValue(): string {
@@ -19,7 +19,7 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
 
     async unlinkResource(): Promise<string | undefined> {
         const vgw = await getVirtualGateway(this.profile, this.resourceId);
-        if (typeof vgw === "string") {
+        if (typeof vgw === "string" || typeof vgw === 'undefined') {
             return vgw;
         }
 

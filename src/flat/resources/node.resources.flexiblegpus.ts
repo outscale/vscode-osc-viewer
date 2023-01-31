@@ -1,5 +1,5 @@
 import { ThemeIcon } from 'vscode';
-import { deleteFlexibleGpu, unlinkFlexibleGpu } from '../../cloud/flexiblegpus';
+import { deleteFlexibleGpu, getFlexibleGpu, unlinkFlexibleGpu } from '../../cloud/flexiblegpus';
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { LinkResourceNode } from './types/node.resources.link';
@@ -8,7 +8,7 @@ import { LinkResourceNode } from './types/node.resources.link';
 export class FlexibleGpuResourceNode extends ResourceNode implements LinkResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "FlexibleGpu", deleteFlexibleGpu);
+        super(profile, resourceName, resourceId, "FlexibleGpu", deleteFlexibleGpu, getFlexibleGpu);
     }
 
     getContextValue(): string {

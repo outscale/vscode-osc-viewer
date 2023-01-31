@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteAccessKey, getAccessKeys } from '../../../cloud/accesskeys';
+import { deleteAccessKey, getAccessKeys, getAccessKey } from '../../../cloud/accesskeys';
 import { FiltersAccessKeys, FiltersAccessKeysFromJSON } from 'outscale-api';
 
 export const ACCESSKEY_FOLDER_NAME = "Access Keys";
@@ -26,7 +26,7 @@ export class AccessKeysFolderNode extends FiltersFolderNode<FiltersAccessKeys> i
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.accessKeyId, "AccessKey", deleteAccessKey));
+                resources.push(new ResourceNode(this.profile, "", item.accessKeyId, "AccessKey", deleteAccessKey, getAccessKey));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

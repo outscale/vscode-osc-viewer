@@ -10,7 +10,7 @@ import { SubResourceNode } from "./types/node.resources.subresource";
 export class RouteTableResourceNode extends ResourceNode implements LinkResourceNode, SubResourceNode {
 
     constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "routetables", deleteRouteTable);
+        super(profile, resourceName, resourceId, "routetables", deleteRouteTable, getRouteTable);
     }
 
     getContextValue(): string {
@@ -29,7 +29,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
 
     async unlinkResource(): Promise<string | undefined> {
         const rt = await getRouteTable(this.profile, this.resourceId);
-        if (typeof rt === "string") {
+        if (typeof rt === "string" || typeof rt === 'undefined') {
             return rt;
         }
 
@@ -66,7 +66,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
 
     async removeSubresource(): Promise<string | undefined> {
         const rt = await getRouteTable(this.profile, this.resourceId);
-        if (typeof rt === "string") {
+        if (typeof rt === "string" || typeof rt === 'undefined') {
             return rt;
         }
 

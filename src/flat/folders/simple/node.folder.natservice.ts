@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteNatService, getNatServices } from '../../../cloud/natservices';
+import { deleteNatService, getNatService, getNatServices } from '../../../cloud/natservices';
 import { FiltersNatService, FiltersNatServiceFromJSON } from 'outscale-api';
 
 export const NATSERVICES_FOLDER_NAME = "Nat Services";
@@ -26,7 +26,7 @@ export class NatServicesFolderNode extends FiltersFolderNode<FiltersNatService> 
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.natServiceId, "NatService", deleteNatService));
+                resources.push(new ResourceNode(this.profile, "", item.natServiceId, "NatService", deleteNatService, getNatService));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

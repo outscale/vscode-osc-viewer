@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteDirectLinkInterface, getDirectLinkInterfaces } from '../../../cloud/directlinkinterfaces';
+import { deleteDirectLinkInterface, getDirectLinkInterface, getDirectLinkInterfaces } from '../../../cloud/directlinkinterfaces';
 import { FiltersDirectLinkInterface, FiltersDirectLinkInterfaceFromJSON } from 'outscale-api';
 
 export const DIRECTLINKINTERFACES_FOLDER_NAME = "DirectLink Interfaces";
@@ -26,7 +26,7 @@ export class DirectLinkInterfacesFolderNode extends FiltersFolderNode<FiltersDir
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.directLinkInterfaceId, "DirectLinkInterface", deleteDirectLinkInterface));
+                resources.push(new ResourceNode(this.profile, "", item.directLinkInterfaceId, "DirectLinkInterface", deleteDirectLinkInterface, getDirectLinkInterface));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteVpnConnection, getVpnConnections } from '../../../cloud/vpnconnections';
+import { deleteVpnConnection, getVpnConnection, getVpnConnections } from '../../../cloud/vpnconnections';
 import { FiltersVpnConnection, FiltersVpnConnectionFromJSON } from 'outscale-api';
 
 export const VPNCONNECTIONS_FOLDER_NAME = "Vpn Connections";
@@ -26,7 +26,7 @@ export class VpnConnectionsFolderNode extends FiltersFolderNode<FiltersVpnConnec
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.vpnConnectionId, "VpnConnection", deleteVpnConnection));
+                resources.push(new ResourceNode(this.profile, "", item.vpnConnectionId, "VpnConnection", deleteVpnConnection, getVpnConnection));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

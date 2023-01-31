@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { deleteLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
+import { deleteLoadBalancer, getLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
@@ -23,7 +23,7 @@ export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalance
                 if (typeof lb.loadBalancerName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer));
+                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

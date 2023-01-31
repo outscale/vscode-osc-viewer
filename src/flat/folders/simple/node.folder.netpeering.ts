@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteNetPeering, getNetPeerings } from '../../../cloud/netpeerings';
+import { deleteNetPeering, getNetPeering, getNetPeerings } from '../../../cloud/netpeerings';
 import { FiltersNetPeering, FiltersNetPeeringFromJSON } from 'outscale-api';
 
 export const NETPEERINGS_FOLDER_NAME = "Net Peerings";
@@ -26,7 +26,7 @@ export class NetPeeringsFolderNode extends FiltersFolderNode<FiltersNetPeering> 
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.netPeeringId, "NetPeering", deleteNetPeering));
+                resources.push(new ResourceNode(this.profile, "", item.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

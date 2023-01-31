@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
 import { ResourceNode } from '../../resources/node.resources';
-import { deleteSnapshot, getSnapshots } from '../../../cloud/snapshots';
+import { deleteSnapshot, getSnapshot, getSnapshots } from '../../../cloud/snapshots';
 import { FiltersSnapshot, FiltersSnapshotFromJSON } from 'outscale-api';
 
 export const SNAPSHOTS_FOLDER_NAME = "Snapshots";
@@ -23,7 +23,7 @@ export class SnapshotsFolderNode extends FiltersFolderNode<FiltersSnapshot> impl
                 if (typeof snapshot.snapshotId === 'undefined' || typeof snapshot.description === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots", deleteSnapshot));
+                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots", deleteSnapshot, getSnapshot));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });
