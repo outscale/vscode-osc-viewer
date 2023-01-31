@@ -101,6 +101,29 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
         return removeRoute(this.profile, this.resourceId, route.destinationIpRange);
     }
 
+    async removeAllSubresources(): Promise<string | undefined> {
+        const rt = await getRouteTable(this.profile, this.resourceId);
+        if (typeof rt === "string" || typeof rt === 'undefined') {
+            return rt;
+        }
+
+        if (typeof rt.routes === "undefined" || rt.routes.length === 0) {
+            return Promise.resolve(vscode.l10n.t("The resource has no subresources"));
+        }
+
+        for (const route of rt.routes) {
+            if (typeof route.destinationIpRange === "undefined") {
+                return Promise.resolve(vscode.l10n.t("The subresource is incomplete"));
+            }
+            const res = await removeRoute(this.profile, this.resourceId, route.destinationIpRange);
+            if (typeof res === 'string') {
+                return res;
+            }
+        }
+
+        return Promise.resolve(undefined);
+    }
+
     async unlinkAllResource(): Promise<string | undefined> {
         const rt = await getRouteTable(this.profile, this.resourceId);
         if (typeof rt === "string" || typeof rt === 'undefined') {
