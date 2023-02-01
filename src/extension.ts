@@ -16,6 +16,7 @@ import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter, updateConfiguratio
 import { editFilters } from './config_file/action.editFilters';
 import { LinkResourceNode } from './flat/resources/types/node.resources.link';
 import { SubResourceNode } from './flat/resources/types/node.resources.subresource';
+import { NetResourceNode } from './flat/resources/node.resources.nets';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -240,6 +241,18 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showErrorMessage(vscode.l10n.t(`Error while deleting the subresource of {0}: {1}`, arg.getResourceName(), res));
             }
         });
+    });
+
+    vscode.commands.registerCommand('osc.teardownNet', async (arg: NetResourceNode) => {
+        showYesOrNoWindow(vscode.l10n.t(`Do you want to tear down the net {0} ?`, arg.getResourceName()), async () => {
+            const res = await arg.teardown();
+            if (typeof res === "undefined") {
+                vscode.window.showInformationMessage(vscode.l10n.t(`The net {0} has been torn down`, arg.getResourceName()));
+            } else {
+                vscode.window.showErrorMessage(vscode.l10n.t(`Error while tearing down the net {0}: {1}`, arg.getResourceName(), res));
+            }
+        });
+
     });
 
 }

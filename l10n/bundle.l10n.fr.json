@@ -40,5 +40,14 @@
     "Edit Filters of {0}": "Modification des filtres de {0}",
     "Which filter to select ?": "Quel filtre est à sélectionner ?",
     "The value is incorrect. It should be a valid JSON": "La valeur est incorrecte. Cela doit être un JSON valide.",
+    "Do you want to tear down the net {0} ?": "Voulez-vous détruire le Net {0} ?",
+    "The net {0} has been torn down": "Le Net {0} a été détruit",
+    "Error while tearing down the net {0}: {1}": "Erreur lors de la destruction du Net {0}: {1}",
+    "Teardown Net '{0}'": "Destruction de Net '{0}'",
+    "{0} resources to clean...": "{0} ressources à nettoyer",
+    "Cancelled by the user": "Annulé par l'utilisateur",
+    "Cleaning {0}...": "Nettoyage de {0}...",
+    "Error while cleaning {0}: {1}": "Erreur lors du nettoyage de {0}: {1}",
+    "Succeed to clean {0}": "Succès du nettoyage de {0}",
     "Get": "Récupération"
 }

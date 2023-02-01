@@ -182,6 +182,11 @@
         "command": "osc.deleteSubresource",
         "title": "%osc.deleteSubresource%",
         "category": "osc-viewer"
+      },
+      {
+        "command": "osc.teardownNet",
+        "title": "%osc.teardownNet%",
+        "category": "osc-viewer"
       }
     ],
     "viewsContainers": {
@@ -266,6 +271,11 @@
           "command": "osc.deleteSubresource",
           "when": "view == profile && viewItem =~ /subresourcenode/",
           "group": "oscinteract@5"
+        },
+        {
+          "command": "osc.teardownNet",
+          "when": "view == profile && viewItem =~ /netresourcenode/",
+          "group": "oscinteract@6"
         },
         {
           "command": "osc.showConsoleLogs",
