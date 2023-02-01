@@ -48,6 +48,33 @@ export function getVm(profile: Profile, resourceId: string): Promise<osc.Vm | un
         });
 }
 
+// Retrieve all items of the resource Vm in a specific Subnet
+export function getVmsInNet(profile: Profile, netId: string): Promise<Array<osc.Vm> | string> {
+    const config = getConfig(profile);
+    const readParameters: osc.ReadVmsOperationRequest = {
+    };
+
+    const api = new osc.VmApi(config);
+    return api.readVms(readParameters)
+        .then((res: osc.ReadVmsResponse) => {
+            if (res.vms === undefined || res.vms.length === 0) {
+                return [];
+            }
+            const targetVms: Array<osc.Vm> = [];
+            for (const vm of res.vms) {
+                if (typeof vm.netId === 'undefined') {
+                    continue;
+                }
+                if (vm.netId === netId) {
+                    targetVms.push(vm);
+                }
+            }
+            return targetVms;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
+
 export function getVmName(vm: osc.Vm): string {
     if (typeof vm.tags === "undefined") {
         return "";

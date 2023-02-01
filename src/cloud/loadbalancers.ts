@@ -49,6 +49,34 @@ export function getLoadBalancer(profile: Profile, resourceId: string): Promise<o
         });
 }
 
+// Retrieve all items of the resource LoadBalancer in a specific Subnet
+export function getLoadBalancersInNet(profile: Profile, netId: string): Promise<Array<osc.LoadBalancer> | string> {
+    const config = getConfig(profile);
+    const readParameters: osc.ReadLoadBalancersOperationRequest = {
+    };
+
+    const api = new osc.LoadBalancerApi(config);
+    return api.readLoadBalancers(readParameters)
+        .then((res: osc.ReadLoadBalancersResponse) => {
+            if (res.loadBalancers === undefined || res.loadBalancers.length === 0) {
+                return [];
+            }
+            const targetRes: Array<osc.LoadBalancer> = [];
+            for (const lbu of res.loadBalancers) {
+                if (typeof lbu.netId === 'undefined') {
+                    continue;
+                }
+
+                if (lbu.netId === netId) {
+                    targetRes.push(lbu);
+                }
+            }
+            return targetRes;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
+
 // Delete a specific item the resource LoadBalancer
 export function deleteLoadBalancer(profile: Profile, resourceId: string): Promise<string | undefined> {
     const config = getConfig(profile);
