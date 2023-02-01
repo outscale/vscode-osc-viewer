@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
-import { ResourceNode } from '../../resources/node.resources';
-import { deleteNet, getNets } from '../../../cloud/nets';
+import { getNets } from '../../../cloud/nets';
 import { FiltersNet, FiltersNetFromJSON } from 'outscale-api';
+import { NetResourceNode } from '../../resources/node.resources.nets';
 
 export const NET_FOLDER_NAME = "Nets";
 export class VpcFolderNode extends FiltersFolderNode<FiltersNet> implements ExplorerFolderNode {
@@ -23,7 +23,7 @@ export class VpcFolderNode extends FiltersFolderNode<FiltersNet> implements Expl
                 if (typeof net.netId === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", net.netId?.toString(), "vpc", deleteNet));
+                resources.push(new NetResourceNode(this.profile, "", net.netId?.toString()));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

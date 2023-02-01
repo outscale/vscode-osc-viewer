@@ -1,7 +1,7 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerProfileNode, Profile } from './node';
 import { VmsFolderNode, VM_FOLDER_NAME } from './folders/specific/node.folder.vm';
-import { NET_FOLDER_NAME, VpcFolderNode } from './folders/simple/node.folder.net';
+import { NET_FOLDER_NAME, VpcFolderNode } from './folders/specific/node.folder.net';
 import { SecurityGroupsFolderNode, SECURITYGROUPS_FOLDER_NAME } from './folders/specific/node.folder.securitygroup';
 import { KeypairsFolderNode, KEYPAIRS_FOLDER_NAME } from './folders/simple/node.folder.keypair';
 import { VolumeFolderNode, VOLUME_FOLDER_NAME } from './folders/specific/node.folder.volume';
