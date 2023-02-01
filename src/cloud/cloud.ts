@@ -4,6 +4,7 @@ import * as fetch from "cross-fetch";
 import * as crypto from "crypto";
 import { Profile } from "../flat/node";
 import { ResponseError } from "outscale-api";
+import { OutputChannel } from "../logs/output_channel";
 
 global.Headers = fetch.Headers;
 global.crypto = crypto.webcrypto;
@@ -25,6 +26,8 @@ export async function handleRejection(err: any): Promise<string> {
         const status = err.response.status;
         const value = await err.response.json();
         console.error("[osc-viewer]", err.response.url, JSON.stringify(value));
+        const outputChannel = OutputChannel.getInstance();
+        outputChannel.appendLine(`[osc-viewer] ${err.response.url} ${JSON.stringify(value)}`);
         return `${status} ${err.response.statusText}`;
     }
     return err.toString();
