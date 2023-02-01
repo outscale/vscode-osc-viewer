@@ -4,24 +4,18 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"type": "npm",
-			"script": "vscode:prepublish",
+			"type": "shell",
+			"command": "npm run vscode:prepublish",
 			"presentation": {
 				"reveal": "never"
 			},
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			}
+			"label": "build"
 		},
 		{
-			"type": "npm",
-			"script": "vscode:prepublish",
+			"type": "shell",
+			"command": "npm run vscode:prepublish",
 			"presentation": {
 				"reveal": "never"
-			},
-			"group": {
-				"kind": "build",
 			},
 			"options": {
 				"env": {
