@@ -1,19 +1,12 @@
 import * as vscode from 'vscode';
-import { getInternetServices } from "../../cloud/internetservices";
-import { deleteLoadBalancer, getLoadBalancer, getLoadBalancersInNet } from "../../cloud/loadbalancers";
-import { deleteNatService, getNatService, getNatServices } from "../../cloud/natservices";
-import { deleteNetAccessPoint, getNetAccessPoint, getNetAccessPoints } from "../../cloud/netaccesspoints";
-import { deleteNetPeering, getNetPeering, getNetPeerings } from '../../cloud/netpeerings';
-import { deleteNet, getNet } from "../../cloud/nets";
-import { getNics } from "../../cloud/nics";
+import { deleteLoadBalancer, getLoadBalancer } from "../../cloud/loadbalancers";
+import { deleteNatService, getNatService } from "../../cloud/natservices";
+import { deleteNetAccessPoint, getNetAccessPoint } from "../../cloud/netaccesspoints";
+import { deleteNetPeering, getNetPeering } from '../../cloud/netpeerings';
+import { deleteNet, getAllNetResources, getNet } from "../../cloud/nets";
 import { deleteExternalIP, getExternalIP } from '../../cloud/publicips';
-import { getRouteTables } from "../../cloud/routetables";
-import { getSecurityGroups } from "../../cloud/securitygroups";
-import { deleteSubnet, getSubnet, getSubnets } from "../../cloud/subnets";
-import { getVirtualGateways } from "../../cloud/virtualgateways";
-import { getVmsInNet } from "../../cloud/vms";
-import { deleteVpnConnection, getVpnConnection, getVpnConnections } from "../../cloud/vpnconnections";
-import { OutputChannel } from '../../logs/output_channel';
+import { deleteSubnet, getSubnet } from "../../cloud/subnets";
+import { deleteVpnConnection, getVpnConnection } from "../../cloud/vpnconnections";
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { InternetServiceResourceNode } from "./node.resources.internetservices";
@@ -36,14 +29,15 @@ export class NetResourceNode extends ResourceNode {
 
     async teardown(): Promise<string | undefined> {
         let resourceToDelete: (ResourceNode | undefined)[] = [];
-        const outputChannel = OutputChannel.getInstance();
+        const net = await getAllNetResources(this.profile, this.resourceId);
+
+        if (typeof net === 'string') {
+            return net;
+        }
 
         // VMs
-        const vms = await getVmsInNet(this.profile, this.resourceId);
-        if (typeof vms === "string") {
-            outputChannel.appendLine(vms);
-        } else {
-            const res = vms.map((vm) => {
+        {
+            const res = net.vms.map((vm) => {
                 if (typeof vm.vmId === 'undefined') {
                     return undefined;
                 }
@@ -53,11 +47,8 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // LBUs
-        const lbus = await getLoadBalancersInNet(this.profile, this.resourceId);
-        if (typeof lbus === "string") {
-            outputChannel.appendLine(lbus);
-        } else {
-            const res = lbus.map((lbu) => {
+        {
+            const res = net.loadbalancers.map((lbu) => {
                 if (typeof lbu.loadBalancerName === 'undefined') {
                     return undefined;
                 }
@@ -68,11 +59,8 @@ export class NetResourceNode extends ResourceNode {
 
         // Net peering (check all source and target)
         // Sources
-        let netPeers = await getNetPeerings(this.profile, { sourceNetNetIds: [this.resourceId] });
-        if (typeof netPeers === 'string') {
-            outputChannel.appendLine(netPeers);
-        } else {
-            const res = netPeers.map((netPeer) => {
+        {
+            const res = net.sourceNetPeerings.map((netPeer) => {
                 if (typeof netPeer.netPeeringId === 'undefined') {
                     return undefined;
                 }
@@ -81,11 +69,8 @@ export class NetResourceNode extends ResourceNode {
             resourceToDelete.push(...res);
         }
 
-        netPeers = await getNetPeerings(this.profile, { accepterNetNetIds: [this.resourceId] });
-        if (typeof netPeers === 'string') {
-            outputChannel.appendLine(netPeers);
-        } else {
-            const res = netPeers.map((netPeer) => {
+        {
+            const res = net.accepterNetPeerings.map((netPeer) => {
                 if (typeof netPeer.netPeeringId === 'undefined') {
                     return undefined;
                 }
@@ -99,11 +84,8 @@ export class NetResourceNode extends ResourceNode {
         const publicIpIds: string[] = [];
 
         // Net Access Point
-        const naps = await getNetAccessPoints(this.profile, { netIds: [this.resourceId] });
-        if (typeof naps === "string") {
-            outputChannel.appendLine(naps);
-        } else {
-            const res = naps.map((nap) => {
+        {
+            const res = net.netAccessPoints.map((nap) => {
                 if (typeof nap.netAccessPointId === 'undefined') {
                     return undefined;
                 }
@@ -116,11 +98,8 @@ export class NetResourceNode extends ResourceNode {
         // Routes (Deletion with route table)
 
         // Nat Services
-        const nats = await getNatServices(this.profile, { netIds: [this.resourceId] });
-        if (typeof nats === "string") {
-            outputChannel.appendLine(nats);
-        } else {
-            const res = nats.map((nat) => {
+        {
+            const res = net.nats.map((nat) => {
                 if (typeof nat.natServiceId === 'undefined') {
                     return undefined;
                 }
@@ -140,11 +119,8 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // Routes Tables
-        const rts = await getRouteTables(this.profile, { netIds: [this.resourceId] });
-        if (typeof rts === "string") {
-            outputChannel.appendLine(rts);
-        } else {
-            const res = rts.map((rt) => {
+        {
+            const res = net.routeTables.map((rt) => {
                 if (typeof rt.routeTableId === 'undefined') {
                     return undefined;
                 }
@@ -157,11 +133,8 @@ export class NetResourceNode extends ResourceNode {
         // Security groups Rules (delete with Security Groups)
 
         // Security group
-        const sgs = await getSecurityGroups(this.profile, { netIds: [this.resourceId] });
-        if (typeof sgs === "string") {
-            outputChannel.appendLine(sgs);
-        } else {
-            const res = sgs.map((sg) => {
+        {
+            const res = net.securityGroups.map((sg) => {
                 if (typeof sg.securityGroupId === 'undefined') {
                     return undefined;
                 }
@@ -171,27 +144,19 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // Virtual Gateways
-        const vgs = await getVirtualGateways(this.profile, { linkNetIds: [this.resourceId] });
-        const vgsIds: string[] = [];
-        if (typeof vgs === "string") {
-            outputChannel.appendLine(vgs);
-        } else {
-            const res = vgs.map((vg) => {
+        {
+            const res = net.virtualGateways.map((vg) => {
                 if (typeof vg.virtualGatewayId === 'undefined') {
                     return undefined;
                 }
-                vgsIds.push(vg.virtualGatewayId);
                 return new VirtualGatewayResourceNode(this.profile, "", vg.virtualGatewayId);
             });
             resourceToDelete.push(...res);
         }
 
         // Nics
-        const nics = await getNics(this.profile, { netIds: [this.resourceId] });
-        if (typeof nics === "string") {
-            outputChannel.appendLine(nics);
-        } else {
-            const res = nics.map((nic) => {
+        {
+            const res = net.nics.map((nic) => {
                 if (typeof nic.nicId === 'undefined') {
                     return undefined;
                 }
@@ -206,11 +171,8 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // Subnets
-        const subnets = await getSubnets(this.profile, { netIds: [this.resourceId] });
-        if (typeof subnets === "string") {
-            outputChannel.appendLine(subnets);
-        } else {
-            const res = subnets.map((subnet) => {
+        {
+            const res = net.subnets.map((subnet) => {
                 if (typeof subnet.subnetId === 'undefined') {
                     return undefined;
                 }
@@ -221,11 +183,8 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // Internet Services
-        const iss = await getInternetServices(this.profile, { linkNetIds: [this.resourceId] });
-        if (typeof iss === "string") {
-            outputChannel.appendLine(iss);
-        } else {
-            const res = iss.map((is) => {
+        {
+            const res = net.internetServices.map((is) => {
                 if (typeof is.internetServiceId === 'undefined') {
                     return undefined;
                 }
@@ -236,11 +195,8 @@ export class NetResourceNode extends ResourceNode {
         }
 
         // VPN Connections (Virtualgateway ou client gateway)
-        const vpns = await getVpnConnections(this.profile, { virtualGatewayIds: vgsIds });
-        if (typeof vpns === "string") {
-            outputChannel.appendLine(vpns);
-        } else {
-            const res = vpns.map((vpn) => {
+        {
+            const res = net.vpnConnections.map((vpn) => {
                 if (typeof vpn.vpnConnectionId === 'undefined') {
                     return undefined;
                 }
