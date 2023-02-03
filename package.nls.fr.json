@@ -27,5 +27,6 @@
     "osc.deleteSubresource": "Supprimer les sous-resources",
     "osc.teardownNet": "Détruire",
     "osc.retrieveAdminPassword": "Copier le mot de passe administrateur",
+    "osc.showNetworkView": "(Beta) Afficher la vue VPC",
     "viewsWelcome.text": "Pour utiliser l'extension 3DS Outscale, vous devez configurer des profiles dans le fichier de configuration.\n[Ouvrir le fichier de configuration](command:profile.configure)\n[Ajouter un profile](command:profile.addEntry)\n"
 }

@@ -4,7 +4,7 @@ import * as vscode from 'vscode';
 import * as clipboard from './components/clipboard';
 import { multiStepInput } from './config_file/action.addprofile';
 import { OscExplorer } from "./explorer";
-import { ExplorerResourceNode } from './flat/node';
+import { ExplorerResourceNode, ResourceNodeType } from './flat/node';
 import { ResourceNode } from './flat/resources/node.resources';
 import { VmResourceNode } from './flat/resources/node.resources.vms';
 import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
@@ -17,12 +17,20 @@ import { editFilters } from './config_file/action.editFilters';
 import { LinkResourceNode } from './flat/resources/types/node.resources.link';
 import { SubResourceNode } from './flat/resources/types/node.resources.subresource';
 import { NetResourceNode } from './flat/resources/node.resources.nets';
+import { init } from './network/networkview';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
         return [mainSelectedItem];
     }
     return allSelectedItems;
+}
+
+export async function showResourceDetails(profileName: string, resourceType: ResourceNodeType, resourceId: string) {
+    const uri = vscode.Uri.parse('osc:/' + profileName + "/" + resourceType + "/" + resourceId);
+    const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+    await vscode.window.showTextDocument(doc);
+    await vscode.languages.setTextDocumentLanguage(doc, "json");
 }
 
 // this method is called when your extension is activated
@@ -68,10 +76,7 @@ export function activate(context: vscode.ExtensionContext) {
 
     // register a command that opens a cowsay-document
     context.subscriptions.push(vscode.commands.registerCommand('osc.showResource', async (resource: ExplorerResourceNode) => {
-        const uri = vscode.Uri.parse('osc:/' + resource.profile.name + "/" + resource.resourceType + "/" + resource.resourceId);
-        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
-        await vscode.window.showTextDocument(doc);
-        await vscode.languages.setTextDocumentLanguage(doc, "json");
+        await showResourceDetails(resource.profile.name, resource.resourceType, resource.resourceId);
     }));
 
 
@@ -262,6 +267,10 @@ export function activate(context: vscode.ExtensionContext) {
         } else {
             vscode.window.showErrorMessage(vscode.l10n.t(`Error while retrieving the admin password for {0}: {1}`, arg.resourceId, adminPassword.error.reason));
         }
+    });
+
+    vscode.commands.registerCommand('osc.showNetworkView', async (arg: NetResourceNode) => {
+        init(arg.profile, arg.resourceId, context);
     });
 
 }
