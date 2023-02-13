@@ -6,7 +6,7 @@ import { ResourceNode } from './node.resources';
 
 export class VmResourceNode extends ResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly windows: boolean) {
         super(profile, resourceName, resourceId, "vms", deleteVm, getVm);
     }
 
@@ -19,7 +19,11 @@ export class VmResourceNode extends ResourceNode {
     }
 
     getContextValue(): string {
-        return "vmresourcenode";
+        if (this.windows) {
+            return "windows;vmresourcenode";
+        } else {
+            return "vmresourcenode";
+        }
     }
 
     getIconPath(): ThemeIcon {
