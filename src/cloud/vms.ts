@@ -160,3 +160,23 @@ export function getLogs(profile: Profile, vmId: string): Promise<string | undefi
             return handleRejection(err_);
         });
 }
+
+export function getAdminPassword(profile: Profile, vmId: string): Promise<string | undefined> {
+    const config = getConfig(profile);
+    const parameters: osc.ReadAdminPasswordOperationRequest = {
+        readAdminPasswordRequest: {
+            vmId: vmId
+        }
+    };
+
+    const api = new osc.VmApi(config);
+    return api.readAdminPassword(parameters)
+        .then((res: osc.ReadAdminPasswordResponse) => {
+            if (typeof res.adminPassword === "undefined") {
+                return undefined;
+            }
+            return res.adminPassword;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}

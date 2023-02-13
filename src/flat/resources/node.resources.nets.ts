@@ -47,7 +47,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof vm.vmId === 'undefined') {
                     return undefined;
                 }
-                return new VmResourceNode(this.profile, "", vm.vmId, "");
+                return new VmResourceNode(this.profile, "", vm.vmId, "", false);
             });
             resourceToDelete.push(...res);
         }

@@ -252,7 +252,16 @@ export function activate(context: vscode.ExtensionContext) {
                 vscode.window.showErrorMessage(vscode.l10n.t(`Error while tearing down the net {0}: {1}`, arg.getResourceName(), res));
             }
         });
+    });
 
+    vscode.commands.registerCommand('osc.retrieveAdminPassword', async (arg: VmResourceNode) => {
+        const adminPassword = await arg.getAdminPassword();
+
+        if (adminPassword.isOk) {
+            clipboard.write(adminPassword.value);
+        } else {
+            vscode.window.showErrorMessage(vscode.l10n.t(`Error while retrieving the admin password for {0}: {1}`, arg.resourceId, adminPassword.error.reason));
+        }
     });
 
 }

@@ -187,6 +187,11 @@
         "command": "osc.teardownNet",
         "title": "%osc.teardownNet%",
         "category": "osc-viewer"
+      },
+      {
+        "command": "osc.retrieveAdminPassword",
+        "title": "%osc.retrieveAdminPassword%",
+        "category": "osc-viewer"
       }
     ],
     "viewsContainers": {
@@ -254,12 +259,12 @@
         },
         {
           "command": "osc.startVm",
-          "when": "view == profile && viewItem == vmresourcenode",
+          "when": "view == profile && viewItem =~ /vmresourcenode/",
           "group": "oscinteract@1"
         },
         {
           "command": "osc.stopVm",
-          "when": "view == profile && viewItem == vmresourcenode",
+          "when": "view == profile && viewItem =~ /vmresourcenode/",
           "group": "oscinteract@2"
         },
         {
@@ -279,7 +284,7 @@
         },
         {
           "command": "osc.showConsoleLogs",
-          "when": "view == profile && viewItem == vmresourcenode",
+          "when": "view == profile && viewItem =~ /vmresourcenode/",
           "group": "oscget@2"
         },
         {
@@ -316,6 +321,11 @@
           "command": "osc.resetFilters",
           "when": "view == profile && viewItem == filterfoldernode",
           "group": "inline@2"
+        },
+        {
+          "command": "osc.retrieveAdminPassword",
+          "when": "view == profile && viewItem =~ /windows/",
+          "group": "oscget@3"
         }
       ]
     },
@@ -372,6 +382,7 @@
     "@vscode/l10n": "^0.0.10",
     "cross-fetch": "^3.1.5",
     "outscale-api": "^0.6.0",
-    "rxjs": "^7.5.7"
+    "rxjs": "^7.5.7",
+    "true-myth": "^6.2.0"
   }
 }

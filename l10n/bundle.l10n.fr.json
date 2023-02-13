@@ -49,5 +49,8 @@
     "Cleaning {0}...": "Nettoyage de {0}...",
     "Error while cleaning {0}: {1}": "Erreur lors du nettoyage de {0}: {1}",
     "Succeed to clean {0}": "Succès du nettoyage de {0}",
-    "Get": "Récupération"
+    "Get": "Récupération",
+    "Select the private key used for decrypting the admin password": "Sélectionnez la clé privée pour déchiffrer le mot de passe administrateur",
+    "Cannot retrieve the admin password": "Impossible de récupérer le mot de passe administrateur",
+    "Decryption fails ({0})": "Echec du déchiffrement ({0})"
 }
