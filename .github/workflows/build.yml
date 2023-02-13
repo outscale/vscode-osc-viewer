@@ -11,7 +11,7 @@ on:
   workflow_dispatch:  
 
 jobs:
-  build:
+  format:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -36,12 +36,41 @@ jobs:
       - name: Check format
         run: |
           npm run-script check-format
-
-      - name: Build
-        run: | 
-          npm run-script package
-
-      - name: Ui test
-        run: | 
-          npm run-script docker-build-ui-test
-          npm run-script docker-start-ui-test
+  compile:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            repository: ${{ github.event.pull_request.head.repo.full_name }}
+            ref: ${{ github.event.pull_request.head.ref }}
+        - name: Install node
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+        - name: Install dependencies
+          run: |
+            npm install
+        - name: Build
+          run: | 
+            npm run-script package
+  ui-test:
+      needs: [compile, format]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout
+          uses: actions/checkout@v3
+          with:
+            repository: ${{ github.event.pull_request.head.repo.full_name }}
+            ref: ${{ github.event.pull_request.head.ref }}
+        - name: Install node
+          uses: actions/setup-node@v3
+          with:
+            node-version: 16
+        - name: Install dependencies
+          run: |
+            npm install
+        - name: Ui test
+          run: | 
+            npm run-script docker-build-ui-test
+            npm run-script docker-start-ui-test
