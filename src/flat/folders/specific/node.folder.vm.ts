@@ -7,6 +7,7 @@ import { FiltersFolderNode } from '../node.filterfolder';
 
 
 const filteredState = ["pending", "running", "stopping", "stopped", "shutting-down"];
+const windowsProductCodes = ["0002", "0005", "0008", "0009"];
 export const VM_FOLDER_NAME = "Vms";
 export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements ExplorerFolderNode {
 
@@ -35,7 +36,16 @@ export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements Explo
                     continue;
                 }
 
-                resources.push(new VmResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), vm.state));
+                let isWindows = false;
+                if (typeof vm.productCodes !== "undefined") {
+                    for (const pc of vm.productCodes) {
+                        if (windowsProductCodes.includes(pc)) {
+                            isWindows = true;
+                        }
+                    }
+                }
+
+                resources.push(new VmResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), vm.state, isWindows));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });
