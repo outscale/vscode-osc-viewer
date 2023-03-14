@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.6.0]
+### Features
+  - (Beta) Display Net view (see README)
+  - Add the ability to retrieve of Administator password for Windows instances
+  - Add the ability to teardown Nets
+  - Translate the plugin into French (more is coming)
 ## [v0.5.0]
 ### Features
   - Add the ability to unlink resources such as RouteTable, Internet Services
