@@ -18,6 +18,9 @@ Open this extension in the  [Visual Studio Marketplace](https://marketplace.visu
 ![Action on resources](./docs/resources/deleteResource.gif)
 ### Show Console logs of VMs
 ![Console Logs](./docs/resources/consoleLogs.gif)
+### (Beta) Show Net view
+This feature uses the library [cytoscape](https://github.com/cytoscape/cytoscape.js) and the layout [dagre](https://github.com/cytoscape/cytoscape.js-dagre) to display the Net view. This is a beta feature, do not hesitate to test and give feedbacks.
+![VPC View](./docs/resources/network-view.gif)
 
 ## Development
 See [Development process](./docs/development.md)
