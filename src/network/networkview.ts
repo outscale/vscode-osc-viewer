@@ -343,6 +343,25 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
         });
     });
 
+    // VGW
+    net.virtualGateways.forEach((vgw) => {
+        if (typeof vgw.virtualGatewayId === 'undefined') {
+            return undefined;
+        }
+
+        data.push({
+            data: {
+                id: vgw.virtualGatewayId,
+                label: vgw.virtualGatewayId,
+                img: 'design/VirtualPrivateGateway@2x.png',
+                showDetails: true,
+                resourceId: vgw.virtualGatewayId,
+                type: 'VirtualGateway'
+            },
+            group: 'nodes'
+        });
+    });
+
 
     return data;
 
