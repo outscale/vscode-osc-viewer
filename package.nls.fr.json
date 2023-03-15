@@ -12,6 +12,7 @@
     "osc.refreshResourceData": "Rafraîchir les données des resources",
     "osc.deleteResource": "Supprimer",
     "osc.stopVm": "Arrêter",
+    "osc.forceStopVm": "Forcer l'arrêt",
     "osc.startVm": "Démarrer",
     "osc.copyResourceId": "Copier l'identifiant de la resource",
     "osc.showConsoleLogs": "Voir les logs de console",

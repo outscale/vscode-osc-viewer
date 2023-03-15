@@ -117,6 +117,11 @@
         "category": "osc-viewer"
       },
       {
+        "command": "osc.forceStopVm",
+        "title": "%osc.forceStopVm%",
+        "category": "osc-viewer"
+      },
+      {
         "command": "osc.startVm",
         "title": "%osc.startVm%",
         "category": "osc-viewer"
@@ -254,7 +259,7 @@
         {
           "command": "osc.deleteResource",
           "when": "view == profile && viewItem =~ /resourcenode$/",
-          "group": "oscinteract@3"
+          "group": "oscinteract@4"
         },
         {
           "command": "osc.copyResourceId",
@@ -272,24 +277,29 @@
           "group": "oscinteract@2"
         },
         {
+          "command": "osc.forceStopVm",
+          "when": "view == profile && viewItem =~ /vmresourcenode/",
+          "group": "oscinteract@3"
+        },
+        {
           "command": "osc.unlinkResource",
           "when": "view == profile && viewItem =~ /linkresourcenode/",
-          "group": "oscinteract@4"
+          "group": "oscinteract@5"
         },
         {
           "command": "osc.deleteSubresource",
           "when": "view == profile && viewItem =~ /subresourcenode/",
-          "group": "oscinteract@5"
+          "group": "oscinteract@6"
         },
         {
           "command": "osc.teardownNet",
           "when": "view == profile && viewItem =~ /netresourcenode/",
-          "group": "oscinteract@6"
+          "group": "oscinteract@7"
         },
         {
           "command": "osc.showNetworkView",
           "when": "view == profile && viewItem =~ /netresourcenode/",
-          "group": "oscinteract@6"
+          "group": "oscinteract@8"
         },
         {
           "command": "osc.showConsoleLogs",
