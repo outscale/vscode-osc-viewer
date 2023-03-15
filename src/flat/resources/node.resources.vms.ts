@@ -21,7 +21,11 @@ export class VmResourceNode extends ResourceNode {
     }
 
     stopResource(): Promise<string | undefined> {
-        return stopVm(this.profile, this.resourceId);
+        return stopVm(this.profile, this.resourceId, false);
+    }
+
+    forceStopResource(): Promise<string | undefined> {
+        return stopVm(this.profile, this.resourceId, true);
     }
 
     getContextValue(): string {

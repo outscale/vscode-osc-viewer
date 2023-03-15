@@ -123,11 +123,13 @@ export function startVm(profile: Profile, vmId: string): Promise<string | undefi
 
 }
 
-export function stopVm(profile: Profile, vmId: string): Promise<string | undefined> {
+export function stopVm(profile: Profile, vmId: string, force?: boolean): Promise<string | undefined> {
     const config = getConfig(profile);
+
     const stopParameters: osc.StopVmsOperationRequest = {
         stopVmsRequest: {
-            vmIds: [vmId]
+            vmIds: [vmId],
+            forceStop: force
         }
     };
 

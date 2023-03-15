@@ -121,6 +121,23 @@ export function activate(context: vscode.ExtensionContext) {
         }
     });
 
+    vscode.commands.registerCommand('osc.forceStopVm', async (arg: VmResourceNode, allSelected: VmResourceNode[]) => {
+        const targetFolders: VmResourceNode[] = getMultipleSelection<VmResourceNode>(arg, allSelected);
+        for (const resource of targetFolders) {
+            if (!(resource instanceof VmResourceNode)) {
+                continue;
+            }
+            showYesOrNoWindow(vscode.l10n.t(`Do you want to force stop the resource {0} ?`, resource.getResourceName()), async () => {
+                const res = await resource.forceStopResource();
+                if (typeof res === "undefined") {
+                    vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been stopped`, resource.getResourceName()));
+                } else {
+                    vscode.window.showErrorMessage(vscode.l10n.t(`Error while force stopping the resource {0}: {1}`, resource.resourceName, res));
+                }
+            });
+        }
+    });
+
 
     vscode.commands.registerCommand('osc.startVm', async (arg: VmResourceNode, allSelected: VmResourceNode[]) => {
         const targetFolders: VmResourceNode[] = getMultipleSelection<VmResourceNode>(arg, allSelected);
