@@ -1,5 +1,8 @@
 # Change Log
 
+## [v0.6.1]
+### Bugfixes
+  - Add Virtual Private Gateway to the Net visualization graph 
 ## [v0.6.0]
 ### Features
   - (Beta) Display Net view (see README)
