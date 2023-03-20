@@ -20,9 +20,16 @@ jobs:
         with:
           node-version: 16
 
-      - name: Build
+      - name: Publish on Marketplace
         run: | 
           npm install
           npm run-script vscode:publish
         env: 
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
+
+      - name: Publish on Open-vsx
+        run: | 
+          npm install
+          npm run-script openvsx:publish
+        env: 
+          OVSX_PAT: ${{ secrets.OVSX_PAT }}
