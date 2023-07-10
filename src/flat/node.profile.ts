@@ -28,6 +28,8 @@ import { SubnetsFolderNode, SUBNETS_FOLDER_NAME } from './folders/simple/node.fo
 import { VirtualGatewaysFolderNode, VIRTUALGATEWAYS_FOLDER_NAME } from './folders/specific/node.folder.virtualgateway';
 import { VpnConnectionsFolderNode, VPNCONNECTIONS_FOLDER_NAME } from './folders/simple/node.folder.vpnconnection';
 import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter } from '../configuration/utils';
+import { VMGROUPS_FOLDER_NAME, VmGroupsFolderNode } from './folders/simple/node.folder.vmgroup';
+import { VMTEMPLATES_FOLDER_NAME, VmTemplatesFolderNode } from './folders/simple/node.folder.vmtemplate';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -70,6 +72,8 @@ export class ProfileNode implements ExplorerProfileNode {
             [VM_FOLDER_NAME, new VmsFolderNode(this.profile)],
             [VPNCONNECTIONS_FOLDER_NAME, new VpnConnectionsFolderNode(this.profile)],
             [VOLUME_FOLDER_NAME, new VolumeFolderNode(this.profile)],
+            [VMGROUPS_FOLDER_NAME, new VmGroupsFolderNode(this.profile)],
+            [VMTEMPLATES_FOLDER_NAME, new VmTemplatesFolderNode(this.profile)],
         ];
 
         let disableFolder = getConfigurationParameter<Array<string>>(DISABLE_FOLDER_PARAMETER);
