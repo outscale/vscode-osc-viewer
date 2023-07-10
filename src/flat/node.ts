@@ -55,7 +55,9 @@ export type ResourceNodeType =
     "eips" |
     "omis" |
     "snapshots" |
-    "routetables";
+    "routetables" |
+    "VmTemplate" |
+    "VmGroup";
 export class NodeImpl {
 }
 

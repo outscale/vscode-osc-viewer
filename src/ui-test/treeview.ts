@@ -37,7 +37,9 @@ const resourceTypes = [
     "Subnets",
     "Virtual Gateways",
     "Vms",
-    "Vpn Connections"
+    "Vpn Connections",
+    "Vm Groups",
+    "Vm Templates"
 ];
 const profile: any = {
     // eslint-disable-next-line @typescript-eslint/naming-convention
