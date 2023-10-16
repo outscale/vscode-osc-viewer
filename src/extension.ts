@@ -28,10 +28,9 @@ function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]):
 }
 
 export async function showResourceDetails(profileName: string, resourceType: ResourceNodeType, resourceId: string) {
-    const uri = vscode.Uri.parse('osc:/' + profileName + "/" + resourceType + "/" + resourceId);
+    const uri = vscode.Uri.parse('osc:/' + profileName + "/" + resourceType + "/" + resourceId + ".json");
     const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
     await vscode.window.showTextDocument(doc);
-    await vscode.languages.setTextDocumentLanguage(doc, "json");
 }
 
 // this method is called when your extension is activated

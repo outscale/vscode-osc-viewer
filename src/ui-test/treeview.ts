@@ -507,14 +507,14 @@ describe('ActivityBar', () => {
 
                         // New titles in editor
                         const editor = new TextEditor();
-                        expect(await editor.getTitle()).equals("AK");
+                        expect(await editor.getTitle()).equals("AK.json");
                         const data = await editor.getText();
                         const accessKey = osc.AccessKeyFromJSON(JSON.parse(data));
                         expect(accessKey.accessKeyId).equals("AK");
                         expect(accessKey.state).equals("ACTIVE");
 
                         const editorView = new EditorView();
-                        await editorView.closeEditor("AK");
+                        await editorView.closeEditor("AK.json");
                     });
 
                     it.skip("refresh the state", async () => {
