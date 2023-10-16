@@ -78,18 +78,22 @@ export class OscVirtualContentProvider implements vscode.TextDocumentContentProv
     onDidChange = this.onDidChangeEmitter.event;
 
     async provideTextDocumentContent(uri: vscode.Uri): Promise<string> {
-        const pathSplit = uri.path.split("/");
-        if (pathSplit.length !== 4) {
+        const regexp = new RegExp("osc:/([^/]+)/([^/]+)/([^/]+).json");
+        const uriString = uri.toString(true);
+
+        const result = regexp.exec(uriString);
+        if (result === null) {
             throw new Error("malformed uri");
         }
 
+
         // Retrieve Profile
-        const uriProfile = pathSplit[1];
+        const uriProfile = result[1];
         const profile = getProfile(uriProfile);
 
         // Retrieve the resource Type
-        const resourceType = pathSplit[2];
-        const resourceId = pathSplit[3];
+        const resourceType = result[2];
+        const resourceId = result[3];
         return this.readFileAsync(profile, resourceType, resourceId);
 
     }
