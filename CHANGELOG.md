@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.7.0]
+### Features
+  - Add resources links in resource descriptions
+  - Add VmGroup and VmTemplate resources
+### Changes 
+  - Change virtual resources description filename to add autodetection of file language (add .json)
 ## [v0.6.1]
 ### Bugfixes
   - Add Virtual Private Gateway to the Net visualization graph 
