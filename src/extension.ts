@@ -18,6 +18,7 @@ import { LinkResourceNode } from './flat/resources/types/node.resources.link';
 import { SubResourceNode } from './flat/resources/types/node.resources.subresource';
 import { NetResourceNode } from './flat/resources/node.resources.nets';
 import { init } from './network/networkview';
+import { OscLinkProvider } from './virtual_filesystem/osclinkprovider';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -68,6 +69,9 @@ export function activate(context: vscode.ExtensionContext) {
     const myScheme = 'osc';
     const oscProvider = new OscVirtualContentProvider();
     context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(myScheme, oscProvider));
+
+    const oscLinkProvider = new OscLinkProvider();
+    context.subscriptions.push(vscode.languages.registerDocumentLinkProvider({ scheme: myScheme }, oscLinkProvider));
 
     vscode.commands.registerCommand('osc.refreshResourceData', async (arg: any) => {
         oscProvider.onDidChangeEmitter.fire(arg);
