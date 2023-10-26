@@ -12,6 +12,9 @@ export abstract class FolderNode implements ExplorerFolderNode {
     getTreeItem(): vscode.TreeItem {
         const treeItem = new vscode.TreeItem(this.folderName, vscode.TreeItemCollapsibleState.Collapsed);
         treeItem.contextValue = this.getContextValue();
+        if (typeof this.profile.oscCost !== 'undefined') {
+            treeItem.description = this.profile.oscCost.getResourceTypeCost(this.folderName);
+        }
         return treeItem;
     }
 
