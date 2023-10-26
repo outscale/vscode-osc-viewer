@@ -1,4 +1,5 @@
 import * as vscode from 'vscode';
+import { AccountCost } from '../components/osc_cost';
 
 export interface ExplorerNodeBase {
     getChildren(): Thenable<ExplorerNode[]>;
@@ -63,6 +64,7 @@ export class NodeImpl {
 
 export class Profile {
     accountId: string;
+    oscCost: AccountCost | undefined;
     constructor(
         public readonly name: string,
         public readonly accessKey: string,

@@ -63,6 +63,16 @@
           "type": "object",
           "default": {},
           "description": "%osc-viewer.filters%"
+        },
+        "osc-viewer.costEstimation.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "%osc-viewer.costEstimation.enabled%"
+        },
+        "osc-viewer.costEstimation.oscCostPath": {
+          "type": "string",
+          "default": "",
+          "description": "%osc-viewer.costEstimation.oscCostPath%"
         }
       }
     },
@@ -358,8 +368,8 @@
   },
   "scripts": {
     "vscode:prepublish": "npm run ${MOCK}esbuild-base -- --minify",
-    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
-    "mock-esbuild-base": "esbuild ./src/mockExtension.ts --bundle --outfile=out/main.js --external:vscode --format=cjs --platform=node",
+    "esbuild-base": "esbuild ./src/extension.ts --bundle --outfile=out/main.js --external:vscode --external:shelljs --format=cjs --platform=node",
+    "mock-esbuild-base": "esbuild ./src/mockExtension.ts --bundle --outfile=out/main.js --external:vscode --external:shelljs --format=cjs --platform=node",
     "esbuild": "npm run esbuild-base -- --sourcemap",
     "esbuild-watch": "npm run esbuild-base -- --sourcemap --watch",
     "docker-build-ui-test": "docker build -f src/ui-test/Dockerfile  -t vscode-osc-viewer-test:latest .",
@@ -379,6 +389,7 @@
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
     "@types/node": "14.x",
+    "@types/shelljs": "^0.8.11",
     "@types/sinon": "^10.0.13",
     "@types/vscode": "^1.73.0",
     "@typescript-eslint/eslint-plugin": "^5.21.0",
@@ -405,6 +416,7 @@
     "cross-fetch": "^3.1.5",
     "outscale-api": "^0.11.0",
     "rxjs": "^7.5.7",
+    "shelljs": "^0.8.5",
     "true-myth": "^6.2.0"
   }
 }
