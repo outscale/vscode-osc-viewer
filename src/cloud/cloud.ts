@@ -1,13 +1,12 @@
 import * as osc from "outscale-api";
 import * as vscode from 'vscode';
 import * as fetch from "cross-fetch";
-import * as crypto from "crypto";
 import { Profile } from "../flat/node";
 import { ResponseError } from "outscale-api";
 import { OutputChannel } from "../logs/output_channel";
 
 global.Headers = fetch.Headers;
-global.crypto = crypto.webcrypto;
+global.crypto = require('crypto');
 
 function getVersion(): string {
     const extensionContext = vscode.extensions.getExtension('outscale.osc-viewer');
