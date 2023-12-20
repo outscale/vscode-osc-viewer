@@ -37,7 +37,6 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
                             }
                             profileObj.profile.oscCost = res;
                             this._onDidChangeTreeData.fire(profileObj);
-                            OutputChannel.getInstance().appendLine(`Retrieve the cost for ${profile.name}: ${profile.oscCost?.accountCost}`);
                         },
                         (reason: any) => {
                             vscode.window.showErrorMessage(vscode.l10n.t(`Retrieval the cost for ${profile.name} fails: ${reason}`));
