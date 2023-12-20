@@ -415,6 +415,7 @@
     "@vscode/l10n": "^0.0.18",
     "cross-fetch": "^4.0.0",
     "outscale-api": "^0.13.0",
+    "compare-versions": "^5.0.3",
     "rxjs": "^7.5.7",
     "shelljs": "^0.8.5",
     "true-myth": "^6.2.0"
