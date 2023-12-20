@@ -48,7 +48,7 @@ export class ProfileNode implements ExplorerProfileNode {
         return treeItem;
     }
 
-    async getChildren(): Promise<ExplorerNode[]> {
+    getChildren(): Thenable<ExplorerNode[]> {
         const resources = [
             [ACCESSKEY_FOLDER_NAME, new AccessKeysFolderNode(this.profile)],
             [APIACCESSRULES_FOLDER_NAME, new ApiAccessRulesFolderNode(this.profile)],

@@ -1,43 +1,26 @@
 import * as vscode from 'vscode';
 import { getConfigurationParameter, OSC_COST_PARAMETER } from "../configuration/utils";
 import { pathExists } from "../config_file/utils";
-import { ACCESSKEY_FOLDER_NAME } from "../flat/folders/simple/node.folder.accesskey";
-import { APIACCESSRULES_FOLDER_NAME } from "../flat/folders/simple/node.folder.apiaccessrule";
-import { CA_FOLDER_NAME } from "../flat/folders/simple/node.folder.ca";
-import { CLIENTGATEWAYS_FOLDER_NAME } from "../flat/folders/simple/node.folder.clientgateway";
-import { DHCPOPTIONS_FOLDER_NAME } from "../flat/folders/simple/node.folder.dhcpoption";
-import { DIRECTLINKS_FOLDER_NAME } from "../flat/folders/simple/node.folder.directlink";
-import { DIRECTLINKINTERFACES_FOLDER_NAME } from "../flat/folders/simple/node.folder.directlinkinterface";
-import { IMAGES_FOLDER_NAME } from "../flat/folders/simple/node.folder.image";
-import { KEYPAIRS_FOLDER_NAME } from "../flat/folders/simple/node.folder.keypair";
 import { LOADBALANCER_FOLDER_NAME } from "../flat/folders/simple/node.folder.loadbalancer";
 import { NATSERVICES_FOLDER_NAME } from "../flat/folders/simple/node.folder.natservice";
-import { NETACCESSPOINTS_FOLDER_NAME } from "../flat/folders/simple/node.folder.netaccesspoint";
-import { NETPEERINGS_FOLDER_NAME } from "../flat/folders/simple/node.folder.netpeering";
 import { SNAPSHOTS_FOLDER_NAME } from "../flat/folders/simple/node.folder.snapshot";
-import { SUBNETS_FOLDER_NAME } from "../flat/folders/simple/node.folder.subnet";
 import { VPNCONNECTIONS_FOLDER_NAME } from "../flat/folders/simple/node.folder.vpnconnection";
 import { FLEXIBLEGPUS_FOLDER_NAME } from "../flat/folders/specific/node.folder.flexiblegpu";
-import { INTERNETSERVICES_FOLDER_NAME } from "../flat/folders/specific/node.folder.internetservice";
-import { NET_FOLDER_NAME } from "../flat/folders/specific/node.folder.net";
-import { NICS_FOLDER_NAME } from "../flat/folders/specific/node.folder.nic";
 import { PUBLICIP_FOLDER_NAME } from "../flat/folders/specific/node.folder.publicip";
-import { ROUTETABLES_FOLDER_NAME } from "../flat/folders/specific/node.folder.routetable";
-import { SECURITYGROUPS_FOLDER_NAME } from "../flat/folders/specific/node.folder.securitygroup";
-import { VIRTUALGATEWAYS_FOLDER_NAME } from "../flat/folders/specific/node.folder.virtualgateway";
 import { VM_FOLDER_NAME } from "../flat/folders/specific/node.folder.vm";
 import { VOLUME_FOLDER_NAME } from "../flat/folders/specific/node.folder.volume";
 import { Profile, ResourceNodeType } from "../flat/node";
 import { OutputChannel } from "../logs/output_channel";
 import { shell } from "./shell";
+import { satisfies } from 'compare-versions';
 
 export type ResourceCost = number;
 export type ResourcesTypeCost = { globalPrice: number, values: Map<string, ResourceCost> };
 
-const DEFAULT_OPTIONS_OSC_COST = new Map<string, string>([
-    ['v0.1.0', '--format json'],
-    ['v0.2.0', '--format json --skip-resource Oos'],
-  ]);
+const DEFAULT_OPTIONS_OSC_COST: [string, string][] = [
+    ['<v0.2.0', '--format json'],
+    ['>=v0.2.0', '--format json --skip-resource Oos'], // Skipe OOS to reduce the latency
+];
 
 export class AccountCost {
     accountCost: number;
@@ -100,7 +83,7 @@ function formatPrice(price: number, currency: string): string {
     return "~" + price.toFixed(2) + currency;
 }
 
-export function getCurrency(region: string): string {
+function getCurrency(region: string): string {
     switch (region) {
         case "eu-west-2":
         case "cloudgouv-eu-west-1":
@@ -130,30 +113,10 @@ function folderNameToOscCostResourceType(folderName: string): string | undefined
         case FLEXIBLEGPUS_FOLDER_NAME:
             return "FlexibleGpu";
         case VPNCONNECTIONS_FOLDER_NAME:
-            return "FlexibleGpu";
+            return "Vpn";
         case NATSERVICES_FOLDER_NAME:
             return "NatServices";
-        case ACCESSKEY_FOLDER_NAME:
-        case CLIENTGATEWAYS_FOLDER_NAME:
-        case IMAGES_FOLDER_NAME:
-        case INTERNETSERVICES_FOLDER_NAME:
-        case KEYPAIRS_FOLDER_NAME:
-        case NET_FOLDER_NAME:
-        case NICS_FOLDER_NAME:
-        case ROUTETABLES_FOLDER_NAME:
-        case SECURITYGROUPS_FOLDER_NAME:
-        case SUBNETS_FOLDER_NAME:
-        case VIRTUALGATEWAYS_FOLDER_NAME:
-        case DHCPOPTIONS_FOLDER_NAME:
-        case DIRECTLINKS_FOLDER_NAME:
-        case DIRECTLINKINTERFACES_FOLDER_NAME:
-        case NETPEERINGS_FOLDER_NAME:
-        case APIACCESSRULES_FOLDER_NAME:
-        case NETACCESSPOINTS_FOLDER_NAME:
-        case CA_FOLDER_NAME:
-            return undefined;
         default:
-            OutputChannel.getInstance().appendLine(`The folder '${folderName}' is not handle for osc-cost conversion. Report it to the developpers`);
             return undefined;
     }
 }
@@ -173,30 +136,10 @@ function resourceNodeTypeToOscCostResourceType(resourceNodeType: ResourceNodeTyp
         case 'FlexibleGpu':
             return "FlexibleGpu";
         case 'VpnConnection':
-            return "FlexibleGpu";
+            return "Vpn";
         case 'NatService':
             return "NatServices";
-        case 'AccessKey':
-        case 'ClientGateway':
-        case 'omis':
-        case 'InternetService':
-        case 'keypairs':
-        case 'vpc':
-        case 'Nic':
-        case 'routetables':
-        case 'securitygroups':
-        case 'Subnet':
-        case 'VirtualGateway':
-        case 'DhcpOption':
-        case 'DirectLink':
-        case 'DirectLinkInterface':
-        case 'NetPeering':
-        case 'ApiAccessRule':
-        case 'NetAccessPoint':
-        case 'Ca':
-            return undefined;
         default:
-            OutputChannel.getInstance().appendLine(`The resourceNodeType '${resourceNodeType}' is not handle for osc-cost conversion. Report it to the developpers`);
             return undefined;
     }
 }
@@ -205,7 +148,6 @@ function resourceNodeTypeToOscCostResourceType(resourceNodeType: ResourceNodeTyp
 function jsonToAccountCost(oscCostOutput: string): AccountCost | undefined {
     const accountCost = new AccountCost();
     for (const jsonString of oscCostOutput.split('\n')) {
-        OutputChannel.getInstance().appendLine(`The jsonString is ${jsonString}`);
         let json;
         try {
             json = JSON.parse(jsonString);
@@ -276,12 +218,26 @@ export async function fetchAccountCost(profile: Profile): Promise<AccountCost | 
         return Promise.resolve(undefined);
     }
 
-    const res = await shell.exec(`osc-cost --format json --profile ${profile.name}`);
+    const oscCostVersion = await getOscCostVersion(oscCostPath);
+
+    if (typeof oscCostVersion === 'undefined') {
+        vscode.window.showErrorMessage("Cannot find the version of osc-cost. Report to developers");
+        return Promise.resolve(undefined);
+    }
+
+    const defaultArg = getDefaultOptions(oscCostVersion);
+
+    if (typeof defaultArg === 'undefined') {
+        vscode.window.showErrorMessage("Cannot recognize the version of osc-cost. Report to developers");
+        return Promise.resolve(undefined);
+    }
+
+    const res = await shell.exec(`${oscCostPath} ${defaultArg} --profile ${profile.name}`);
     if (typeof res === "undefined") {
         return res;
     }
 
-    return Promise.resolve(jsonToAccountCost(res.stdout.trim()));
+    return Promise.resolve(jsonToAccountCost(res.trim()));
 }
 
 
@@ -290,7 +246,6 @@ export function isOscCostEnabled(): boolean {
     if (typeof isEnabled === 'undefined') {
         return false;
     }
-    OutputChannel.getInstance().appendLine("IsEnabled:" + isEnabled);
     return isEnabled;
 }
 
@@ -301,13 +256,39 @@ export function getOscCostPath(): string | undefined {
         if (systemOscCostPath === null) {
             return undefined;
         }
-        OutputChannel.getInstance().appendLine(systemOscCostPath);
         return systemOscCostPath;
     }
     // Check exist
-    if (! pathExists(userOscCostPath)) {
+    if (!pathExists(userOscCostPath)) {
         return undefined;
     }
-    OutputChannel.getInstance().appendLine(userOscCostPath);
     return userOscCostPath;
+}
+
+async function getOscCostVersion(oscCostPath: string): Promise<string | undefined> {
+    const res = await shell.exec(`${oscCostPath} --version`);
+    if (typeof res === "undefined") {
+        return res;
+    }
+    // version is like "osc-cost X.Y.Z"
+    return res.split(" ")[1].trim();
+
+}
+
+function getDefaultOptions(version: string): string | undefined {
+    const options = DEFAULT_OPTIONS_OSC_COST.filter((val) => {
+        return satisfies(version, val[0]);
+    });
+
+    if (options.length > 1) {
+        OutputChannel.getInstance().appendLine("Got multiple default options possible, rejecting all of them");
+        return undefined;
+    }
+
+    if (options.length === 0) {
+        OutputChannel.getInstance().appendLine("Got none default option");
+        return undefined;
+    }
+
+    return options[0][1];
 }
