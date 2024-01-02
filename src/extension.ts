@@ -19,6 +19,8 @@ import { SubResourceNode } from './flat/resources/types/node.resources.subresour
 import { NetResourceNode } from './flat/resources/node.resources.nets';
 import { init } from './network/networkview';
 import { OscLinkProvider } from './virtual_filesystem/osclinkprovider';
+import { isOscCostEnabled, isOscCostFound, showErrorMessageWithInstallPrompt } from './components/osc_cost';
+import { handleOscViewerUpdateConf } from './configuration/listener';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -292,6 +294,13 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand('osc.showNetworkView', async (arg: NetResourceNode) => {
         init(arg.profile, arg.resourceId, context);
     });
+
+    if (isOscCostEnabled() && !isOscCostFound()) {
+        showErrorMessageWithInstallPrompt();
+    }
+
+    // Watch Conf Update
+    handleOscViewerUpdateConf()
 
 }
 // this method is called when your extension is deactivated
