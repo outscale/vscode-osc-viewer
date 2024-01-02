@@ -2,7 +2,7 @@ import * as vscode from 'vscode';
 import { ExplorerNode, Profile } from './flat/node';
 import { ProfileNode } from './flat/node.profile';
 import { createConfigFile, getConfigFile, getDefaultConfigFilePath, jsonToProfile, readConfigFile } from './config_file/utils';
-import { AccountCost, fetchAccountCost, isOscCostEnabled } from './components/osc_cost';
+import { AccountCost, fetchAccountCost, isOscCostEnabled, isOscCostWorking } from './components/osc_cost';
 import { OutputChannel } from './logs/output_channel';
 
 
@@ -19,22 +19,17 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
         return element.getTreeItem();
     }
 
-    getChildren(element?: ExplorerNode): Thenable<ExplorerNode[]> {
+    async getChildren(element?: ExplorerNode): Promise<ExplorerNode[]> {
         if (element) {
             return element.getChildren();
         } else {
-            const toExplorerNode = (profileName: string, definition: any): ProfileNode => {
+            const toExplorerNode = (profileName: string, definition: any, performOscCost: boolean): ProfileNode => {
                 const profile = jsonToProfile(profileName, definition);
                 const profileObj = new ProfileNode(profile);
 
-                if (isOscCostEnabled()) {
-                    // Do not wait for completion but only fire a refresh on the node only if the data is available
+                if (performOscCost) {
                     this.retrieveAccountCost(profile).then(
-                        (res: AccountCost | undefined) => {
-                            if (typeof res === 'undefined') {
-                                vscode.window.showErrorMessage(vscode.l10n.t(`Retrieve the cost for ${profile.name} fails: undefined`));
-                                return;
-                            }
+                        (res: AccountCost) => {
                             profileObj.profile.oscCost = res;
                             this._onDidChangeTreeData.fire(profileObj);
                         },
@@ -50,7 +45,8 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
                 vscode.window.showErrorMessage(vscode.l10n.t('No config file found'));
                 return Promise.resolve([]);
             }
-            const explorerNodes = Object.keys(oscConfigObject).map(dep => toExplorerNode(dep, oscConfigObject[dep]));
+            const performOscCost = isOscCostEnabled() && await isOscCostWorking();
+            const explorerNodes = Object.keys(oscConfigObject).map(dep => toExplorerNode(dep, oscConfigObject[dep], performOscCost));
             return Promise.resolve(explorerNodes);
         }
 
@@ -70,7 +66,7 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
     }
 
-    async retrieveAccountCost(profile: Profile): Promise<AccountCost | undefined> {
+    async retrieveAccountCost(profile: Profile): Promise<AccountCost> {
         // TODO: Add user options
         return fetchAccountCost(profile);
     }

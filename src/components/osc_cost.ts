@@ -1,5 +1,5 @@
 import * as vscode from 'vscode';
-import { getConfigurationParameter, OSC_COST_PARAMETER } from "../configuration/utils";
+import { getConfigurationParameter, OSC_COST_PARAMETER, updateConfigurationParameter } from "../configuration/utils";
 import { pathExists } from "../config_file/utils";
 import { LOADBALANCER_FOLDER_NAME } from "../flat/folders/simple/node.folder.loadbalancer";
 import { NATSERVICES_FOLDER_NAME } from "../flat/folders/simple/node.folder.natservice";
@@ -11,8 +11,15 @@ import { VM_FOLDER_NAME } from "../flat/folders/specific/node.folder.vm";
 import { VOLUME_FOLDER_NAME } from "../flat/folders/specific/node.folder.volume";
 import { Profile, ResourceNodeType } from "../flat/node";
 import { OutputChannel } from "../logs/output_channel";
-import { shell } from "./shell";
+import { Platform, platformArch, shell } from "./shell";
 import { satisfies } from 'compare-versions';
+
+import * as fs from 'fs';
+import * as path from 'path';
+import * as os from 'os';
+import { finished } from 'stream/promises';
+import { Readable } from 'stream';
+import { ReadableStream } from 'stream/web';
 
 export type ResourceCost = number;
 export type ResourcesTypeCost = { globalPrice: number, values: Map<string, ResourceCost> };
@@ -209,35 +216,34 @@ function jsonToAccountCost(oscCostOutput: string): AccountCost | undefined {
     return accountCost;
 }
 
-export async function fetchAccountCost(profile: Profile): Promise<AccountCost | undefined> {
+export async function fetchAccountCost(profile: Profile): Promise<AccountCost> {
 
     const oscCostPath = getOscCostPath();
 
     if (typeof oscCostPath === 'undefined') {
-        vscode.window.showErrorMessage("Cannot find osc-cost binary. Please install it.");
-        return Promise.resolve(undefined);
+        return Promise.reject("Cannot find osc-cost binary. Please install it.");
     }
 
     const oscCostVersion = await getOscCostVersion(oscCostPath);
 
     if (typeof oscCostVersion === 'undefined') {
-        vscode.window.showErrorMessage("Cannot find the version of osc-cost. Report to developers");
-        return Promise.resolve(undefined);
+        return Promise.reject("Cannot find the version of osc-cost. Report to developers");
     }
 
     const defaultArg = getDefaultOptions(oscCostVersion);
 
     if (typeof defaultArg === 'undefined') {
-        vscode.window.showErrorMessage("Cannot recognize the version of osc-cost. Report to developers");
-        return Promise.resolve(undefined);
+        return Promise.reject("Cannot recognize the version of osc-cost. Report to developers");
     }
 
     const res = await shell.exec(`${oscCostPath} ${defaultArg} --profile ${profile.name}`);
-    if (typeof res === "undefined") {
-        return res;
+
+    const accountCost = jsonToAccountCost(res.trim());
+    if (typeof accountCost === 'undefined') {
+        return Promise.reject("Cannot convert the Json to AccountCost");
     }
 
-    return Promise.resolve(jsonToAccountCost(res.trim()));
+    return Promise.resolve(accountCost);
 }
 
 
@@ -247,6 +253,33 @@ export function isOscCostEnabled(): boolean {
         return false;
     }
     return isEnabled;
+}
+
+export function isOscCostFound(): boolean {
+
+    return typeof getOscCostPath() !== 'undefined';
+}
+
+export async function isOscCostWorking(): Promise<boolean> {
+    const oscCostPath = getOscCostPath();
+
+    if (typeof oscCostPath === 'undefined') {
+        vscode.window.showInformationMessage(vscode.l10n.t(`osc-cost binary is not found`));
+        showErrorMessageWithInstallPrompt();
+        return false;
+    }
+
+    return getOscCostVersion(oscCostPath).then(
+        () => {
+            return true;
+        },
+        (reason) => {
+            vscode.window.showErrorMessage(vscode.l10n.t(`osc-cost binary is found but it fails with: ${reason}`));
+            return false;
+        }
+    );
+
+
 }
 
 export function getOscCostPath(): string | undefined {
@@ -267,9 +300,7 @@ export function getOscCostPath(): string | undefined {
 
 async function getOscCostVersion(oscCostPath: string): Promise<string | undefined> {
     const res = await shell.exec(`${oscCostPath} --version`);
-    if (typeof res === "undefined") {
-        return res;
-    }
+
     // version is like "osc-cost X.Y.Z"
     return res.split(" ")[1].trim();
 
@@ -291,4 +322,141 @@ function getDefaultOptions(version: string): string | undefined {
     }
 
     return options[0][1];
+}
+
+export async function showErrorMessageWithInstallPrompt() {
+    const message = vscode.l10n.t("osc-cost is not found. Do you want to install it ?");
+    const yes = vscode.l10n.t('Yes');
+    const noManually = vscode.l10n.t('No, manually');
+    const no = vscode.l10n.t('No at all');
+    const tool = "osc-cost";
+    const choice = await vscode.window.showErrorMessage(message, yes, noManually, no);
+    switch (choice) {
+        case no:
+            return;
+        case noManually:
+            await vscode.env.openExternal(vscode.Uri.parse('https://github.com/outscale/osc-cost#installation'));
+            return;
+        case yes:
+            // Install and update the path
+            await vscode.window.withProgress(
+                {
+                    title: vscode.l10n.t("Installing osc-cost"),
+                    location: vscode.ProgressLocation.Notification,
+                    cancellable: false
+                },
+                // eslint-disable-next-line @typescript-eslint/no-unused-vars
+                async (p, _) => {
+                    p.report({ message: vscode.l10n.t("Installing the latest stable version of osc-cost") });
+                    await installOscCost(p).catch((reason: string) => {
+                        vscode.window.showErrorMessage(vscode.l10n.t("Error while installing {0}: {1}", tool, reason));
+                        throw vscode.l10n.t("Error while installing {0}: {1}", tool, reason);
+                    });
+                    p.report({ message: vscode.l10n.t("Adding the path to the user config") });
+                    await addInstalledPathToExtension();
+                });
+            break;
+    }
+}
+
+async function getStableVersion(): Promise<string | undefined> {
+    const requestHeaders: HeadersInit = new Headers();
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    requestHeaders.set('Accept', 'application/vnd.github+json');
+    // eslint-disable-next-line @typescript-eslint/naming-convention
+    requestHeaders.set('User-Agent', 'osc-viewer/0.0.0');
+
+    const response = await fetch("https://api.github.com/repos/outscale/osc-cost/releases/latest", {
+        method: 'GET',
+        headers: requestHeaders,
+    });
+
+    const responseJson = await response.json();
+
+    return responseJson.tag_name;
+}
+
+function platformUrlString(platform: Platform): string | undefined {
+    switch (platform) {
+        case Platform.Windows:
+            return 'pc-windows-msvc';
+        case Platform.MacOS:
+            return 'apple-darwin';
+        case Platform.Linux:
+            return 'unknown-linux-musl';
+        default:
+            return undefined;
+    }
+}
+
+function defaultInstalledPath(): string {
+    return path.join(os.homedir(), `.vs-osc_viewer`);
+}
+
+function defaultBinName(): string {
+    const tool = 'osc-cost';
+    const extension = (shell.isUnix()) ? '' : '.exe';
+    return `${tool}${extension}`;
+}
+
+
+async function installOscCost(p?: vscode.Progress<{ message?: string; increment?: number }>): Promise<null> {
+    const tool = 'osc-cost';
+    const extension = (shell.isUnix()) ? '' : '.exe';
+    const platform = shell.platform();
+    const targetOs = platformUrlString(platform);
+    if (typeof targetOs === 'undefined') {
+        return Promise.reject('OS is not supported');
+    }
+    const arch = platformArch();
+    if (typeof arch === 'undefined') {
+        return Promise.reject('arch is not supported');
+    }
+
+    p?.report({ message: vscode.l10n.t("Fetching the latest stable version") });
+    const version = await getStableVersion();
+    if (typeof version === 'undefined') {
+        return Promise.reject('Cannot retrieve latest stable version');
+    }
+
+    p?.report({ message: vscode.l10n.t("Latest stable version found is {0}", version) });
+
+    const targetDir = defaultInstalledPath();
+    const binName = defaultBinName();
+
+    if (!pathExists(targetDir)) {
+        fs.mkdirSync(targetDir);
+    }
+
+    const downloadUrl = `https://github.com/outscale/osc-cost/releases/download/${version}/${tool}-${version}-${arch}-${targetOs}${extension}`;
+    const downloadFile = path.join(targetDir, binName);
+
+    p?.report({ message: vscode.l10n.t("Downloading osc-cost for {0} {1} in {2}", platform, arch, downloadFile) });
+
+    const stream = fs.createWriteStream(downloadFile);
+    const res = await fetch(downloadUrl);
+
+    if (!res.ok) {
+        return Promise.reject(`Download fails (${downloadUrl}) with "${res.status} ${res.statusText}"`);
+    }
+
+    if (res.body === null) {
+        return Promise.reject('Receive an empty response from server');
+    }
+    await finished(Readable.fromWeb(res.body as ReadableStream<any>).pipe(stream));
+
+    if (shell.isUnix()) {
+        fs.chmodSync(downloadFile, '0750');
+    }
+
+    return null;
+}
+
+async function addInstalledPathToExtension() {
+
+    const targetDir = defaultInstalledPath();
+    const binName = defaultBinName();
+
+    await updateConfigurationParameter(OSC_COST_PARAMETER + ".oscCostPath", path.join(targetDir, binName));
+
 }
