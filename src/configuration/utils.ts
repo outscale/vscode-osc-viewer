@@ -1,7 +1,6 @@
 import * as vscode from 'vscode';
 
-
-const CONFIGURATION_NAME = "osc-viewer";
+export const CONFIGURATION_NAME = "osc-viewer";
 
 export const FILTERS_PARAMETER = "filters";
 export const DISABLE_FOLDER_PARAMETER = "disableFolders";
