@@ -300,7 +300,7 @@ export function activate(context: vscode.ExtensionContext) {
     }
 
     // Watch Conf Update
-    handleOscViewerUpdateConf()
+    handleOscViewerUpdateConf();
 
 }
 // this method is called when your extension is deactivated
