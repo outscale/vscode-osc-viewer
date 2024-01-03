@@ -307,9 +307,33 @@ describe('ActivityBar', () => {
                     expect(await menu.hasItem(expectedCommandName)).equals(true);
                 });
 
-                it('has show Account Info button', async () => {
+                describe('has show Account Info button', async () => {
                     const expectedCommandName = getButtonTitle("osc.showAccountInfo");
-                    expect(await menu.hasItem(expectedCommandName)).equals(true);
+
+                    after(async () => {
+                        await (new EditorView()).closeAllEditors();
+                    });
+
+                    it("exists", async () => {
+                        expect(await menu.hasItem(expectedCommandName)).equals(true);
+                    });
+
+                    it("shows resource detail when clicking", async () => {
+                        const action = await menu.getItem(expectedCommandName);
+                        await action?.select();
+
+                        await delay(500);
+
+                        // New titles in editor
+                        const editor = new TextEditor();
+                        expect(await editor.getTitle()).equals("first_profile.json");
+                        const data = await editor.getText();
+                        const account = osc.AccountFromJSON(JSON.parse(data));
+                        expect(account.accountId).equals("accountid");
+
+                        const editorView = new EditorView();
+                        await editorView.closeEditor("first_profile.json");
+                    });
                 });
             });
 
