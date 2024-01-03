@@ -110,3 +110,7 @@ export class OscVirtualContentProvider implements vscode.TextDocumentContentProv
         return JSON.stringify(resourceEncoding.toString(res), null, 4);
     }
 }
+
+export function computeUri(profile: string, resourceType: string, resourceId: string): vscode.Uri {
+    return vscode.Uri.parse(`osc:/${profile}/${resourceType}/${resourceId}.json`);
+}

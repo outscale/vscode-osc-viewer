@@ -7,7 +7,7 @@ import { OscExplorer } from "./explorer";
 import { ExplorerResourceNode, ResourceNodeType } from './flat/node';
 import { ResourceNode } from './flat/resources/node.resources';
 import { VmResourceNode } from './flat/resources/node.resources.vms';
-import { OscVirtualContentProvider } from './virtual_filesystem/oscvirtualfs';
+import { OscVirtualContentProvider, computeUri } from './virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './virtual_filesystem/logs';
 import { ProfileNode } from './flat/node.profile';
 import { FolderNode } from './flat/folders/node.folder';
@@ -28,7 +28,7 @@ function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]):
 }
 
 export async function showResourceDetails(profileName: string, resourceType: ResourceNodeType, resourceId: string) {
-    const uri = vscode.Uri.parse('osc:/' + profileName + "/" + resourceType + "/" + resourceId + ".json");
+    const uri = computeUri(profileName, `${resourceType}`, resourceId);
     const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
     await vscode.window.showTextDocument(doc);
 }
@@ -187,7 +187,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.commands.registerCommand('osc.showAccountInfo', async (arg: ProfileNode) => {
-        const uri = vscode.Uri.parse('osc:/' + arg.profile.name + "/profile/" + arg.profile.name);
+        const uri = computeUri(arg.profile.name, "profile", arg.profile.name);
         try {
             const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
             await vscode.window.showTextDocument(doc);
