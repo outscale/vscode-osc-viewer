@@ -7,7 +7,6 @@ const account: osc.Account = {
 
 export function initMock() {
     const getAccountMock = ImportMock.mockFunction(osc.AccountApi.prototype, 'readAccounts');
-    getAccountMock.onFirstCall().returns(Promise.reject("403"));
     getAccountMock.returns(Promise.resolve(
         {
             accounts: [account],
