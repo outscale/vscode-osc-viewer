@@ -30,6 +30,7 @@ import { VpnConnectionsFolderNode, VPNCONNECTIONS_FOLDER_NAME } from './folders/
 import { DISABLE_FOLDER_PARAMETER, getConfigurationParameter } from '../configuration/utils';
 import { VMGROUPS_FOLDER_NAME, VmGroupsFolderNode } from './folders/simple/node.folder.vmgroup';
 import { VMTEMPLATES_FOLDER_NAME, VmTemplatesFolderNode } from './folders/simple/node.folder.vmtemplate';
+import { DEDICATEDGROUP_FOLDER_NAME, DedicatedGroupsFolderNode } from './folders/simple/node.folder.dedicatedgroup';
 
 
 export class ProfileNode implements ExplorerProfileNode {
@@ -50,6 +51,7 @@ export class ProfileNode implements ExplorerProfileNode {
             [APIACCESSRULES_FOLDER_NAME, new ApiAccessRulesFolderNode(this.profile)],
             [CA_FOLDER_NAME, new CasFolderNode(this.profile)],
             [CLIENTGATEWAYS_FOLDER_NAME, new ClientGatewaysFolderNode(this.profile)],
+            [DEDICATEDGROUP_FOLDER_NAME, new DedicatedGroupsFolderNode(this.profile)],
             [DHCPOPTIONS_FOLDER_NAME, new DhcpOptionsFolderNode(this.profile)],
             [DIRECTLINKS_FOLDER_NAME, new DirectLinksFolderNode(this.profile)],
             [DIRECTLINKINTERFACES_FOLDER_NAME, new DirectLinkInterfacesFolderNode(this.profile)],

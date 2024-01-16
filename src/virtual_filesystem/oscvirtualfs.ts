@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 
-import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, NicToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, SubnetToJSON, VirtualGatewayToJSON, VmGroupFromJSON, VmGroupToJSON, VmTemplateToJSON, VmToJSON, VolumeToJSON, VpnConnectionToJSON } from "outscale-api";
+import { AccessKeyToJSON, AccountToJSON, ApiAccessRuleToJSON, CaToJSON, ClientGatewayToJSON, DedicatedGroupToJSON, DhcpOptionsSetToJSON, DirectLinkInterfaceToJSON, DirectLinkToJSON, FlexibleGpuToJSON, ImageToJSON, InternetServiceToJSON, KeypairToJSON, LoadBalancerToJSON, NatServiceToJSON, NetAccessPointToJSON, NetPeeringToJSON, NetToJSON, NicToJSON, PublicIpToJSON, RouteTableToJSON, SecurityGroupToJSON, SnapshotToJSON, SubnetToJSON, VirtualGatewayToJSON, VmGroupToJSON, VmTemplateToJSON, VmToJSON, VolumeToJSON, VpnConnectionToJSON } from "outscale-api";
 import { getExternalIP } from "../cloud/publicips";
 import { getKeypair } from "../cloud/keypairs";
 import { getLoadBalancer } from "../cloud/loadbalancers";
@@ -32,6 +32,7 @@ import { getVirtualGateway } from '../cloud/virtualgateways';
 import { getVpnConnection } from '../cloud/vpnconnections';
 import { getVmGroup } from '../cloud/vmgroup';
 import { getVmTemplate } from '../cloud/vmtemplate';
+import { getDedicatedGroup } from '../cloud/dedicatedgroup';
 
 
 class ResourceEncoding {
@@ -71,6 +72,7 @@ const resourceMap = new Map([
     ["VpnConnection", new ResourceEncoding(getVpnConnection, VpnConnectionToJSON)],
     ["VmGroup", new ResourceEncoding(getVmGroup, VmGroupToJSON)],
     ["VmTemplate", new ResourceEncoding(getVmTemplate, VmTemplateToJSON)],
+    ["DedicatedGroup", new ResourceEncoding(getDedicatedGroup, DedicatedGroupToJSON)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {

@@ -57,7 +57,8 @@ export type ResourceNodeType =
     "snapshots" |
     "routetables" |
     "VmTemplate" |
-    "VmGroup";
+    "VmGroup" |
+    "DedicatedGroup";
 export class NodeImpl {
 }
 
