@@ -16,6 +16,7 @@ const resourceTypes = [
     "Api Access Rules",
     "Cas",
     "Client Gateways",
+    "Dedicated Groups",
     "Dhcp Options",
     "DirectLinks",
     "DirectLink Interfaces",
