@@ -264,7 +264,7 @@ export async function isOscCostWorking(): Promise<boolean> {
     const oscCostPath = getOscCostPath();
 
     if (typeof oscCostPath === 'undefined') {
-        vscode.window.showInformationMessage(vscode.l10n.t(`osc-cost binary is not found`));
+        vscode.window.showErrorMessage(vscode.l10n.t("{0} is not found", "osc-cost"));
         showErrorMessageWithInstallPrompt();
         return false;
     }
@@ -274,7 +274,7 @@ export async function isOscCostWorking(): Promise<boolean> {
             return true;
         },
         (reason) => {
-            vscode.window.showErrorMessage(vscode.l10n.t(`osc-cost binary is found but it fails with: ${reason}`));
+            vscode.window.showErrorMessage(vscode.l10n.t("Error while retrieving the version of {0}: {1}", "osc-cost", reason));
             return false;
         }
     );
@@ -325,11 +325,11 @@ function getDefaultOptions(version: string): string | undefined {
 }
 
 export async function showErrorMessageWithInstallPrompt() {
-    const message = vscode.l10n.t("osc-cost is not found. Do you want to install it ?");
-    const yes = vscode.l10n.t('Yes');
-    const noManually = vscode.l10n.t('No, manually');
-    const no = vscode.l10n.t('No at all');
     const tool = "osc-cost";
+    const message = vscode.l10n.t("{0} is not found. Do you want to install it ?", tool);
+    const yes = vscode.l10n.t('Yes');
+    const noManually = vscode.l10n.t('No, open the documentation');
+    const no = vscode.l10n.t('No');
     const choice = await vscode.window.showErrorMessage(message, yes, noManually, no);
     switch (choice) {
         case no:
@@ -341,13 +341,13 @@ export async function showErrorMessageWithInstallPrompt() {
             // Install and update the path
             await vscode.window.withProgress(
                 {
-                    title: vscode.l10n.t("Installing osc-cost"),
+                    title: vscode.l10n.t("Installing {0}", tool),
                     location: vscode.ProgressLocation.Notification,
                     cancellable: false
                 },
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 async (p, _) => {
-                    p.report({ message: vscode.l10n.t("Installing the latest stable version of osc-cost") });
+                    p.report({ message: vscode.l10n.t("Installing the latest stable version of {0}", tool) });
                     await installOscCost(p).catch((reason: string) => {
                         vscode.window.showErrorMessage(vscode.l10n.t("Error while installing {0}: {1}", tool, reason));
                         throw vscode.l10n.t("Error while installing {0}: {1}", tool, reason);
@@ -431,7 +431,7 @@ async function installOscCost(p?: vscode.Progress<{ message?: string; increment?
     const downloadUrl = `https://github.com/outscale/osc-cost/releases/download/${version}/${tool}-${version}-${arch}-${targetOs}${extension}`;
     const downloadFile = path.join(targetDir, binName);
 
-    p?.report({ message: vscode.l10n.t("Downloading osc-cost for {0} {1} in {2}", platform, arch, downloadFile) });
+    p?.report({ message: vscode.l10n.t("Downloading {0} for {1}, {2} in {3}", tool, targetOs, arch, downloadFile) });
 
     const stream = fs.createWriteStream(downloadFile);
     const res = await fetch(downloadUrl);

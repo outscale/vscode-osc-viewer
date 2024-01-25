@@ -54,5 +54,15 @@
     "Get": "Récupération",
     "Select the private key used for decrypting the admin password": "Sélectionnez la clé privée pour déchiffrer le mot de passe administrateur",
     "Cannot retrieve the admin password": "Impossible de récupérer le mot de passe administrateur",
-    "Decryption fails ({0})": "Echec du déchiffrement ({0})"
+    "Decryption fails ({0})": "Echec du déchiffrement ({0})",
+    "No, open the documentation": "Lire la documentation",
+    "Installing {0}": "Installation de {0}",
+    "Installing the latest stable version of {0}": "Installation de la dernière version de {0}",
+    "Error while installing {0}: {1}": "Erreur lors de l'installation de {0}: {1}",
+    "{0} is not found": "{0} est introuvable",
+    "Error while retrieving the version of {0}: {1}": "Erreur lors de la récupération de la version de {0}: {1}",
+    "Downloading {0} for {1}, {2} in {3}": "Téléchargement de {0} pour {1}, {2} dans {3}",
+    "{0} is not found. Do you want to install it ?": "{0} est introuvable. Voulez-vous l'installer ?",
+    "Adding the path to the user config": "Ajout du chemin dans la configuration utilisateur",
+    "Latest stable version found is {0}": "La dernière version stable trouvée est {0}"
 }
