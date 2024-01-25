@@ -64,5 +64,6 @@
     "Downloading {0} for {1}, {2} in {3}": "Téléchargement de {0} pour {1}, {2} dans {3}",
     "{0} is not found. Do you want to install it ?": "{0} est introuvable. Voulez-vous l'installer ?",
     "Adding the path to the user config": "Ajout du chemin dans la configuration utilisateur",
-    "Latest stable version found is {0}": "La dernière version stable trouvée est {0}"
+    "Latest stable version found is {0}": "La dernière version stable trouvée est {0}",
+    "Refreshed not finished, waiting": "Actualisation non terminée"
 }
