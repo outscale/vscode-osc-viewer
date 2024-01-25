@@ -3,15 +3,19 @@ import { ExplorerNode, Profile } from './flat/node';
 import { ProfileNode } from './flat/node.profile';
 import { createConfigFile, getConfigFile, getDefaultConfigFilePath, jsonToProfile, readConfigFile } from './config_file/utils';
 import { AccountCost, fetchAccountCost, isOscCostEnabled, isOscCostWorking } from './components/osc_cost';
-import { OutputChannel } from './logs/output_channel';
 
 
 export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
 
     private _onDidChangeTreeData: vscode.EventEmitter<ExplorerNode | undefined | void> = new vscode.EventEmitter<ExplorerNode | undefined | void>();
     readonly onDidChangeTreeData: vscode.Event<ExplorerNode | undefined | void> = this._onDidChangeTreeData.event;
+    private waitFor = 0; // Counter to not spam the API/tools when they are already executed (here osc-cost)
 
     refresh(): void {
+        if (this.waitFor !== 0) {
+            vscode.window.showInformationMessage(vscode.l10n.t("Refreshed not finished, waiting"));
+            return;
+        }
         this._onDidChangeTreeData.fire();
     }
 
@@ -28,6 +32,7 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
                 const profileObj = new ProfileNode(profile);
 
                 if (performOscCost) {
+                    this.waitFor += 1;
                     this.retrieveAccountCost(profile).then(
                         (res: AccountCost) => {
                             profileObj.profile.oscCost = res;
@@ -35,6 +40,8 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
                         },
                         (reason: any) => {
                             vscode.window.showErrorMessage(vscode.l10n.t(`Retrieval the cost for ${profile.name} fails: ${reason}`));
+                        }).finally(() => {
+                            this.waitFor -= 1;
                         });
                 }
                 return profileObj;
