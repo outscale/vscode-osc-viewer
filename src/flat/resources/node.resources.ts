@@ -42,6 +42,12 @@ export class ResourceNode implements ExplorerResourceNode {
     getTreeItem(): vscode.TreeItem {
         const treeItem = new vscode.TreeItem(this.resourceId, vscode.TreeItemCollapsibleState.None);
         treeItem.description = this.resourceName;
+        if (typeof this.profile.oscCost !== 'undefined') {
+            const oscCost = this.profile.oscCost.getResourceIdCost(this.resourceType, this.resourceId);
+            if (typeof oscCost !== 'undefined') {
+                treeItem.description += " " + this.profile.oscCost.getResourceIdCost(this.resourceType, this.resourceId);
+            }
+        }
         treeItem.iconPath = this.getIconPath();
         treeItem.command = {
             "title": vscode.l10n.t("Get"),

@@ -40,6 +40,9 @@ export class ProfileNode implements ExplorerProfileNode {
 
     getTreeItem(): vscode.TreeItem {
         const treeItem = new vscode.TreeItem(this.profile.name, vscode.TreeItemCollapsibleState.Collapsed);
+        if (typeof this.profile.oscCost !== 'undefined') {
+            treeItem.description = this.profile.oscCost.getAccountCost();
+        }
         treeItem.iconPath = new vscode.ThemeIcon("account");
         treeItem.contextValue = this.getContextValue();
         return treeItem;
