@@ -26,7 +26,7 @@ export class NatServicesFolderNode extends FiltersFolderNode<FiltersNatService> 
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.natServiceId, "NatService", deleteNatService, getNatService));
+                resources.push(new ResourceNode(this.profile, "", item.natServiceId, "NatService", deleteNatService, getNatService, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

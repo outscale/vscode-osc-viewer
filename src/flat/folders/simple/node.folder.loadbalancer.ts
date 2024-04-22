@@ -23,7 +23,7 @@ export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalance
                 if (typeof lb.loadBalancerName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer));
+                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer, lb.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

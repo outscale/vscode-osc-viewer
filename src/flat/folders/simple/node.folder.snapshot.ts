@@ -23,7 +23,7 @@ export class SnapshotsFolderNode extends FiltersFolderNode<FiltersSnapshot> impl
                 if (typeof snapshot.snapshotId === 'undefined' || typeof snapshot.description === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots", deleteSnapshot, getSnapshot));
+                resources.push(new ResourceNode(this.profile, snapshot.description, snapshot.snapshotId, "snapshots", deleteSnapshot, getSnapshot, snapshot.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

@@ -26,7 +26,7 @@ export class DirectLinkInterfacesFolderNode extends FiltersFolderNode<FiltersDir
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.directLinkInterfaceId, "DirectLinkInterface", deleteDirectLinkInterface, getDirectLinkInterface));
+                resources.push(new ResourceNode(this.profile, "", item.directLinkInterfaceId, "DirectLinkInterface", deleteDirectLinkInterface, getDirectLinkInterface, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

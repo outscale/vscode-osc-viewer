@@ -5,6 +5,7 @@ import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import crypto = require("crypto");
 import { Result } from 'true-myth';
+import { ResourceTag } from 'outscale-api';
 
 
 
@@ -12,8 +13,8 @@ import { Result } from 'true-myth';
 
 export class VmResourceNode extends ResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly windows: boolean) {
-        super(profile, resourceName, resourceId, "vms", deleteVm, getVm);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly windows: boolean, readonly tags: Array<ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "vms", deleteVm, getVm, tags);
     }
 
     startResource(): Promise<string | undefined> {

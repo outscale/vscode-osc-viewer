@@ -26,7 +26,7 @@ export class NetPeeringsFolderNode extends FiltersFolderNode<FiltersNetPeering> 
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering));
+                resources.push(new ResourceNode(this.profile, "", item.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

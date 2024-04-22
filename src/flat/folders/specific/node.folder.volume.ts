@@ -24,7 +24,7 @@ export class VolumeFolderNode extends FiltersFolderNode<FiltersVolume> implement
                 if (typeof volume.volumeId === 'undefined' || typeof volume.state === 'undefined') {
                     continue;
                 }
-                resources.push(new VolumeResourceNode(this.profile, "", volume.volumeId, volume.state));
+                resources.push(new VolumeResourceNode(this.profile, "", volume.volumeId, volume.state, volume.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

@@ -8,8 +8,8 @@ import { LinkResourceNode } from './types/node.resources.link';
 
 export class VirtualGatewayResourceNode extends ResourceNode implements LinkResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string) {
-        super(profile, resourceName, resourceId, "VirtualGateway", deleteVirtualGateway, getVirtualGateway);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly tags: Array<osc.ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "VirtualGateway", deleteVirtualGateway, getVirtualGateway, tags);
     }
 
     getContextValue(): string {

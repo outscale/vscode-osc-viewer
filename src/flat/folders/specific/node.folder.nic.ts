@@ -30,7 +30,7 @@ export class NicsFolderNode extends FiltersFolderNode<FiltersNic> implements Exp
                     continue;
                 }
 
-                resources.push(new NicResourceNode(this.profile, "", item.nicId, item.state));
+                resources.push(new NicResourceNode(this.profile, "", item.nicId, item.state, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

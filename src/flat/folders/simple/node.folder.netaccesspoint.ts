@@ -26,7 +26,7 @@ export class NetAccessPointsFolderNode extends FiltersFolderNode<FiltersNetAcces
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint, getNetAccessPoint));
+                resources.push(new ResourceNode(this.profile, "", item.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint, getNetAccessPoint, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

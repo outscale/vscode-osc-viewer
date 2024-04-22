@@ -23,7 +23,7 @@ export class SecurityGroupsFolderNode extends FiltersFolderNode<FiltersSecurityG
                 if (typeof sg.securityGroupId === 'undefined' || typeof sg.securityGroupName === 'undefined') {
                     continue;
                 }
-                resources.push(new SecurityGroupResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId));
+                resources.push(new SecurityGroupResourceNode(this.profile, sg.securityGroupName, sg.securityGroupId, sg.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

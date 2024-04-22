@@ -15,12 +15,13 @@ import { RouteTableResourceNode } from "./node.resources.routetables";
 import { SecurityGroupResourceNode } from "./node.resources.securitygroups";
 import { VirtualGatewayResourceNode } from "./node.resources.virtualgateways";
 import { VmResourceNode } from "./node.resources.vms";
+import { ResourceTag } from 'outscale-api';
 
 
 export class NetResourceNode extends ResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string) {
-        super(profile, resourceName, resourceId, "vpc", deleteNet, getNet);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly tags: Array<ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "vpc", deleteNet, getNet, tags);
     }
 
     getContextValue(): string {
@@ -41,7 +42,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof vm.vmId === 'undefined') {
                     return undefined;
                 }
-                return new VmResourceNode(this.profile, "", vm.vmId, "", false);
+                return new VmResourceNode(this.profile, "", vm.vmId, "", false, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -52,7 +53,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof lbu.loadBalancerName === 'undefined') {
                     return undefined;
                 }
-                return new ResourceNode(this.profile, "", lbu.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer);
+                return new ResourceNode(this.profile, "", lbu.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -64,7 +65,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof netPeer.netPeeringId === 'undefined') {
                     return undefined;
                 }
-                return new ResourceNode(this.profile, "", netPeer.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering);
+                return new ResourceNode(this.profile, "", netPeer.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -74,7 +75,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof netPeer.netPeeringId === 'undefined') {
                     return undefined;
                 }
-                return new ResourceNode(this.profile, "", netPeer.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering);
+                return new ResourceNode(this.profile, "", netPeer.netPeeringId, "NetPeering", deleteNetPeering, getNetPeering, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -90,7 +91,7 @@ export class NetResourceNode extends ResourceNode {
                     return undefined;
                 }
 
-                return new ResourceNode(this.profile, "", nap.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint, getNetAccessPoint);
+                return new ResourceNode(this.profile, "", nap.netAccessPointId, "NetAccessPoint", deleteNetAccessPoint, getNetAccessPoint, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -113,7 +114,7 @@ export class NetResourceNode extends ResourceNode {
                     }
                 }
 
-                return new ResourceNode(this.profile, "", nat.natServiceId, "NatService", deleteNatService, getNatService);
+                return new ResourceNode(this.profile, "", nat.natServiceId, "NatService", deleteNatService, getNatService, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -125,7 +126,7 @@ export class NetResourceNode extends ResourceNode {
                     return undefined;
                 }
 
-                return new RouteTableResourceNode(this.profile, "", rt.routeTableId, "");
+                return new RouteTableResourceNode(this.profile, "", rt.routeTableId, "", undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -138,7 +139,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof sg.securityGroupId === 'undefined') {
                     return undefined;
                 }
-                return new SecurityGroupResourceNode(this.profile, "", sg.securityGroupId);
+                return new SecurityGroupResourceNode(this.profile, "", sg.securityGroupId, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -149,7 +150,7 @@ export class NetResourceNode extends ResourceNode {
                 if (typeof vg.virtualGatewayId === 'undefined') {
                     return undefined;
                 }
-                return new VirtualGatewayResourceNode(this.profile, "", vg.virtualGatewayId);
+                return new VirtualGatewayResourceNode(this.profile, "", vg.virtualGatewayId, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -165,7 +166,7 @@ export class NetResourceNode extends ResourceNode {
                     publicIpIds.push(nic.linkPublicIp.publicIpId);
                 }
 
-                return new NicResourceNode(this.profile, "", nic.nicId, "");
+                return new NicResourceNode(this.profile, "", nic.nicId, "", undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -177,7 +178,7 @@ export class NetResourceNode extends ResourceNode {
                     return undefined;
                 }
 
-                return new ResourceNode(this.profile, "", subnet.subnetId, "Subnet", deleteSubnet, getSubnet);
+                return new ResourceNode(this.profile, "", subnet.subnetId, "Subnet", deleteSubnet, getSubnet, undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -189,7 +190,7 @@ export class NetResourceNode extends ResourceNode {
                     return undefined;
                 }
 
-                return new InternetServiceResourceNode(this.profile, "", is.internetServiceId, "");
+                return new InternetServiceResourceNode(this.profile, "", is.internetServiceId, "", undefined);
             });
             resourceToDelete.push(...res);
         }
@@ -201,13 +202,13 @@ export class NetResourceNode extends ResourceNode {
                     return undefined;
                 }
 
-                return new ResourceNode(this.profile, "", vpn.vpnConnectionId, "VpnConnection", deleteVpnConnection, getVpnConnection);
+                return new ResourceNode(this.profile, "", vpn.vpnConnectionId, "VpnConnection", deleteVpnConnection, getVpnConnection, undefined);
             });
             resourceToDelete.push(...res);
         }
 
         //PublicIP
-        const ips = publicIpIds.map((ip) => new ResourceNode(this.profile, "", ip, "eips", deleteExternalIP, getExternalIP));
+        const ips = publicIpIds.map((ip) => new ResourceNode(this.profile, "", ip, "eips", deleteExternalIP, getExternalIP, undefined));
         resourceToDelete.push(...ips);
 
         // Net

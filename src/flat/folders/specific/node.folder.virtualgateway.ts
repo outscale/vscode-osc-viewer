@@ -26,7 +26,7 @@ export class VirtualGatewaysFolderNode extends FiltersFolderNode<FiltersVirtualG
                     continue;
                 }
 
-                resources.push(new VirtualGatewayResourceNode(this.profile, "", item.virtualGatewayId));
+                resources.push(new VirtualGatewayResourceNode(this.profile, "", item.virtualGatewayId, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

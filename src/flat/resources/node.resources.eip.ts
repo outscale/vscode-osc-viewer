@@ -3,12 +3,13 @@ import { deleteExternalIP, unlinkExternalIP, getExternalIP } from '../../cloud/p
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { LinkResourceNode } from './types/node.resources.link';
+import { ResourceTag } from 'outscale-api';
 
 
 export class PublicIpResourceNode extends ResourceNode implements LinkResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "eips", deleteExternalIP, getExternalIP);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly tags: Array<ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "eips", deleteExternalIP, getExternalIP, tags);
     }
 
     getContextValue(): string {

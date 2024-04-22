@@ -31,7 +31,7 @@ export class VmTemplatesFolderNode extends FiltersFolderNode<FiltersVmTemplate> 
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, item.vmTemplateName, item.vmTemplateId, "VmTemplate", deleteVmTemplate, getVmTemplate));
+                resources.push(new ResourceNode(this.profile, item.vmTemplateName, item.vmTemplateId, "VmTemplate", deleteVmTemplate, getVmTemplate, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

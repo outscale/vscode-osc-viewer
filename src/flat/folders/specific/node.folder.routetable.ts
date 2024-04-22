@@ -23,7 +23,7 @@ export class RouteTablesFolderNode extends FiltersFolderNode<FiltersRouteTable> 
                 if (typeof routeTable.routeTableId === 'undefined') {
                     continue;
                 }
-                resources.push(new RouteTableResourceNode(this.profile, "", routeTable.routeTableId, (typeof routeTable.linkRouteTables === 'undefined') || routeTable.linkRouteTables.length === 0 ? 'unlink' : 'link'));
+                resources.push(new RouteTableResourceNode(this.profile, "", routeTable.routeTableId, (typeof routeTable.linkRouteTables === 'undefined') || routeTable.linkRouteTables.length === 0 ? 'unlink' : 'link', routeTable.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

@@ -26,7 +26,7 @@ export class CasFolderNode extends FiltersFolderNode<FiltersCa> implements Explo
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.caId, "Ca", deleteCa, getCa));
+                resources.push(new ResourceNode(this.profile, "", item.caId, "Ca", deleteCa, getCa, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

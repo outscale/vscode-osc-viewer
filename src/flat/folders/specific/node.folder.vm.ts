@@ -45,7 +45,7 @@ export class VmsFolderNode extends FiltersFolderNode<FiltersVm> implements Explo
                     }
                 }
 
-                resources.push(new VmResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), vm.state, isWindows));
+                resources.push(new VmResourceNode(this.profile, getVmName(vm), vm.vmId?.toString(), vm.state, isWindows, vm.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

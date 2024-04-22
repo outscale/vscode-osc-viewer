@@ -1,12 +1,13 @@
 import * as vscode from 'vscode';
 import { ExplorerNode, ExplorerResourceNode, Profile, ResourceNodeType } from '../node';
+import { ResourceTag } from 'outscale-api';
 
 
 
 export class ResourceNode implements ExplorerResourceNode {
 
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType, readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string | undefined>, readonly getFunc: (profile: Profile, resourceid: string) => Promise<any | string | undefined>) {
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceType: ResourceNodeType, readonly deleteFunc: (profile: Profile, resourceid: string) => Promise<string | undefined>, readonly getFunc: (profile: Profile, resourceid: string) => Promise<any | string | undefined>, readonly tags: Array<ResourceTag> | undefined) {
     }
 
     getResourceId(): Promise<string | undefined> {
@@ -55,6 +56,15 @@ export class ResourceNode implements ExplorerResourceNode {
             "arguments": [this]
         };
         treeItem.contextValue = this.getContextValue();
+        if (typeof this.tags !== 'undefined') {
+            const markdown = new vscode.MarkdownString();
+            markdown.appendMarkdown("**Tags**:");
+            for (const tag of this.tags) {
+                markdown.appendMarkdown(`\n- **${tag.key}**: ${tag.value}`);
+            }
+
+            treeItem.tooltip = markdown;
+        }
         return treeItem;
     }
 

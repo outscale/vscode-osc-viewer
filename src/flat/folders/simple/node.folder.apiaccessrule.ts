@@ -26,7 +26,7 @@ export class ApiAccessRulesFolderNode extends FiltersFolderNode<FiltersApiAccess
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.apiAccessRuleId, "ApiAccessRule", deleteApiAccessRule, getApiAccessRule));
+                resources.push(new ResourceNode(this.profile, "", item.apiAccessRuleId, "ApiAccessRule", deleteApiAccessRule, getApiAccessRule, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
