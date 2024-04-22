@@ -401,7 +401,7 @@
   },
   "dependencies": {
     "@types/cytoscape": "^3.19.9",
-    "@vscode/l10n": "^0.0.13",
+    "@vscode/l10n": "^0.0.18",
     "cross-fetch": "^4.0.0",
     "outscale-api": "^0.12.0",
     "rxjs": "^7.5.7",
