@@ -819,6 +819,17 @@ describe('ActivityBar', () => {
 
                     });
 
+                    describe("Hover", async () => {
+                        let tooltip: string | undefined;
+                        before(async () => {
+                            tooltip = await resourceChildren[0].getTooltip();
+                        });
+
+                        it("is not empty", async () => {
+                            expect(tooltip).not.empty;
+                        });
+                    });
+
                     describe("Filter Vms", async () => {
                         before(async () => {
                             // Reset the option for disable folders
