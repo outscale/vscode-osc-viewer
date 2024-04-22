@@ -3,12 +3,13 @@ import { deleteFlexibleGpu, getFlexibleGpu, unlinkFlexibleGpu } from '../../clou
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { LinkResourceNode } from './types/node.resources.link';
+import { ResourceTag } from 'outscale-api';
 
 
 export class FlexibleGpuResourceNode extends ResourceNode implements LinkResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "FlexibleGpu", deleteFlexibleGpu, getFlexibleGpu);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly tags: Array<ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "FlexibleGpu", deleteFlexibleGpu, getFlexibleGpu, tags);
     }
 
     getContextValue(): string {

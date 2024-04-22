@@ -8,8 +8,8 @@ import { SubResourceNode } from "./types/node.resources.subresource";
 
 export class SecurityGroupResourceNode extends ResourceNode implements SubResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string) {
-        super(profile, resourceName, resourceId, "securitygroups", deleteSecurityGroup, getSecurityGroup);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly tags: Array<osc.ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "securitygroups", deleteSecurityGroup, getSecurityGroup, tags);
     }
 
     getContextValue(): string {

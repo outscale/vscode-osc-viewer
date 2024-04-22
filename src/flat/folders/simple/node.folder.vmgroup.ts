@@ -31,7 +31,7 @@ export class VmGroupsFolderNode extends FiltersFolderNode<FiltersVmGroup> implem
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, item.vmGroupName, item.vmGroupId, "VmGroup", deleteVmGroup, getVmGroup));
+                resources.push(new ResourceNode(this.profile, item.vmGroupName, item.vmGroupId, "VmGroup", deleteVmGroup, getVmGroup, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

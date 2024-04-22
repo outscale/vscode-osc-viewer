@@ -30,7 +30,7 @@ export class FlexibleGpusFolderNode extends FiltersFolderNode<FiltersFlexibleGpu
                     continue;
                 }
 
-                resources.push(new FlexibleGpuResourceNode(this.profile, "", item.flexibleGpuId, item.state));
+                resources.push(new FlexibleGpuResourceNode(this.profile, "", item.flexibleGpuId, item.state, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

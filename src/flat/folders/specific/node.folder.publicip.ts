@@ -23,7 +23,7 @@ export class ExternalIPsFolderNode extends FiltersFolderNode<FiltersPublicIp> im
                 if (typeof publicIp.publicIp === 'undefined' || typeof publicIp.publicIpId === 'undefined') {
                     continue;
                 }
-                resources.push(new PublicIpResourceNode(this.profile, publicIp.publicIp, publicIp.publicIpId, (typeof publicIp.linkPublicIpId === "undefined" || publicIp.linkPublicIpId.length === 0) ? "unlink" : "link"));
+                resources.push(new PublicIpResourceNode(this.profile, publicIp.publicIp, publicIp.publicIpId, (typeof publicIp.linkPublicIpId === "undefined" || publicIp.linkPublicIpId.length === 0) ? "unlink" : "link", publicIp.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

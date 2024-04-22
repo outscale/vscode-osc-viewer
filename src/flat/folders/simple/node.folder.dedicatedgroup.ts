@@ -31,7 +31,7 @@ export class DedicatedGroupsFolderNode extends FiltersFolderNode<FiltersDedicate
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, item.name, item.dedicatedGroupId, "DedicatedGroup", deleteDedicatedGroup, getDedicatedGroup));
+                resources.push(new ResourceNode(this.profile, item.name, item.dedicatedGroupId, "DedicatedGroup", deleteDedicatedGroup, getDedicatedGroup, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

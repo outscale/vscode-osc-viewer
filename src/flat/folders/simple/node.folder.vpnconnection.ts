@@ -26,7 +26,7 @@ export class VpnConnectionsFolderNode extends FiltersFolderNode<FiltersVpnConnec
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.vpnConnectionId, "VpnConnection", deleteVpnConnection, getVpnConnection));
+                resources.push(new ResourceNode(this.profile, "", item.vpnConnectionId, "VpnConnection", deleteVpnConnection, getVpnConnection, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

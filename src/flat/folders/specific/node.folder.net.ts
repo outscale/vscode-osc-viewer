@@ -23,7 +23,7 @@ export class VpcFolderNode extends FiltersFolderNode<FiltersNet> implements Expl
                 if (typeof net.netId === 'undefined') {
                     continue;
                 }
-                resources.push(new NetResourceNode(this.profile, "", net.netId?.toString()));
+                resources.push(new NetResourceNode(this.profile, "", net.netId?.toString(), net.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

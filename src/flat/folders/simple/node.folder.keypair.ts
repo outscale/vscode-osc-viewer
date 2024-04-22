@@ -23,7 +23,7 @@ export class KeypairsFolderNode extends FiltersFolderNode<FiltersKeypair> implem
                 if (typeof keypair.keypairName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair, getKeypair));
+                resources.push(new ResourceNode(this.profile, "", keypair.keypairName, "keypairs", deleteKeypair, getKeypair, undefined));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });

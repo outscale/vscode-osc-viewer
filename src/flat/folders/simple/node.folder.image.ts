@@ -32,7 +32,7 @@ export class OMIsFolderNode extends FolderNode implements ExplorerFolderNode {
                     if (typeof image.imageId === 'undefined' || typeof image.imageName === 'undefined') {
                         continue;
                     }
-                    resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI, getOMI));
+                    resources.push(new ResourceNode(this.profile, image.imageName, image.imageId, "omis", deleteOMI, getOMI, image.tags));
                 }
                 return Promise.resolve(resources.sort(resourceNodeCompare));
             });

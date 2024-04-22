@@ -9,8 +9,8 @@ import { SubResourceNode } from "./types/node.resources.subresource";
 
 export class RouteTableResourceNode extends ResourceNode implements LinkResourceNode, SubResourceNode {
 
-    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string) {
-        super(profile, resourceName, resourceId, "routetables", deleteRouteTable, getRouteTable);
+    constructor(readonly profile: Profile, readonly resourceName: string, readonly resourceId: string, readonly resourceState: string, readonly tags: Array<osc.ResourceTag> | undefined) {
+        super(profile, resourceName, resourceId, "routetables", deleteRouteTable, getRouteTable, tags);
     }
 
     getContextValue(): string {

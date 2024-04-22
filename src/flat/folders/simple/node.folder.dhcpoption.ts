@@ -26,7 +26,7 @@ export class DhcpOptionsFolderNode extends FiltersFolderNode<FiltersDhcpOptions>
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.dhcpOptionsSetId, "DhcpOption", deleteDhcpOption, getDhcpOption));
+                resources.push(new ResourceNode(this.profile, "", item.dhcpOptionsSetId, "DhcpOption", deleteDhcpOption, getDhcpOption, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

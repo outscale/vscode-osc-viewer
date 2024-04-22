@@ -26,7 +26,7 @@ export class InternetServicesFolderNode extends FiltersFolderNode<FiltersInterne
                     continue;
                 }
 
-                resources.push(new InternetServiceResourceNode(this.profile, "", item.internetServiceId, item.netId === "undefined" ? "unlink" : "link"));
+                resources.push(new InternetServiceResourceNode(this.profile, "", item.internetServiceId, item.netId === "undefined" ? "unlink" : "link", item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

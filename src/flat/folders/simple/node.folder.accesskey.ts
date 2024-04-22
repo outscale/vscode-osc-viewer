@@ -26,7 +26,7 @@ export class AccessKeysFolderNode extends FiltersFolderNode<FiltersAccessKeys> i
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.accessKeyId, "AccessKey", deleteAccessKey, getAccessKey));
+                resources.push(new ResourceNode(this.profile, "", item.accessKeyId, "AccessKey", deleteAccessKey, getAccessKey, undefined));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

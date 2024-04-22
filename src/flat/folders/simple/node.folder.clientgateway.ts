@@ -26,7 +26,7 @@ export class ClientGatewaysFolderNode extends FiltersFolderNode<FiltersClientGat
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.clientGatewayId, "ClientGateway", deleteClientGateway, getClientGateway));
+                resources.push(new ResourceNode(this.profile, "", item.clientGatewayId, "ClientGateway", deleteClientGateway, getClientGateway, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));

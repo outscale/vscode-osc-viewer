@@ -26,7 +26,7 @@ export class SubnetsFolderNode extends FiltersFolderNode<FiltersSubnet> implemen
                     continue;
                 }
 
-                resources.push(new ResourceNode(this.profile, "", item.subnetId, "Subnet", deleteSubnet, getSubnet));
+                resources.push(new ResourceNode(this.profile, "", item.subnetId, "Subnet", deleteSubnet, getSubnet, item.tags));
 
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
