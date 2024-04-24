@@ -410,7 +410,7 @@
     "vscode-extension-tester": "5.2.1"
   },
   "dependencies": {
-    "@types/cytoscape": "^3.19.9",
+    "@types/cytoscape": "^3.21.0",
     "@vscode/l10n": "^0.0.18",
     "cross-fetch": "^4.0.0",
     "outscale-api": "^0.13.0",
