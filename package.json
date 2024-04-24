@@ -2,7 +2,7 @@
   "name": "osc-viewer",
   "displayName": "osc-viewer",
   "description": "Viewer of the resource in the 3DS Outscale Cloud",
-  "version": "0.7.0",
+  "version": "0.8.0",
   "l10n": "./l10n",
   "icon": "resources/outscale.png",
   "publisher": "outscale",
