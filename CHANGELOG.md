@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.8.1]
+### Bugfixes 
+  - Fix Profile name in osc-cost calls
+
 ## [v0.8.0]
 ### Features
   - Display tags when hovering over resources
