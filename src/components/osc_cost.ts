@@ -236,7 +236,7 @@ export async function fetchAccountCost(profile: Profile): Promise<AccountCost> {
         return Promise.reject("Cannot recognize the version of osc-cost. Report to developers");
     }
 
-    const res = await shell.exec(`${oscCostPath} ${defaultArg} --profile ${profile.name}`);
+    const res = await shell.exec(`${oscCostPath} ${defaultArg} --profile "${profile.name}"`);
 
     const accountCost = jsonToAccountCost(res.trim());
     if (typeof accountCost === 'undefined') {
