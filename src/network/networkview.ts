@@ -213,6 +213,10 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 if (typeof route.gatewayId !== 'undefined') {
                     const gatewayId = route.gatewayId;
                     rtEl.forEach((rtId) => {
+                        // Skip the local gateway
+                        if (gatewayId === "local") {
+                            return;
+                        }
                         data.push({
                             data: {
                                 id: 'routes' + rtId + route.gatewayId,
