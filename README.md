@@ -4,7 +4,7 @@
 This extension provides a vscode integrated viewer of cloud resources. It relies on widely use configuration file (~/.osc/config.json or ~/.osc_sdk/config.json).
 
 ## Installation
-Open this extension in the  [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=outscale.osc-viewer)
+Open this extension in the  [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=outscale.osc-viewer) or in [Open VSX Registry](https://open-vsx.org/extension/outscale/osc-viewer).
 ## What is available ?
 ### Add profile into configuration file
 ![Add Profile](./docs/resources/addProfile.gif)

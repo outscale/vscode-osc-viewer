@@ -1,5 +1,13 @@
 # Change Log
 
+## [v0.8.0]
+### Features
+  - Display tags when hovering over resources
+  - Support cost estimation using osc-cost
+  - Add Dedicated Group resource
+### Bugfixes 
+  - Fix network view after API 1.29.3
+  - Fix Account display
 ## [v0.7.0]
 ### Features
   - Add resources links in resource descriptions
