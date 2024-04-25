@@ -19,7 +19,7 @@ import { SubResourceNode } from './flat/resources/types/node.resources.subresour
 import { NetResourceNode } from './flat/resources/node.resources.nets';
 import { init } from './network/networkview';
 import { OscLinkProvider } from './virtual_filesystem/osclinkprovider';
-import { isOscCostEnabled, isOscCostFound, showErrorMessageWithInstallPrompt } from './components/osc_cost';
+import { updateToLatestVersionInstalled, isOscCostEnabled, isOscCostFound, showMessageWithInstallPrompt } from './components/osc_cost';
 import { handleOscViewerUpdateConf } from './configuration/listener';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
@@ -295,12 +295,19 @@ export function activate(context: vscode.ExtensionContext) {
         init(arg.profile, arg.resourceId, context);
     });
 
-    if (isOscCostEnabled() && !isOscCostFound()) {
-        showErrorMessageWithInstallPrompt();
-    }
 
     // Watch Conf Update
     handleOscViewerUpdateConf();
+
+    // Check latest version of osc-cost if enabled
+    if (isOscCostEnabled()) {
+        if (!isOscCostFound()) {
+            const message = vscode.l10n.t("{0} is not found. Do you want to install it ?", "osc-cost");
+            showMessageWithInstallPrompt(vscode.LogLevel.Error, message);
+        } else {
+            updateToLatestVersionInstalled();
+        }
+    }
 
 }
 // this method is called when your extension is deactivated

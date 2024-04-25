@@ -1,6 +1,6 @@
 import * as vscode from 'vscode';
 import { CONFIGURATION_NAME, OSC_COST_PARAMETER } from "../configuration/utils";
-import { isOscCostEnabled, isOscCostFound, showErrorMessageWithInstallPrompt } from '../components/osc_cost';
+import { isOscCostEnabled, isOscCostFound, showMessageWithInstallPrompt } from '../components/osc_cost';
 
 
 export function handleOscViewerUpdateConf() {
@@ -8,7 +8,8 @@ export function handleOscViewerUpdateConf() {
         // Osc-Cost enabled
         if (e.affectsConfiguration(`${CONFIGURATION_NAME}.${OSC_COST_PARAMETER}.enabled`)) {
             if (isOscCostEnabled() && !(isOscCostFound())) {
-                showErrorMessageWithInstallPrompt();
+                const message = vscode.l10n.t("{0} is not found. Do you want to install it ?", "osc-cost");
+                showMessageWithInstallPrompt(vscode.LogLevel.Error, message);
             }
         }
     });
