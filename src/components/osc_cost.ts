@@ -12,7 +12,7 @@ import { VOLUME_FOLDER_NAME } from "../flat/folders/specific/node.folder.volume"
 import { Profile, ResourceNodeType } from "../flat/node";
 import { OutputChannel } from "../logs/output_channel";
 import { Platform, platformArch, shell } from "./shell";
-import { satisfies } from 'compare-versions';
+import { compareVersions, satisfies } from 'compare-versions';
 
 import * as fs from 'fs';
 import * as path from 'path';
@@ -268,8 +268,8 @@ export async function isOscCostWorking(): Promise<boolean> {
     const oscCostPath = getOscCostPath();
 
     if (typeof oscCostPath === 'undefined') {
-        vscode.window.showErrorMessage(vscode.l10n.t("{0} is not found", "osc-cost"));
-        showErrorMessageWithInstallPrompt();
+        const message = vscode.l10n.t("{0} is not found. Do you want to install it ?", "osc-cost");
+        showMessageWithInstallPrompt(vscode.LogLevel.Error, message);
         return false;
     }
 
@@ -328,13 +328,24 @@ function getDefaultOptions(version: string): string | undefined {
     return options[0][1];
 }
 
-export async function showErrorMessageWithInstallPrompt() {
+export async function showMessageWithInstallPrompt(level: vscode.LogLevel.Error | vscode.LogLevel.Warning | vscode.LogLevel.Info, message: string) {
     const tool = "osc-cost";
-    const message = vscode.l10n.t("{0} is not found. Do you want to install it ?", tool);
     const yes = vscode.l10n.t('Yes');
     const noManually = vscode.l10n.t('No, open the documentation');
     const no = vscode.l10n.t('No');
-    const choice = await vscode.window.showErrorMessage(message, yes, noManually, no);
+
+    let choice: string | undefined;
+    switch (level) {
+        case vscode.LogLevel.Info:
+            choice = await vscode.window.showInformationMessage(message, yes, noManually, no);
+            break;
+        case vscode.LogLevel.Warning:
+            choice = await vscode.window.showWarningMessage(message, yes, noManually, no);
+            break;
+        case vscode.LogLevel.Error:
+            choice = await vscode.window.showErrorMessage(message, yes, noManually, no);
+            break;
+    }
     switch (choice) {
         case no:
             return;
@@ -459,4 +470,32 @@ async function installOscCost(p?: vscode.Progress<{ message?: string; increment?
 async function addInstalledPathToExtension(path: string) {
     await updateConfigurationParameter(OSC_COST_PARAMETER + ".oscCostPath", path);
 
+}
+
+export async function updateToLatestVersionInstalled(): Promise<null> {
+    const oscCostPath = getOscCostPath();
+
+    if (typeof oscCostPath === 'undefined') {
+        vscode.window.showErrorMessage(vscode.l10n.t("{0} is not found", "osc-cost"));
+        return Promise.reject();
+    }
+
+    const localOscVersion = await getOscCostVersion(oscCostPath);
+    if (typeof localOscVersion === 'undefined') {
+        vscode.window.showErrorMessage(vscode.l10n.t("Error while retrieving the version of {0}", "osc-cost"));
+        return Promise.reject();
+    }
+
+    const latestVersionAvailable = await getStableVersion();
+    if (typeof latestVersionAvailable === 'undefined') {
+        vscode.window.showErrorMessage(vscode.l10n.t("Error while retrieving the latest available version of {0}", "osc-cost"));
+        return Promise.reject();
+    }
+
+    if (compareVersions(localOscVersion, latestVersionAvailable) < 0) {
+        const message = vscode.l10n.t("A new version of {0} is available, do you want to update it? ({1} -> {2})", "osc-cost", `v${localOscVersion}`, latestVersionAvailable);
+        await showMessageWithInstallPrompt(vscode.LogLevel.Warning, message);
+    }
+
+    return null;
 }
