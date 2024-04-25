@@ -352,12 +352,12 @@ export async function showErrorMessageWithInstallPrompt() {
                 // eslint-disable-next-line @typescript-eslint/no-unused-vars
                 async (p, _) => {
                     p.report({ message: vscode.l10n.t("Installing the latest stable version of {0}", tool) });
-                    await installOscCost(p).catch((reason: string) => {
+                    const path = await installOscCost(p).catch((reason: string) => {
                         vscode.window.showErrorMessage(vscode.l10n.t("Error while installing {0}: {1}", tool, reason));
                         throw vscode.l10n.t("Error while installing {0}: {1}", tool, reason);
                     });
                     p.report({ message: vscode.l10n.t("Adding the path to the user config") });
-                    await addInstalledPathToExtension();
+                    await addInstalledPathToExtension(path);
                 });
             break;
     }
@@ -397,14 +397,14 @@ function defaultInstalledPath(): string {
     return path.join(os.homedir(), `.vs-osc_viewer`);
 }
 
-function defaultBinName(): string {
+function defaultBinName(version: string): string {
     const tool = 'osc-cost';
     const extension = (shell.isUnix()) ? '' : '.exe';
-    return `${tool}${extension}`;
+    return `${tool}-${version}${extension}`;
 }
 
 
-async function installOscCost(p?: vscode.Progress<{ message?: string; increment?: number }>): Promise<null> {
+async function installOscCost(p?: vscode.Progress<{ message?: string; increment?: number }>): Promise<string> {
     const tool = 'osc-cost';
     const extension = (shell.isUnix()) ? '' : '.exe';
     const platform = shell.platform();
@@ -426,7 +426,7 @@ async function installOscCost(p?: vscode.Progress<{ message?: string; increment?
     p?.report({ message: vscode.l10n.t("Latest stable version found is {0}", version) });
 
     const targetDir = defaultInstalledPath();
-    const binName = defaultBinName();
+    const binName = defaultBinName(version);
 
     if (!pathExists(targetDir)) {
         fs.mkdirSync(targetDir);
@@ -453,14 +453,10 @@ async function installOscCost(p?: vscode.Progress<{ message?: string; increment?
         fs.chmodSync(downloadFile, '0750');
     }
 
-    return null;
+    return downloadFile;
 }
 
-async function addInstalledPathToExtension() {
-
-    const targetDir = defaultInstalledPath();
-    const binName = defaultBinName();
-
-    await updateConfigurationParameter(OSC_COST_PARAMETER + ".oscCostPath", path.join(targetDir, binName));
+async function addInstalledPathToExtension(path: string) {
+    await updateConfigurationParameter(OSC_COST_PARAMETER + ".oscCostPath", path);
 
 }
