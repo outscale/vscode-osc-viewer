@@ -65,5 +65,7 @@
     "{0} is not found. Do you want to install it ?": "{0} est introuvable. Voulez-vous l'installer ?",
     "Adding the path to the user config": "Ajout du chemin dans la configuration utilisateur",
     "Latest stable version found is {0}": "La dernière version stable trouvée est {0}",
-    "Refreshed not finished, waiting": "Actualisation non terminée"
+    "Refreshed not finished, waiting": "Actualisation non terminée",
+    "Choose the rules to remove": "Choissisez les règles à supprimer",
+    "Choose the rule category to remove": "Choissisez le type de règles à supprimer"
 }

@@ -86,30 +86,34 @@ export function ruleToString(flow: string, resource: osc.SecurityGroupRule): str
     return stringBuilder;
 }
 
-export function removeRule(profile: Profile, resourceId: string, flow: string, rule: osc.SecurityGroupRule): Promise<string | undefined> {
+export function removeRules(profile: Profile, resourceId: string, flow: string, rules: osc.SecurityGroupRule[]): Promise<string | undefined> {
     const config = getConfig(profile);
 
     // Sanityze the request
-    if (typeof rule.securityGroupsMembers !== "undefined" && rule.securityGroupsMembers.length > 0) {
-        const targetSecurityGroupsMembers: osc.SecurityGroupsMember[] = rule.securityGroupsMembers.map((sgMember) => {
-            if (typeof sgMember.securityGroupId !== 'undefined' && typeof sgMember.securityGroupName !== 'undefined') {
-                return {
-                    securityGroupId: sgMember.securityGroupId,
-                };
-            } else {
-                return {
-                    securityGroupId: sgMember.securityGroupId,
-                    securityGroupName: sgMember.securityGroupName,
-                };
-            }
-        });
-        rule.securityGroupsMembers = targetSecurityGroupsMembers;
-    }
+    const sanitizedRules = rules.map((rule) => {
+        if (typeof rule.securityGroupsMembers !== "undefined" && rule.securityGroupsMembers.length > 0) {
+            const targetSecurityGroupsMembers: osc.SecurityGroupsMember[] = rule.securityGroupsMembers.map((sgMember) => {
+                if (typeof sgMember.securityGroupId !== 'undefined' && typeof sgMember.securityGroupName !== 'undefined') {
+                    return {
+                        securityGroupId: sgMember.securityGroupId,
+                    };
+                } else {
+                    return {
+                        securityGroupId: sgMember.securityGroupId,
+                        securityGroupName: sgMember.securityGroupName,
+                    };
+                }
+            });
+            rule.securityGroupsMembers = targetSecurityGroupsMembers;
+        }
+        return rule;
+    });
+
 
     const parameter: osc.DeleteSecurityGroupRuleOperationRequest = {
         deleteSecurityGroupRuleRequest: {
             flow: flow,
-            rules: [rule],
+            rules: sanitizedRules,
             securityGroupId: resourceId,
         }
     };
@@ -122,3 +126,33 @@ export function removeRule(profile: Profile, resourceId: string, flow: string, r
             return handleRejection(err_);
         });
 }
+
+export function flattenRules(rules: osc.SecurityGroupRule[]): osc.SecurityGroupRule[] {
+    return rules.flatMap((rule) => {
+        const res: osc.SecurityGroupRule[] = [];
+
+        if (typeof rule.ipRanges !== 'undefined') {
+            rule.ipRanges.forEach((ipRange) => {
+                res.push({
+                    fromPortRange: rule.fromPortRange,
+                    toPortRange: rule.toPortRange,
+                    ipProtocol: rule.ipProtocol,
+                    ipRanges: [ipRange]
+                });
+            });
+        }
+
+        if (typeof rule.securityGroupsMembers !== 'undefined') {
+            rule.securityGroupsMembers.forEach((sgMembers) => {
+                res.push({
+                    fromPortRange: rule.fromPortRange,
+                    toPortRange: rule.toPortRange,
+                    ipProtocol: rule.ipProtocol,
+                    securityGroupsMembers: [sgMembers]
+                });
+            });
+        }
+
+        return res;
+    });
+}   
