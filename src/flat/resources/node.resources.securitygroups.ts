@@ -1,6 +1,6 @@
 import * as osc from "outscale-api";
 import * as vscode from 'vscode';
-import { deleteSecurityGroup, getSecurityGroup, removeRule, ruleToString } from "../../cloud/securitygroups";
+import { deleteSecurityGroup, flattenRules, getSecurityGroup, removeRules, ruleToString } from "../../cloud/securitygroups";
 import { Profile } from '../node';
 import { ResourceNode } from './node.resources';
 import { SubResourceNode } from "./types/node.resources.subresource";
@@ -63,7 +63,11 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
             flow = pickItems[0].label;
         }
 
-        let rule: osc.SecurityGroupRule;
+        // Flatten the rules to have fined grained selection
+        rules = flattenRules(rules);
+
+        // Ask for which rules to remove
+        let selectedRules: osc.SecurityGroupRule[];
         if (rules.length > 1) {
             const pickItems = rules.map((element) => {
                 return {
@@ -73,21 +77,21 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
                 };
             });
 
-            const value = await vscode.window.showQuickPick(pickItems);
+            const value = await vscode.window.showQuickPick(pickItems, { title: vscode.l10n.t("Choose the rules to remove"), canPickMany: true });
 
-            if (!value) {
+            if (typeof value === 'undefined') {
                 return Promise.resolve(vscode.l10n.t("Deletion of subresource cancelled"));
             }
-            rule = value.item;
+            selectedRules = value.map((element) => element.item);
         } else {
-            rule = rules[0];
+            selectedRules = [rules[0]];
         }
 
-        if (typeof rule === "undefined") {
+        if (typeof selectedRules === "undefined") {
             return Promise.resolve(vscode.l10n.t("The subresource is incomplete"));
         }
 
-        return removeRule(this.profile, this.resourceId, flow, rule);
+        return removeRules(this.profile, this.resourceId, flow, selectedRules);
     }
 
     async removeAllSubresources(): Promise<string | undefined> {
@@ -99,7 +103,7 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         // Inbound
         if (typeof sg.inboundRules !== 'undefined' && sg.inboundRules.length > 0) {
             for (const rule of sg.inboundRules) {
-                const res = await removeRule(this.profile, this.resourceId, "Inbound", rule);
+                const res = await removeRules(this.profile, this.resourceId, "Inbound", [rule]);
                 if (typeof res === 'string') {
                     return res;
                 }
@@ -109,7 +113,7 @@ export class SecurityGroupResourceNode extends ResourceNode implements SubResour
         // Outbound
         if (typeof sg.outboundRules !== 'undefined' && sg.outboundRules.length > 0) {
             for (const rule of sg.outboundRules) {
-                const res = await removeRule(this.profile, this.resourceId, "Outbound", rule);
+                const res = await removeRules(this.profile, this.resourceId, "Outbound", [rule]);
                 if (typeof res === 'string') {
                     return res;
                 }
