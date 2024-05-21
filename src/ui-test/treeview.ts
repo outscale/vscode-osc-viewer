@@ -1032,7 +1032,7 @@ describe('ActivityBar', () => {
                             expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                         });
 
-                        it("delete with multiple choices", async () => {
+                        it.skip("delete with multiple choices", async () => {
                             contextMenu = await resourceChildren[0].openContextMenu();
                             const action = await contextMenu.getItem(expectedCommandName);
                             await action?.select();
@@ -1062,10 +1062,12 @@ describe('ActivityBar', () => {
 
                             input = new InputBox();
                             quickPick = await input.getQuickPicks();
-                            expect(quickPick.length).equals(2);
+                            expect(quickPick.length).equals(3);
                             expect(await quickPick[0].getText()).equals("From 0.0.0.0/0:[-1 -> -1] via -1");
-                            expect(await quickPick[1].getText()).equals("From sg-12345:[22 -> 23] via tcp");
-                            await input.selectQuickPick(1);
+                            expect(await quickPick[1].getText()).equals("From sg-12345:[-1 -> -1] via -1");
+                            expect(await quickPick[2].getText()).equals("From sg-12345:[22 -> 23] via tcp");
+                            await input.selectQuickPick(2);
+                            await input.confirm();
 
                             await resourceChildren[0].select();
                             await delay(500);

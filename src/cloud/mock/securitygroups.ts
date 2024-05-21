@@ -10,6 +10,13 @@ let securityGroups: osc.SecurityGroup[] = [
                 fromPortRange: -1,
                 ipProtocol: "-1",
                 ipRanges: ["0.0.0.0/0"],
+                securityGroupsMembers: [
+                    {
+                        accountId: "123456789",
+                        securityGroupId: "sg-12345",
+                        securityGroupName: "first-sg"
+                    }
+                ],
                 toPortRange: -1,
             },
             {
