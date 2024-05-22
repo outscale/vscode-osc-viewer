@@ -1,5 +1,10 @@
 # Change Log
 
+## [v0.9.0]
+### Features 
+  - Install the latest version available of osc-cost
+  - Rework security group removals (multiple selection)
+
 ## [v0.8.1]
 ### Bugfixes 
   - Fix Profile name in osc-cost calls
