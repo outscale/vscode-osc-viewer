@@ -63,7 +63,7 @@ const profile: any = {
         "region": "eu-west-2"
     }
 };
-const settingPath = path.join("test-resources", "settings", "User", "settings.json");
+const settingPath = path.join("/tmp", "test-resources", "settings", "User", "settings.json");
 
 
 function getButtonTitle(action: string): string {
