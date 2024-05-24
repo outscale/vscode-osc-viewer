@@ -250,11 +250,6 @@ describe('ActivityBar', () => {
             expect(welcomeContent).not.undefined;
         });
 
-        it.skip('Has no profile', async () => {
-            const visibleItem = await section.getVisibleItems();
-            expect(visibleItem.length).equals(0, "Should no have any profile");
-        });
-
         describe('Test with old configuration file path', async () => {
             const OLD_FILE_PATH = path.join(homedir(), ".osc_sdk", "config.json");
             before(async () => {
