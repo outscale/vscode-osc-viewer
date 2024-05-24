@@ -61,7 +61,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
                 };
             });
 
-            const value = await vscode.window.showQuickPick(pickItems);
+            const value = await vscode.window.showQuickPick(pickItems, { ignoreFocusOut: true });
 
             if (!value) {
                 return Promise.resolve(vscode.l10n.t("Unlink cancelled"));
@@ -98,7 +98,7 @@ export class RouteTableResourceNode extends ResourceNode implements LinkResource
                 };
             });
 
-            const value = await vscode.window.showQuickPick(pickItems);
+            const value = await vscode.window.showQuickPick(pickItems, { ignoreFocusOut: true });
 
             if (!value) {
                 return Promise.resolve(vscode.l10n.t("Deletion of subresource cancelled"));
