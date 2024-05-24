@@ -550,7 +550,7 @@ describe('ActivityBar', () => {
                         await editorView.closeEditor("AK.json");
                     });
 
-                    it.skip("refresh the state", async () => {
+                    it("refresh the state", async () => {
                         await resourceChildren[0].click();
                         await delay(500);
 
@@ -569,7 +569,7 @@ describe('ActivityBar', () => {
                         const accessKey2 = osc.AccessKeyFromJSON(JSON.parse(data));
 
                         expect(accessKey.lastModificationDate).not.equals(accessKey2.lastModificationDate);
-                        await editorView.closeEditor("AK");
+                        await editorView.closeEditor("AK.json");
                     });
 
                     describe("Context menu", () => {
@@ -1040,7 +1040,7 @@ describe('ActivityBar', () => {
                             expect(await contextMenu.hasItem(expectedCommandName)).equals(true);
                         });
 
-                        it.skip("delete with multiple choices", async () => {
+                        it("delete with multiple choices", async () => {
                             contextMenu = await resourceChildren[0].openContextMenu();
                             const action = await contextMenu.getItem(expectedCommandName);
                             await action?.select();
@@ -1062,19 +1062,19 @@ describe('ActivityBar', () => {
                             let input = new InputBox();
 
                             // Select Inbound
-                            let quickPick = await input.getQuickPicks();
+                            const quickPick = await input.getQuickPicks();
                             expect(quickPick.length).equals(2);
                             expect(await quickPick[0].getText()).equals("Inbound");
                             expect(await quickPick[1].getText()).equals("Outbound");
                             await input.selectQuickPick('Inbound');
 
                             input = new InputBox();
-                            quickPick = await input.getQuickPicks();
-                            expect(quickPick.length).equals(3);
-                            expect(await quickPick[0].getText()).equals("From 0.0.0.0/0:[-1 -> -1] via -1");
-                            expect(await quickPick[1].getText()).equals("From sg-12345:[-1 -> -1] via -1");
-                            expect(await quickPick[2].getText()).equals("From sg-12345:[22 -> 23] via tcp");
-                            await input.selectQuickPick(2);
+                            const checkboxes = await input.getCheckboxes();
+                            expect(checkboxes.length).equals(3);
+                            expect(await checkboxes[0].getText()).equals("From 0.0.0.0/0:[-1 -> -1] via -1");
+                            expect(await checkboxes[1].getText()).equals("From sg-12345:[-1 -> -1] via -1");
+                            expect(await checkboxes[2].getText()).equals("From sg-12345:[22 -> 23] via tcp");
+                            await checkboxes[2].click();
                             await input.confirm();
 
                             await resourceChildren[0].select();
