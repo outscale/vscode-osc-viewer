@@ -46,7 +46,7 @@ export class VirtualGatewayResourceNode extends ResourceNode implements LinkReso
                 };
             });
 
-            const value = await vscode.window.showQuickPick(pickItems);
+            const value = await vscode.window.showQuickPick(pickItems, { ignoreFocusOut: true });
 
             if (!value) {
                 return Promise.resolve(vscode.l10n.t("Unlink cancelled"));
