@@ -77,6 +77,11 @@ describe('ActivityBar', () => {
     let content: ViewContent;
 
     before(async () => {
+
+        // Empty file to avoid the config file error notification
+        createConfigFile();
+        fs.writeFileSync(getDefaultConfigFilePath(), "{}");
+
         // make sure the view is open
         const expectedTitle = pjson["contributes"]["viewsContainers"]["activitybar"][0]["title"];
         const tempView = await new ActivityBar().getViewControl(expectedTitle);
@@ -112,11 +117,17 @@ describe('ActivityBar', () => {
             action = await titlePart.getAction(expectedCommandName);
         });
 
+        after(async () => {
+            // Reset the configuration file
+            createConfigFile();
+            fs.writeFileSync(getDefaultConfigFilePath(), "{}");
+        });
+
         it('exists', async () => {
             expect(action).not.undefined;
         });
 
-        it.skip('open dialog', async function() {
+        it('open dialog', async function() {
             await action.click();
             const input = new InputBox();
             // Check the title
@@ -195,7 +206,7 @@ describe('ActivityBar', () => {
             expect(action).not.undefined;
         });
 
-        it.skip('open the profile', async () => {
+        it('open the profile', async () => {
             await action.click();
             const editorView = new EditorView();
             const titles = await editorView.getOpenEditorTitles();
@@ -215,7 +226,9 @@ describe('ActivityBar', () => {
             expect(action).not.undefined;
         });
 
-        it.skip('open the settings', async () => {
+        it('open the settings', async () => {
+            const expectedCommandName = getButtonTitle("osc.openParameter");
+            action = await titlePart.getAction(expectedCommandName);
             await action.click();
             const editorView = new EditorView();
             const titles = await editorView.getOpenEditorTitles();
@@ -375,7 +388,7 @@ describe('ActivityBar', () => {
                         children = await firstProfile.getChildren();
                     });
 
-                    it.skip("exists", async () => {
+                    it("exists", async () => {
                         for (const el of children) {
                             const action = await el.getActionButton(expectedCommandName);
                             expect(action).not.undefined;
@@ -409,7 +422,7 @@ describe('ActivityBar', () => {
                         await (new Workbench()).executeCommand("osc-viewer: Refresh");
                     });
 
-                    it.skip("exists", async () => {
+                    it("exists", async () => {
                         for (const el of children) {
                             const action = await el.getActionButton(expectedCommandName);
                             // Images is not filtered right now
@@ -421,7 +434,7 @@ describe('ActivityBar', () => {
                         }
                     });
 
-                    it.skip("add a filters to the resource", async () => {
+                    it("add a filters to the resource", async () => {
                         const el = children[0];
                         const elLabel = await el.getLabel();
                         // Click on the button
@@ -485,12 +498,12 @@ describe('ActivityBar', () => {
                         await (new Workbench()).executeCommand("osc-viewer: Refresh");
                     });
 
-                    it.skip("exists", async () => {
+                    it("exists", async () => {
                         const action = await children[0].getActionButton(expectedCommandName);
                         expect(action).not.undefined;
                     });
 
-                    it.skip("delete the filters", async () => {
+                    it("delete the filters", async () => {
                         const action = await children[0].getActionButton(expectedCommandName);
                         await action?.click();
 
