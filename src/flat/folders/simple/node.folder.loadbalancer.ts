@@ -1,9 +1,9 @@
 import * as vscode from 'vscode';
-import { deleteLoadBalancer, getLoadBalancer, getLoadBalancers } from '../../../cloud/loadbalancers';
+import { getLoadBalancers } from '../../../cloud/loadbalancers';
 import { ExplorerNode, ExplorerFolderNode, Profile, resourceNodeCompare } from '../../node';
 import { FiltersFolderNode } from '../node.filterfolder';
-import { ResourceNode } from '../../resources/node.resources';
 import { FiltersLoadBalancer, FiltersLoadBalancerFromJSON } from 'outscale-api';
+import { LoadBalancerResourceNode } from '../../resources/node.resources.loadbalancers';
 
 export const LOADBALANCER_FOLDER_NAME = "LoadBalancers";
 export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalancer> implements ExplorerFolderNode {
@@ -23,7 +23,8 @@ export class LoadBalancerFolderNode extends FiltersFolderNode<FiltersLoadBalance
                 if (typeof lb.loadBalancerName === 'undefined') {
                     continue;
                 }
-                resources.push(new ResourceNode(this.profile, "", lb.loadBalancerName, "loadbalancers", deleteLoadBalancer, getLoadBalancer, lb.tags));
+
+                resources.push(new LoadBalancerResourceNode(this.profile, "", lb.loadBalancerName, lb.tags));
             }
             return Promise.resolve(resources.sort(resourceNodeCompare));
         });
