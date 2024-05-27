@@ -19,6 +19,7 @@ export interface ExplorerResourceNode extends ExplorerProfileNode {
     getResourceId(): Promise<string | undefined>
     getIconPath(): vscode.ThemeIcon;
     getResourceName(): string;
+    getHoverExtraData(): vscode.MarkdownString | undefined;
 }
 
 export interface ExplorerFolderNode extends ExplorerProfileNode {
