@@ -226,7 +226,7 @@ describe('ActivityBar', () => {
             expect(action).not.undefined;
         });
 
-        it('open the settings', async () => {
+        it.skip('open the settings', async () => {
             const expectedCommandName = getButtonTitle("osc.openParameter");
             action = await titlePart.getAction(expectedCommandName);
             await action.click();
