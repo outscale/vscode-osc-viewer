@@ -94,3 +94,21 @@ export function deleteLoadBalancer(profile: Profile, resourceId: string): Promis
             return handleRejection(err_);
         });
 }
+
+// Read The health of backends
+export function getLoadBalancerHealth(profile: Profile, resourceId: string): Promise<osc.BackendVmHealth[] | undefined | string> {
+    const config = getConfig(profile);
+    const parameter: osc.ReadVmsHealthOperationRequest = {
+        readVmsHealthRequest: {
+            loadBalancerName: resourceId,
+        }
+    };
+
+    const api = new osc.LoadBalancerApi(config);
+    return api.readVmsHealth(parameter)
+        .then((res: osc.ReadVmsHealthResponse) => {
+            return res.backendVmHealth;
+        }, (err_: any) => {
+            return handleRejection(err_);
+        });
+}
