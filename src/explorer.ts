@@ -11,12 +11,12 @@ export class OscExplorer implements vscode.TreeDataProvider<ExplorerNode> {
     readonly onDidChangeTreeData: vscode.Event<ExplorerNode | undefined | void> = this._onDidChangeTreeData.event;
     private waitFor = 0; // Counter to not spam the API/tools when they are already executed (here osc-cost)
 
-    refresh(): void {
+    refresh(element: ExplorerNode | undefined): void {
         if (this.waitFor !== 0) {
             vscode.window.showInformationMessage(vscode.l10n.t("Refreshed not finished, waiting"));
             return;
         }
-        this._onDidChangeTreeData.fire();
+        this._onDidChangeTreeData.fire(element);
     }
 
     getTreeItem(element: ExplorerNode): vscode.TreeItem {
