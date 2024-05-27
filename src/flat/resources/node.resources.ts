@@ -39,6 +39,10 @@ export class ResourceNode implements ExplorerResourceNode {
         return this.resourceId;
     }
 
+    getHoverExtraData(): vscode.MarkdownString | undefined {
+        return undefined;
+    }
+
 
     getTreeItem(): vscode.TreeItem {
         const treeItem = new vscode.TreeItem(this.resourceId, vscode.TreeItemCollapsibleState.None);
@@ -56,6 +60,9 @@ export class ResourceNode implements ExplorerResourceNode {
             "arguments": [this]
         };
         treeItem.contextValue = this.getContextValue();
+
+        // Tooltip
+        let tooltip = this.getHoverExtraData();
         if (typeof this.tags !== 'undefined') {
             const markdown = new vscode.MarkdownString();
             markdown.appendMarkdown("**Tags**:");
@@ -63,8 +70,14 @@ export class ResourceNode implements ExplorerResourceNode {
                 markdown.appendMarkdown(`\n- **${tag.key}**: ${tag.value}`);
             }
 
-            treeItem.tooltip = markdown;
+            if (typeof tooltip === 'undefined') {
+                tooltip = markdown;
+            } else {
+                tooltip.appendMarkdown(markdown.value);
+            }
         }
+        treeItem.tooltip = tooltip;
+
         return treeItem;
     }
 

@@ -60,4 +60,20 @@ export class LoadBalancerResourceNode extends ResourceNode {
 
     }
 
+    getHoverExtraData(): vscode.MarkdownString | undefined {
+        if ((typeof this.resourceHealth === 'undefined') || (typeof this.resourceHealth === 'string')) {
+            return undefined;
+        }
+        const markdown = new vscode.MarkdownString();
+        markdown.appendMarkdown("**Backend Vms Health**:");
+        markdown.appendMarkdown("\n| VmId | State | State Reason | Description |");
+        markdown.appendMarkdown("\n| --- | --- | --- | --- |");
+        this.resourceHealth.forEach((backendVm) => {
+            markdown.appendMarkdown(`\n| ${backendVm.vmId} | ${backendVm.state} | ${typeof backendVm.stateReason === 'undefined' ? "-" : backendVm.stateReason} | ${typeof backendVm.description === 'undefined' ? "-" : backendVm.description} |`);
+        });
+        markdown.appendMarkdown("\n---\n"); // Add a section delimiter
+
+        return markdown;
+    }
+
 }
