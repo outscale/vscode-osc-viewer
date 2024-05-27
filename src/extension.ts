@@ -61,7 +61,7 @@ export function activate(context: vscode.ExtensionContext) {
         treeDataProvider: profileProvider,
         canSelectMany: true,
     });
-    vscode.commands.registerCommand('profile.refreshEntry', () => profileProvider.refresh());
+    vscode.commands.registerCommand('profile.refreshEntry', (arg) => profileProvider.refresh(arg));
     vscode.commands.registerCommand('profile.configure', () => profileProvider.openConfigFile());
     vscode.commands.registerCommand('profile.addEntry', () => multiStepInput());
 
