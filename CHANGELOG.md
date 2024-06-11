@@ -1,5 +1,15 @@
 # Change Log
 
+## [v0.10.0]
+### Features 
+  - Show LoadBalancer Health on UI and on hover
+
+### Changes
+  - Modify the behavior of dialog view, does not disappear when focusing out
+
+### Bugfixes 
+  - Fix plugin after 1.90.0 vscode
+
 ## [v0.9.0]
 ### Features 
   - Install the latest version available of osc-cost
