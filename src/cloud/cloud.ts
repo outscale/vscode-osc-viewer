@@ -6,7 +6,6 @@ import { ResponseError } from "outscale-api";
 import { OutputChannel } from "../logs/output_channel";
 
 global.Headers = fetch.Headers;
-global.crypto = require('crypto');
 
 function getVersion(): string {
     const extensionContext = vscode.extensions.getExtension('outscale.osc-viewer');
