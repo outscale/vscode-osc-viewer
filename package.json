@@ -413,7 +413,7 @@
   "dependencies": {
     "@types/cytoscape": "^3.21.4",
     "@vscode/l10n": "^0.0.18",
-    "compare-versions": "^5.0.3",
+    "compare-versions": "^6.1.1",
     "cross-fetch": "^4.0.0",
     "outscale-api": "^0.14.0",
     "rxjs": "^7.5.7",
