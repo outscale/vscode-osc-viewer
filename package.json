@@ -418,6 +418,6 @@
     "outscale-api": "^0.14.0",
     "rxjs": "^7.5.7",
     "shelljs": "^0.8.5",
-    "true-myth": "^6.2.0"
+    "true-myth": "^8.0.1"
   }
 }
