@@ -411,7 +411,7 @@
     "vscode-extension-tester": "8.2.0"
   },
   "dependencies": {
-    "@types/cytoscape": "^3.21.4",
+    "@types/cytoscape": "^3.21.8",
     "@vscode/l10n": "^0.0.18",
     "compare-versions": "^5.0.3",
     "cross-fetch": "^4.0.0",
