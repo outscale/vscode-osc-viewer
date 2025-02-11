@@ -22,6 +22,7 @@ export function getAccounts(profile: Profile): Promise<Array<osc.Account> | stri
         });
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export function getAccount(profile: Profile, _: string): Promise<osc.Account | undefined | string> {
     const config = getConfig(profile);
     const readParameters: osc.ReadAccountsOperationRequest = {
