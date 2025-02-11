@@ -1,5 +1,11 @@
 # Change Log
 
+## [v0.10.1]
+### Bugfixes 
+  - Fix Refresh button
+### Changes
+  - Update Outscale to 0.17
+
 ## [v0.10.0]
 ### Features 
   - Show LoadBalancer Health on UI and on hover
