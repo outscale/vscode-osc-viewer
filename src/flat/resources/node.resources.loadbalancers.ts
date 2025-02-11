@@ -19,7 +19,7 @@ export class LoadBalancerResourceNode extends ResourceNode {
         this.resourceHealth = undefined;
         getLoadBalancerHealth(this.profile, this.resourceId).then(health => {
             this.resourceHealth = health;
-            vscode.commands.executeCommand("profile.refreshEntry", this);
+            vscode.commands.executeCommand("profile.refreshSpecificData", this);
         });
     }
 
