@@ -414,7 +414,7 @@
     "@types/cytoscape": "^3.21.8",
     "@vscode/l10n": "^0.0.18",
     "compare-versions": "^6.1.1",
-    "cross-fetch": "^4.0.0",
+    "cross-fetch": "^4.1.0",
     "outscale-api": "^0.17.0",
     "rxjs": "^7.8.1",
     "shelljs": "^0.8.5",
