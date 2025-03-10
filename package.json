@@ -417,7 +417,7 @@
     "cross-fetch": "^4.1.0",
     "outscale-api": "^0.17.0",
     "rxjs": "^7.8.2",
-    "shelljs": "^0.8.5",
+    "shelljs": "^0.9.1",
     "true-myth": "^8.0.1"
   }
 }
