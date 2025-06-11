@@ -1,5 +1,9 @@
 # Change Log
 
+## [v0.11.0]
+### Changes
+  - Update Outscale to 0.19
+
 ## [v0.10.1]
 ### Bugfixes 
   - Fix Refresh button
