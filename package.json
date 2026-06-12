@@ -388,7 +388,7 @@
     "@types/chai": "^4.3.3",
     "@types/glob": "^7.2.0",
     "@types/mocha": "^9.1.1",
-    "@types/node": "^18.18.x",
+    "@types/node": "^18.18.6",
     "@types/shelljs": "^0.8.11",
     "@types/sinon": "^10.0.13",
     "@types/vscode": "^1.73.0",
