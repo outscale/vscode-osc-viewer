@@ -407,7 +407,7 @@
     "ts-mock-imports": "^1.3.8",
     "typescript": "^5.2.2",
     "typescript-formatter": "^7.2.2",
-    "@vscode/vsce": "^2.8.0",
+    "@vscode/vsce": "^2.32.0",
     "vscode-extension-tester": "8.2.0"
   },
   "dependencies": {
