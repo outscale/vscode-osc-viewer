@@ -8,8 +8,8 @@ jobs:
   github-sanity-scan:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@ee0669bd1cc54295c223e0bb666b733df41de1c5 # v2
     - name: Github sanity scanner
-      uses: outscale/github-sanity-scan@main
+      uses: outscale/github-sanity-scan@380a9927b4be45d9c4f6f66a4e8dfd7cf7b18513 # main
       with:
         no-pull-request-target: true
