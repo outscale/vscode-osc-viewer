@@ -395,7 +395,7 @@
     "@typescript-eslint/eslint-plugin": "^5.33.0",
     "@typescript-eslint/parser": "^5.33.0",
     "@vscode/l10n-dev": "^0.0.22",
-    "chai": "^4.3.6",
+    "chai": "^4.5.0",
     "clipboardy": "^2.3.0",
     "esbuild": "^0.14.51",
     "eslint": "^8.14.0",
