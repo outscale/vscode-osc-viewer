@@ -1,5 +1,5 @@
 # Github action for releasing the binaries
-name: Publish
+name: Build
 
 on:
   pull_request:
@@ -9,6 +9,9 @@ on:
     branches:
       - main
   workflow_dispatch:  
+
+permissions:
+  contents: read
 
 jobs:
   format:
