@@ -17,6 +17,8 @@
     "osc.copyResourceId": "Copier l'identifiant de la resource",
     "osc.showConsoleLogs": "Voir les logs de console",
     "osc.refreshConsoleLogs": "Rafraîchir les logs de console",
+    "osc.showPodLogs": "Voir les logs du Pod",
+    "osc.refreshPodLogs": "Rafraîchir les logs du Pod",
     "osc.showAccountInfo": "Voir les informations du compte",
     "osc.copyAccessKey": "Copier l'Access Key",
     "osc.copySecretKey": "Copier la Secret Key",
@@ -29,7 +31,12 @@
     "osc.teardownNet": "Détruire",
     "osc.retrieveAdminPassword": "Copier le mot de passe administrateur",
     "osc.showNetworkView": "(Beta) Afficher la vue VPC",
+    "osc.showOksView": "(Beta) Afficher la vue OKS",
     "viewsWelcome.text": "Pour utiliser l'extension 3DS Outscale, vous devez configurer des profiles dans le fichier de configuration.\n[Ouvrir le fichier de configuration](command:profile.configure)\n[Ajouter un profile](command:profile.addEntry)\n",
     "osc-viewer.costEstimation.enabled": "Calcul l'estimation du coût des comptes Cloud.",
-    "osc-viewer.costEstimation.oscCostPath": "Chemin du binaire osc-cost."
+    "osc-viewer.costEstimation.oscCostPath": "Chemin du binaire osc-cost.",
+    "osc-viewer.networkView.liveRefresh.enabled": "Rafraîchissement automatique de la vue Net (mode tableau de bord en direct).",
+    "osc-viewer.networkView.liveRefresh.interval": "Interval en seconde pour le rafraîchissement de la vue Net en mode direct.",
+    "osc-viewer.oksView.liveRefresh.enabled": "Rafraîchissement automatique de la vue OKS (mode tableau de bord en direct).",
+    "osc-viewer.oksView.liveRefresh.interval": "Interval en seconde pour le rafraîchissement de la vue OKS en mode direct."
 }

@@ -23,7 +23,7 @@ export interface Shell {
     isWindows(): boolean;
     isUnix(): boolean;
     platform(): Platform;
-    exec(cmd: string): Promise<string>;
+    exec(cmd: string, maxBuffer?: number): Promise<string>;
     which(bin: string): string | null;
 }
 
@@ -65,8 +65,10 @@ export function platformArch(): string | undefined {
 }
 
 
-async function exec(cmd: string): Promise<string> {
-    const { stdout } = await innerExec(cmd);
+async function exec(cmd: string, maxBuffer?: number): Promise<string> {
+    // encoding: 'utf8' pins util.promisify(exec)'s overload to the string-returning one; without
+    // it, passing an options object at all resolves to the string | Buffer overload instead.
+    const { stdout } = await innerExec(cmd, { encoding: 'utf8', ...(typeof maxBuffer === 'number' ? { maxBuffer } : {}) });
     return stdout;
 }
 

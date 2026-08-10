@@ -4,6 +4,34 @@ let vscode                 // VS Code API instance, can only be fetched once
 let labelField = 'label'   // Which field to show in labels
 let showEdges = true
 let imagePrefix
+let liveEnabled = false    // Whether the dashboard auto-refreshes itself
+let lastUpdated            // Timestamp (ms) of the last data refresh
+let previousStates = new Map() // resourceId -> state, as of the last refresh
+let hasLoadedOnce = false  // Avoid flashing every node as "changed" on the first load
+
+// Resource state -> status category, for dashboard-style health at a glance
+const STATE_CATEGORIES = {
+  running: 'healthy',
+  available: 'healthy',
+  pending: 'warning',
+  stopping: 'warning',
+  'shutting-down': 'warning',
+  deleting: 'warning',
+  stopped: 'critical',
+  terminated: 'critical',
+  deleted: 'critical',
+  quarantine: 'critical'
+}
+
+const CATEGORY_COLORS = {
+  healthy: '#3fb950',
+  warning: '#d29922',
+  critical: '#f85149'
+}
+
+function stateColor(state) {
+  return CATEGORY_COLORS[STATE_CATEGORIES[state]]
+}
 
 //
 // Initialize the Cytoscope container, and send message we're done
@@ -70,6 +98,13 @@ function init(prefix) {
 
   cy.navigator(defaults)
 
+  // Flashed onto a node for a moment when its resource state changes between two live refreshes
+  cy.style().selector('.state-changed').style({
+    'overlay-color': '#58a6ff',
+    'overlay-opacity': 0.45,
+    'overlay-padding': '10px'
+  }).update()
+
   // Send message that we're initialized and ready for data
   vscode = acquireVsCodeApi()
   vscode.postMessage({ command: 'initialized' })
@@ -79,6 +114,13 @@ function init(prefix) {
 // Called with new or refreshed data
 //
 function displayData(data) {
+  const newStates = new Map()
+  data.forEach(el => {
+    if (el.group === 'nodes' && typeof el.data.state !== 'undefined') {
+      newStates.set(el.data.id, el.data.state)
+    }
+  })
+
   cy.remove('*')
   cy.add(data)
   var api = cy.expandCollapse('get')
@@ -91,6 +133,57 @@ function displayData(data) {
   })
 
   reLayout()
+  updateHealthSummary(newStates)
+  flashStateChanges(newStates)
+
+  previousStates = newStates
+  hasLoadedOnce = true
+}
+
+//
+// Small "N tracked · X healthy · Y transitioning · Z down" summary, dashboard-style
+//
+function updateHealthSummary(states) {
+  const summary = document.getElementById('health-summary')
+  if (!summary) {
+    return
+  }
+  if (states.size === 0) {
+    summary.textContent = ''
+    return
+  }
+  let healthy = 0
+  let warning = 0
+  let critical = 0
+  states.forEach(state => {
+    const category = STATE_CATEGORIES[state]
+    if (category === 'healthy') {
+      healthy += 1
+    } else if (category === 'warning') {
+      warning += 1
+    } else if (category === 'critical') {
+      critical += 1
+    }
+  })
+  summary.textContent = states.size + ' tracked · ' + healthy + ' healthy · ' + warning + ' transitioning · ' + critical + ' down'
+}
+
+//
+// Flash nodes whose resource state changed since the previous refresh
+//
+function flashStateChanges(newStates) {
+  if (!hasLoadedOnce) {
+    return
+  }
+  newStates.forEach((state, id) => {
+    const previous = previousStates.get(id)
+    if (typeof previous !== 'undefined' && previous !== state) {
+      const node = cy.getElementById(id)
+      if (node.nonempty()) {
+        node.flashClass('state-changed', 1500)
+      }
+    }
+  })
 }
 
 //
@@ -112,11 +205,20 @@ function reLayout() {
     'background-opacity': node => { return node.data('color') === undefined ? 0 : 1 },
     'background-width': '100%',
     'background-height': '100%',
-    'width': '128px',
-    'height': '128px',
+    'width': node => node.data('size') || '128px',
+    'height': node => node.data('size') || '128px',
     'font-family': 'system-ui',
-    'font-size': '20px',
-    'shape': 'rectangle',
+    'font-size': node => node.data('size') ? '11px' : '20px',
+    'text-max-width': node => node.data('size') ? '90px' : '9999px',
+    'text-wrap': node => node.data('size') ? 'ellipsis' : 'none',
+    'shape': node => node.data('shape') || 'rectangle',
+  })
+
+  // Status border for resources exposing a lifecycle state (VM, NAT service, virtual gateway, ...)
+  cy.style().selector('node[state]').style({
+    'border-width': node => (stateColor(node.data('state')) === undefined ? 0 : 3),
+    'border-color': node => stateColor(node.data('state')),
+    'border-opacity': node => (stateColor(node.data('state')) === undefined ? 0 : 1),
   })
 
   // Bounding box for selected nodes
@@ -215,8 +317,49 @@ window.addEventListener('message', event => {
 
     // Call main display function (above)
     displayData(message.payload)
+
+    // Dashboard live status (may have been toggled from the settings, keep the button in sync)
+    liveEnabled = message.live
+    lastUpdated = message.lastUpdated
+    updateLiveIndicator()
   }
 })
+
+//
+// Toggle live auto-refresh (dashboard mode) on/off
+//
+function toggleLive() {
+  liveEnabled = !liveEnabled
+  vscode.postMessage({ command: 'toggleLive', payload: { enabled: liveEnabled } })
+  updateLiveIndicator()
+}
+
+//
+// Reflect the live/refreshed-at state onto the toolbar
+//
+function updateLiveIndicator() {
+  const button = document.getElementById('live-toggle')
+  if (button) {
+    button.classList.toggle('live', liveEnabled)
+  }
+  updateLiveStatusText()
+}
+
+function updateLiveStatusText() {
+  const status = document.getElementById('live-status')
+  if (!status) {
+    return
+  }
+  if (typeof lastUpdated === 'undefined') {
+    status.textContent = ''
+    return
+  }
+  const seconds = Math.max(0, Math.round((Date.now() - lastUpdated) / 1000))
+  status.textContent = 'Updated ' + seconds + 's ago'
+}
+
+// Tick the "Updated Xs ago" label every second, independently of the actual refresh rate
+setInterval(updateLiveStatusText, 1000)
 
 
 function exportPNG() {

@@ -9,6 +9,8 @@ import { ResourceNode } from './flat/resources/node.resources';
 import { VmResourceNode } from './flat/resources/node.resources.vms';
 import { OscVirtualContentProvider, computeUri } from './virtual_filesystem/oscvirtualfs';
 import { LogsProvider } from './virtual_filesystem/logs';
+import { KubeLogsProvider } from './virtual_filesystem/kubelogs';
+import { KubeObjectResourceNode } from './flat/resources/node.resources.kubeobject';
 import { ProfileNode } from './flat/node.profile';
 import { FolderNode } from './flat/folders/node.folder';
 import { FiltersFolderNode } from './flat/folders/node.filterfolder';
@@ -18,9 +20,12 @@ import { LinkResourceNode } from './flat/resources/types/node.resources.link';
 import { SubResourceNode } from './flat/resources/types/node.resources.subresource';
 import { NetResourceNode } from './flat/resources/node.resources.nets';
 import { init } from './network/networkview';
+import { init as initOksView } from './network/oksview';
+import { OksClusterResourceNode } from './flat/resources/node.resources.oksclusters';
 import { OscLinkProvider } from './virtual_filesystem/osclinkprovider';
 import { updateToLatestVersionInstalled, isOscCostEnabled, isOscCostFound, showMessageWithInstallPrompt } from './components/osc_cost';
 import { handleOscViewerUpdateConf } from './configuration/listener';
+import { cleanupCachedKubeconfigs } from './cloud/kube';
 
 function getMultipleSelection<T>(mainSelectedItem: T, allSelectedItems?: any[]): T[] {
     if (typeof allSelectedItems === 'undefined') {
@@ -100,7 +105,7 @@ export function activate(context: vscode.ExtensionContext) {
             if (!(folder instanceof ResourceNode)) {
                 continue;
             }
-            showYesOrNoWindow(vscode.l10n.t(`Do you want to delete the resource {0} ?`, folder.getResourceName()), async () => {
+            confirmByTypingId(folder.getResourceName(), vscode.l10n.t(`Type "{0}" to confirm you want to delete this resource`, folder.getResourceName()), async () => {
                 const res = await folder.deleteResource();
                 if (typeof res === "undefined") {
                     vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been deleted`, folder.getResourceName()));
@@ -197,6 +202,22 @@ export function activate(context: vscode.ExtensionContext) {
         vscode.window.showInformationMessage(vscode.l10n.t(`Refreshed`));
     });
 
+    vscode.commands.registerCommand('osc.showPodLogs', async (arg: KubeObjectResourceNode) => {
+        const uri = vscode.Uri.parse('osc-kube-logs:/' + arg.profile.name + "/" + arg.resourceId);
+        const doc = await vscode.workspace.openTextDocument(uri); // calls back into the provider
+        await vscode.window.showTextDocument(doc, { preview: false });
+    });
+
+    const mySchemeKubeLogs = 'osc-kube-logs';
+
+    const kubeLogsProvider = new KubeLogsProvider();
+    context.subscriptions.push(vscode.workspace.registerTextDocumentContentProvider(mySchemeKubeLogs, kubeLogsProvider));
+
+    vscode.commands.registerCommand('osc.refreshPodLogs', async (arg: any) => {
+        kubeLogsProvider.onDidChangeEmitter.fire(arg);
+        vscode.window.showInformationMessage(vscode.l10n.t(`Refreshed`));
+    });
+
     vscode.commands.registerCommand('osc.showAccountInfo', async (arg: ProfileNode) => {
         const uri = computeUri(arg.profile.name, "profile", arg.profile.name);
         try {
@@ -269,7 +290,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.commands.registerCommand('osc.deleteSubresource', async (arg: SubResourceNode) => {
-        showYesOrNoWindow(vscode.l10n.t(`Do you want to remove the subresource of {0} ?`, arg.getResourceName()), async () => {
+        confirmByTypingId(arg.getResourceName(), vscode.l10n.t(`Type "{0}" to confirm you want to remove this subresource`, arg.getResourceName()), async () => {
             const res = await arg.removeSubresource();
             if (typeof res === "undefined") {
                 vscode.window.showInformationMessage(vscode.l10n.t(`The subresource of {0} has been deleted`, arg.getResourceName()));
@@ -280,7 +301,7 @@ export function activate(context: vscode.ExtensionContext) {
     });
 
     vscode.commands.registerCommand('osc.teardownNet', async (arg: NetResourceNode) => {
-        showYesOrNoWindow(vscode.l10n.t(`Do you want to tear down the net {0} ?`, arg.getResourceName()), async () => {
+        confirmByTypingId(arg.getResourceName(), vscode.l10n.t(`Type "{0}" to confirm you want to tear down this net (this deletes every resource inside it)`, arg.getResourceName()), async () => {
             const res = await arg.teardown();
             if (typeof res === "undefined") {
                 vscode.window.showInformationMessage(vscode.l10n.t(`The net {0} has been torn down`, arg.getResourceName()));
@@ -304,6 +325,10 @@ export function activate(context: vscode.ExtensionContext) {
         init(arg.profile, arg.resourceId, context);
     });
 
+    vscode.commands.registerCommand('osc.showOksView', async (arg: OksClusterResourceNode) => {
+        initOksView(arg.profile, arg.resourceId, arg.resourceName, context);
+    });
+
 
     // Watch Conf Update
     handleOscViewerUpdateConf();
@@ -321,7 +346,7 @@ export function activate(context: vscode.ExtensionContext) {
 }
 // this method is called when your extension is deactivated
 export function deactivate() {
-    return;
+    cleanupCachedKubeconfigs();
 }
 
 function showYesOrNoWindow(question: string, cb: () => void) {
@@ -331,4 +356,18 @@ function showYesOrNoWindow(question: string, cb: () => void) {
                 cb();
             }
         });
+}
+
+// Stronger confirmation for irreversible actions (delete, teardown): the user has to type
+// the exact resource name/id rather than click a button, to guard against fat-fingered clicks.
+async function confirmByTypingId(resourceName: string, prompt: string, cb: () => void) {
+    const typed = await vscode.window.showInputBox({
+        prompt: prompt,
+        placeHolder: resourceName,
+        ignoreFocusOut: true,
+        validateInput: (value) => value === resourceName ? null : vscode.l10n.t(`Input does not match "{0}"`, resourceName)
+    });
+    if (typed === resourceName) {
+        cb();
+    }
 }
