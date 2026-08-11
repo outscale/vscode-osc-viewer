@@ -246,20 +246,6 @@ function redactSecretManifestBlocks(manifestText: string): string {
     }).join("\n---\n");
 }
 
-// A release's `values` has no structural marker distinguishing secret-bearing entries from the
-// rest (unlike manifest, where `kind: Secret` is reliable) — omit it wholesale rather than risk
-// showing a password/token that happens to live under an arbitrary chart-specific key.
-function redactHelmRelease(release: HelmRelease): HelmRelease {
-    const redacted = { ...release };
-    if (typeof redacted.manifest === "string") {
-        redacted.manifest = redactSecretManifestBlocks(redacted.manifest);
-    }
-    if (typeof redacted.values !== "undefined") {
-        redacted.values = "*** values omitted (may contain secrets) — run `helm get values <name> -n <namespace>` to view ***";
-    }
-    return redacted;
-}
-
 export async function getHelmRelease(profile: Profile, compositeResourceId: string): Promise<HelmRelease | string> {
     const parts = compositeResourceId.split("::");
     if (parts.length !== 3) {
@@ -274,9 +260,32 @@ export async function getHelmRelease(profile: Profile, compositeResourceId: stri
     if (typeof kubeconfig === "string") {
         return kubeconfig;
     }
+
+    // `helm get all` has no -o/--output flag at all (confirmed live against a real cluster: it's
+    // a fixed human-readable text report, not structured data) — build the equivalent from the
+    // subcommands that actually support JSON, or that are plain text anyway (manifest/notes/hooks
+    // never had one to begin with).
+    const baseArgs = ["--kubeconfig", kubeconfig.path];
     try {
-        const output = await shell.execFile("helm", ["--kubeconfig", kubeconfig.path, "get", "all", name, "-n", namespace, "-o", "json"], KUBECTL_MAX_BUFFER);
-        return redactHelmRelease(JSON.parse(output));
+        const [metadataOutput, manifest, notes, hooks] = await Promise.all([
+            shell.execFile("helm", [...baseArgs, "get", "metadata", name, "-n", namespace, "-o", "json"], KUBECTL_MAX_BUFFER),
+            shell.execFile("helm", [...baseArgs, "get", "manifest", name, "-n", namespace], KUBECTL_MAX_BUFFER),
+            shell.execFile("helm", [...baseArgs, "get", "notes", name, "-n", namespace], KUBECTL_MAX_BUFFER),
+            // Hooks are also `---`-separated rendered manifests (e.g. a pre-install Job/Secret),
+            // so they get the same Secret-block redaction as the main manifest below.
+            shell.execFile("helm", [...baseArgs, "get", "hooks", name, "-n", namespace], KUBECTL_MAX_BUFFER),
+        ]);
+        return {
+            ...JSON.parse(metadataOutput),
+            manifest: redactSecretManifestBlocks(manifest),
+            notes,
+            hooks: redactSecretManifestBlocks(hooks),
+            // No structural marker distinguishes secret-bearing values entries from the rest
+            // (unlike manifest/hooks, where `kind: Secret` is reliable), so values are omitted
+            // wholesale rather than risking a password/token under some arbitrary chart-specific
+            // key — not even fetched here.
+            values: "*** values omitted (may contain secrets) — run `helm get values <name> -n <namespace>` to view ***",
+        };
     } catch (err: any) {
         return err.toString();
     }
