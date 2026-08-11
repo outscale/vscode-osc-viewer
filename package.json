@@ -30,9 +30,11 @@
     "onCommand:osc.copyResourceId",
     "onCommand:osc.startVm",
     "onCommand:osc.showConsoleLogs",
+    "onCommand:osc.showPodLogs",
     "onCommand:osc.stopVm",
     "onFileSystem:osc",
     "onFileSystem:osc-logs",
+    "onFileSystem:osc-kube-logs",
     "onCommand:osc.copyAccountId",
     "onCommand:osc.showAccountId",
     "onCommand:osc.disableResourceFolder",
@@ -73,6 +75,26 @@
           "type": "string",
           "default": "",
           "description": "%osc-viewer.costEstimation.oscCostPath%"
+        },
+        "osc-viewer.networkView.liveRefresh.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "%osc-viewer.networkView.liveRefresh.enabled%"
+        },
+        "osc-viewer.networkView.liveRefresh.interval": {
+          "type": "integer",
+          "default": 15,
+          "description": "%osc-viewer.networkView.liveRefresh.interval%"
+        },
+        "osc-viewer.oksView.liveRefresh.enabled": {
+          "type": "boolean",
+          "default": false,
+          "description": "%osc-viewer.oksView.liveRefresh.enabled%"
+        },
+        "osc-viewer.oksView.liveRefresh.interval": {
+          "type": "integer",
+          "default": 15,
+          "description": "%osc-viewer.oksView.liveRefresh.interval%"
         }
       }
     },
@@ -153,6 +175,17 @@
         "category": "osc-viewer"
       },
       {
+        "command": "osc.showPodLogs",
+        "title": "%osc.showPodLogs%",
+        "category": "osc-viewer"
+      },
+      {
+        "command": "osc.refreshPodLogs",
+        "title": "%osc.refreshPodLogs%",
+        "icon": "$(refresh)",
+        "category": "osc-viewer"
+      },
+      {
         "command": "osc.showAccountInfo",
         "title": "%osc.showAccountInfo%",
         "category": "osc-viewer"
@@ -211,6 +244,11 @@
         "command": "osc.showNetworkView",
         "title": "%osc.showNetworkView%",
         "category": "osc-viewer"
+      },
+      {
+        "command": "osc.showOksView",
+        "title": "%osc.showOksView%",
+        "category": "osc-viewer"
       }
     ],
     "viewsContainers": {
@@ -258,6 +296,11 @@
           "command": "osc.refreshConsoleLogs",
           "group": "navigation",
           "when": "resourceScheme == osc-logs"
+        },
+        {
+          "command": "osc.refreshPodLogs",
+          "group": "navigation",
+          "when": "resourceScheme == osc-kube-logs"
         },
         {
           "command": "osc.refreshResourceData",
@@ -312,8 +355,18 @@
           "group": "oscinteract@8"
         },
         {
+          "command": "osc.showOksView",
+          "when": "view == profile && viewItem == okscluster",
+          "group": "oscinteract@8"
+        },
+        {
           "command": "osc.showConsoleLogs",
           "when": "view == profile && viewItem =~ /vmresourcenode/",
+          "group": "oscget@2"
+        },
+        {
+          "command": "osc.showPodLogs",
+          "when": "view == profile && viewItem == kubeobject-pod",
           "group": "oscget@2"
         },
         {
@@ -395,6 +448,7 @@
     "@typescript-eslint/eslint-plugin": "5.62.0",
     "@typescript-eslint/parser": "5.62.0",
     "@vscode/l10n-dev": "0.0.22",
+    "@vscode/vsce": "2.26.1",
     "chai": "4.3.6",
     "clipboardy": "2.3.0",
     "esbuild": "^0.14.51",
@@ -407,7 +461,6 @@
     "ts-mock-imports": "1.3.8",
     "typescript": "5.2.2",
     "typescript-formatter": "7.2.2",
-    "@vscode/vsce": "2.26.1",
     "vscode-extension-tester": "8.2.0"
   },
   "dependencies": {

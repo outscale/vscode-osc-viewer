@@ -17,6 +17,8 @@
     "osc.copyResourceId": "Copy Resource Id",
     "osc.showConsoleLogs": "Show Console Logs",
     "osc.refreshConsoleLogs": "Refresh Console Logs",
+    "osc.showPodLogs": "Show Pod Logs",
+    "osc.refreshPodLogs": "Refresh Pod Logs",
     "osc.showAccountInfo": "Show Account Info",
     "osc.copyAccessKey": "Copy Access Key",
     "osc.copySecretKey": "Copy Secret Key",
@@ -29,7 +31,12 @@
     "osc.teardownNet": "Tear down",
     "osc.retrieveAdminPassword": "Copy Administrator password",
     "osc.showNetworkView": "(Beta) Show VPC View",
+    "osc.showOksView": "(Beta) Show OKS View",
     "viewsWelcome.text": "In order to use 3DS Outscale plugin, you have to configure profiles the configuration file.\n[Open configuration file](command:profile.configure)\n[Add a profile](command:profile.addEntry)\n",
     "osc-viewer.costEstimation.enabled": "Compute cost estimation of profiles.",
-    "osc-viewer.costEstimation.oscCostPath": "Path of the binary osc-cost."
+    "osc-viewer.costEstimation.oscCostPath": "Path of the binary osc-cost.",
+    "osc-viewer.networkView.liveRefresh.enabled": "Automatic refresh of the Net view (live dashboard mode).",
+    "osc-viewer.networkView.liveRefresh.interval": "Interval in seconds to refresh the Net view when live mode is on.",
+    "osc-viewer.oksView.liveRefresh.enabled": "Automatic refresh of the OKS view (live dashboard mode).",
+    "osc-viewer.oksView.liveRefresh.interval": "Interval in seconds to refresh the OKS view when live mode is on."
 }

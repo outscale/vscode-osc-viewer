@@ -24,7 +24,7 @@ button {
   border: none;
   padding: 8px;
   margin: 2px;
-  border-radius: 3px;
+  border-radius: 4px;
   font-size: 95%;
   /* min-width: 70px; */
   text-align: center;
@@ -42,6 +42,50 @@ button:hover {
 
 .toggled {
   background-color: var(--vscode-gitDecoration-addedResourceForeground);
+}
+
+.live-dot {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background-color: var(--vscode-descriptionForeground);
+}
+
+/* Outscale Core UX design system: Success200 (colorIconSuccess) */
+#live-toggle.live .live-dot {
+  background-color: #38A00B;
+  animation: live-pulse 1.6s infinite;
+}
+
+@keyframes live-pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(56, 160, 11, 0.6);
+  }
+
+  70% {
+    box-shadow: 0 0 0 6px rgba(56, 160, 11, 0);
+  }
+
+  100% {
+    box-shadow: 0 0 0 0 rgba(56, 160, 11, 0);
+  }
+}
+
+.live-status {
+  margin-left: 4px;
+  font-size: 90%;
+  color: var(--vscode-descriptionForeground);
+  vertical-align: middle;
+}
+
+.health-summary {
+  margin-left: 12px;
+  padding-left: 12px;
+  font-size: 90%;
+  color: var(--vscode-descriptionForeground);
+  vertical-align: middle;
+  border-left: 1px solid var(--vscode-widget-border);
 }
 
 /* CSS loader/spinner */

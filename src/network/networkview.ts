@@ -4,6 +4,8 @@ import { Profile } from '../flat/node';
 import { CytoscapeNode, CytoscapeNodeData } from './types';
 import { getAllNetResources } from '../cloud/nets';
 import { showResourceDetails } from '../extension';
+import { getConfigurationParameter } from '../configuration/utils';
+import { getGraphWebviewContent } from './webviewshell';
 
 
 
@@ -13,11 +15,23 @@ let extensionPath: string;
 let resource: string | undefined;
 let client: Profile | undefined;
 
+// Live refresh (dashboard mode)
+const MIN_LIVE_REFRESH_INTERVAL = 5;
+const DEFAULT_LIVE_REFRESH_INTERVAL = 15;
+let liveEnabled = false;
+let liveInterval = DEFAULT_LIVE_REFRESH_INTERVAL;
+let liveTimer: ReturnType<typeof setTimeout> | undefined;
 
 export async function init(profile: Profile, resourceId: string, context: vscode.ExtensionContext) {
     resource = resourceId;
     client = profile;
     extensionPath = context.extensionPath;
+
+    liveEnabled = getConfigurationParameter<boolean>('networkView.liveRefresh.enabled') ?? false;
+    const configuredInterval = getConfigurationParameter<number>('networkView.liveRefresh.interval');
+    liveInterval = (typeof configuredInterval === 'number' && configuredInterval >= MIN_LIVE_REFRESH_INTERVAL)
+        ? configuredInterval : DEFAULT_LIVE_REFRESH_INTERVAL;
+
     // Create the panel (held globally)
     panel = vscode.window.createWebviewPanel(
         `osc-viewer-network-view-${resourceId}`,
@@ -33,13 +47,16 @@ export async function init(profile: Profile, resourceId: string, context: vscode
         },
     );
 
-    panel.webview.html = getWebviewContent();
+    panel.webview.html = getGraphWebviewContent(panel, extensionPath);
 
     panel.webview.onDidReceiveMessage(
         message => {
             // Initial load of content, done at startup
             if (message.command === 'initialized') {
                 sendData();
+                if (liveEnabled) {
+                    startLiveRefresh();
+                }
             }
 
             // Message from webview - user clicked 'Filters' button
@@ -52,10 +69,40 @@ export async function init(profile: Profile, resourceId: string, context: vscode
                 showResourceDetails(profile.name, message.payload.resourceType, message.payload.resourceId);
             }
 
+            // Message from webview - user toggled the 'Live' button
+            if (message.command === 'toggleLive') {
+                liveEnabled = !!message.payload.enabled;
+                if (liveEnabled) {
+                    startLiveRefresh();
+                } else {
+                    stopLiveRefresh();
+                }
+            }
+
         },
         undefined,
         context.subscriptions,
     );
+
+    panel.onDidDispose(() => {
+        stopLiveRefresh();
+        panel = undefined;
+    }, undefined, context.subscriptions);
+}
+
+function startLiveRefresh() {
+    stopLiveRefresh();
+    liveTimer = setTimeout(async function tick() {
+        await sendData();
+        liveTimer = setTimeout(tick, 1000 * liveInterval);
+    }, 1000 * liveInterval);
+}
+
+function stopLiveRefresh() {
+    if (typeof liveTimer !== 'undefined') {
+        clearTimeout(liveTimer);
+        liveTimer = undefined;
+    }
 }
 
 async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
@@ -92,7 +139,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 data: {
                     id: subnet.subregionName,
                     label: subnet.subregionName,
-                    color: '#c3c5c7',
+                    // Outscale Core UX: Neutral100 (structural grouping container)
+                    color: '#C5C5C5',
                     showDetails: false
                 },
                 group: 'nodes'
@@ -103,10 +151,14 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 id: subnet.subnetId,
                 label: subnet.subnetId,
                 parent: subnet.subregionName,
-                color: '#e6f2f8',
+                // Outscale Core UX: Info50. Not Success (subnet's own status border already uses
+                // Success/Warning/Error — a green fill + green healthy-border would read as
+                // redundant/ambiguous), so domain identity uses the non-status hue families.
+                color: '#E6ECFA',
                 showDetails: true,
                 resourceId: subnet.subnetId,
-                type: 'Subnet'
+                type: 'Subnet',
+                state: subnet.state
 
             },
             group: 'nodes'
@@ -147,7 +199,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 img: 'design/VM@2x.png',
                 showDetails: true,
                 resourceId: vm.vmId,
-                type: 'vms'
+                type: 'vms',
+                state: vm.state
             },
             group: 'nodes'
         });
@@ -266,7 +319,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 img: 'design/NatGateway@2x.png',
                 showDetails: true,
                 resourceId: nat.natServiceId,
-                type: 'NatService'
+                type: 'NatService',
+                state: nat.state
             },
             group: 'nodes'
         });
@@ -321,7 +375,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 img: 'design/InternetService@2x.png',
                 showDetails: true,
                 resourceId: is.internetServiceId,
-                type: 'InternetService'
+                type: 'InternetService',
+                state: is.state
             },
             group: 'nodes'
         });
@@ -341,7 +396,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 img: 'design/VPCEndpoint@2x.png',
                 showDetails: true,
                 resourceId: nap.netAccessPointId,
-                type: 'NetAccessPoint'
+                type: 'NetAccessPoint',
+                state: nap.state
             },
             group: 'nodes'
         });
@@ -360,7 +416,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 img: 'design/VirtualPrivateGateway@2x.png',
                 showDetails: true,
                 resourceId: vgw.virtualGatewayId,
-                type: 'VirtualGateway'
+                type: 'VirtualGateway',
+                state: vgw.state
             },
             group: 'nodes'
         });
@@ -387,65 +444,5 @@ async function sendData() {
     if (typeof panel === 'undefined') {
         return;
     }
-    panel.webview.postMessage({ command: 'newData', payload: data });
-}
-
-
-function getWebviewContent(): string {
-    // Just in case, shouldn't happen
-    if (!panel) {
-        return '';
-    }
-
-    const assetsPath = panel.webview.asWebviewUri(vscode.Uri.file(path.join(extensionPath, 'assets')));
-    const iconThemeBase = panel.webview.asWebviewUri(
-        vscode.Uri.file(path.join(extensionPath, 'assets', 'img')),
-    ).toString();
-
-    return `
-    <!DOCTYPE html>
-    <html lang="en">
-    
-    <head>
-      <meta charset="UTF-8">
-      <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-      <script src="${assetsPath}/js/vendor/jquery-3.4.1.slim.min.js"></script>
-      <script src="${assetsPath}/js/vendor/cytoscape-3.23.0.min.js"></script>
-      <script src="${assetsPath}/js/vendor/layout-base.js"></script>
-      <script src="${assetsPath}/js/vendor/dagre-0.7.4.min.js"></script>
-      <script src="${assetsPath}/js/vendor/cytoscape-dagre-2.5.0.js"></script>
-      <script src="${assetsPath}/js/vendor/collapse-4.1.0.js"></script>
-      <script src="${assetsPath}/js/vendor/navigator-2.0.2.js"></script>
-    
-      <script src="${assetsPath}/js/main.js"></script>
-      <link href="${assetsPath}/css/main.css" rel="stylesheet" type="text/css">
-      <link href="${assetsPath}/css/navigator.css" rel="stylesheet" type="text/css">
-    
-      <title>Osc Viewer</title>
-    </head>
-    
-    <body>
-      <div id="buttons">
-        <button onclick="resize()" title="Zoom to fit"><img src="${assetsPath}/img/toolbar/fit.svg"><span class="lab">&nbsp;
-            Zoom to fit</span></button>
-        <button onclick="reLayout()" title="Relayout"><img src="${assetsPath}/img/toolbar/fit.svg"><span class="lab">&nbsp;
-            Relayout</span></button>
-        <button onclick="exportPNG()" title="Export view as PNG"><img src="${assetsPath}/img/toolbar/export.svg"><span
-            class="lab">&nbsp; Export</span></button>
-        <button onclick="showDetails()" title="Export view as PNG" id="details" disabled="true"><img src="${assetsPath}/img/toolbar/zoom-in.svg"><span
-            class="lab">&nbsp; Show</span></button>
-            <button onclick="toggleEdges()" title="Toggle Edges"><img src="${assetsPath}/img/toolbar/subtract-minus-remove.svg"><span class="lab">&nbsp; Edges</span></button>
-      </div>
-    
-      <div class="loader"></div>
-      <div id="mainview"></div>
-    
-      <script>
-        init("${iconThemeBase}");
-      </script>
-    
-    </body>
-    
-    </html>`;
+    panel.webview.postMessage({ command: 'newData', payload: data, lastUpdated: Date.now(), live: liveEnabled });
 }
