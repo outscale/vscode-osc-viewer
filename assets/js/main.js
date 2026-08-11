@@ -23,10 +23,11 @@ const STATE_CATEGORIES = {
   quarantine: 'critical'
 }
 
+// Outscale Core UX design system: Success300 / Warning300 / Error300
 const CATEGORY_COLORS = {
-  healthy: '#3fb950',
-  warning: '#d29922',
-  critical: '#f85149'
+  healthy: '#2E7E0C',
+  warning: '#B95503',
+  critical: '#E00B15'
 }
 
 function stateColor(state) {
@@ -121,6 +122,13 @@ function displayData(data) {
     }
   })
 
+  // On a live-refresh tick (not the first load), preserve the user's current pan/zoom across the
+  // rebuild+relayout below - otherwise every refresh snaps the view back to a fit-to-screen reset,
+  // which is disorienting if they've zoomed/panned into a specific area to watch it. The manual
+  // "Relayout" button calls reLayout() directly (not through here), so it's unaffected and still
+  // resets the view on demand.
+  const preservedView = hasLoadedOnce ? { pan: cy.pan(), zoom: cy.zoom() } : null
+
   cy.remove('*')
   cy.add(data)
   var api = cy.expandCollapse('get')
@@ -133,6 +141,12 @@ function displayData(data) {
   })
 
   reLayout()
+
+  if (preservedView) {
+    cy.pan(preservedView.pan)
+    cy.zoom(preservedView.zoom)
+  }
+
   updateHealthSummary(newStates)
   flashStateChanges(newStates)
 
@@ -210,7 +224,10 @@ function reLayout() {
     'font-family': 'system-ui',
     'font-size': node => node.data('size') ? '11px' : '20px',
     'text-max-width': node => node.data('size') ? '90px' : '9999px',
-    'text-wrap': node => node.data('size') ? 'ellipsis' : 'none',
+    // 'wrap', not 'ellipsis': names like service/deployment names are meaningful in full, and
+    // wrapping onto more lines (rather than truncating) is what actually stops the horizontal
+    // overlap into neighboring labels.
+    'text-wrap': node => node.data('size') ? 'wrap' : 'none',
     'shape': node => node.data('shape') || 'rectangle',
   })
 
@@ -283,7 +300,7 @@ function reLayout() {
     randomize: true,
     fit: true,
     padding: 24,
-    spacingFactor: 1.2,
+    spacingFactor: 1.6,
 
   }).run()
 

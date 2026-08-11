@@ -56,7 +56,10 @@ export function cleanupCachedKubeconfigs() {
 // exceed Node's 1MB default child_process.exec buffer.
 const KUBECTL_MAX_BUFFER = 64 * 1024 * 1024;
 
-async function kubectlGetJson(profile: Profile, clusterId: string, kubectlArgs: string): Promise<any | string> {
+// kubectlArgs is a real argv array, passed straight through to execFile (no shell involved) —
+// namespace/kind/name values coming from a URI-derived composite id can never be interpreted as
+// shell syntax this way, unlike building a command string and running it via a shell.
+async function kubectlGetJson(profile: Profile, clusterId: string, kubectlArgs: string[]): Promise<any | string> {
     if (shell.which("kubectl") === null) {
         return "kubectl was not found on your PATH";
     }
@@ -65,7 +68,7 @@ async function kubectlGetJson(profile: Profile, clusterId: string, kubectlArgs: 
         return kubeconfig;
     }
     try {
-        const output = await shell.exec(`kubectl --kubeconfig='${kubeconfig.path}' ${kubectlArgs} -o json`, KUBECTL_MAX_BUFFER);
+        const output = await shell.execFile("kubectl", ["--kubeconfig", kubeconfig.path, ...kubectlArgs, "-o", "json"], KUBECTL_MAX_BUFFER);
         return JSON.parse(output);
     } catch (err: any) {
         return err.toString();
@@ -108,7 +111,7 @@ function redactIfSecret(kind: string, obj: KubeObject): KubeObject {
 // List every object of a kind. namespaced kinds are listed across all namespaces (the namespace
 // is shown per-object in the tree, rather than nesting a namespace picker).
 export async function getKubeObjects(profile: Profile, clusterId: string, kind: string, namespaced: boolean): Promise<Array<KubeObject> | string> {
-    const args = namespaced ? `get ${kind} --all-namespaces` : `get ${kind}`;
+    const args = namespaced ? ["get", kind, "--all-namespaces"] : ["get", kind];
     const body = await kubectlGetJson(profile, clusterId, args);
     if (typeof body === "string") {
         return body;
@@ -118,8 +121,8 @@ export async function getKubeObjects(profile: Profile, clusterId: string, kind: 
 }
 
 async function getKubeObject(profile: Profile, clusterId: string, kind: string, namespace: string, name: string): Promise<KubeObject | string> {
-    const nsFlag = namespace.length > 0 ? `-n ${namespace}` : "";
-    const body = await kubectlGetJson(profile, clusterId, `get ${kind} ${name} ${nsFlag}`);
+    const args = namespace.length > 0 ? ["get", kind, name, "-n", namespace] : ["get", kind, name];
+    const body = await kubectlGetJson(profile, clusterId, args);
     if (typeof body === "string") {
         return body;
     }
@@ -165,7 +168,7 @@ export async function getPodLogs(profile: Profile, compositeResourceId: string):
         return kubeconfig;
     }
     try {
-        return await shell.exec(`kubectl --kubeconfig='${kubeconfig.path}' logs ${name} -n ${namespace} --tail=1000`, KUBECTL_MAX_BUFFER);
+        return await shell.execFile("kubectl", ["--kubeconfig", kubeconfig.path, "logs", name, "-n", namespace, "--tail=1000"], KUBECTL_MAX_BUFFER);
     } catch (err: any) {
         return err.toString();
     }
@@ -219,7 +222,7 @@ export async function getHelmReleases(profile: Profile, clusterId: string): Prom
         return kubeconfig;
     }
     try {
-        const output = await shell.exec(`helm --kubeconfig='${kubeconfig.path}' list --all-namespaces -o json`, KUBECTL_MAX_BUFFER);
+        const output = await shell.execFile("helm", ["--kubeconfig", kubeconfig.path, "list", "--all-namespaces", "-o", "json"], KUBECTL_MAX_BUFFER);
         return JSON.parse(output);
     } catch (err: any) {
         return err.toString();
@@ -228,6 +231,33 @@ export async function getHelmReleases(profile: Profile, clusterId: string): Prom
 
 export function helmReleaseCompositeId(clusterId: string, namespace: string, name: string): string {
     return [clusterId, namespace, name].join("::");
+}
+
+// `helm get all`'s `manifest` field is a string of concatenated `---`-separated rendered YAML
+// documents (unlike native kube objects, which come back as structured JSON redactable key-by-key
+// via redactIfSecret) — any Secret the chart deploys would otherwise show its decoded-looking
+// values in the clear here. Scrub the data:/stringData: block of any `kind: Secret` document.
+function redactSecretManifestBlocks(manifestText: string): string {
+    return manifestText.split(/\n---\n/).map(doc => {
+        if (!/^kind:\s*Secret\s*$/m.test(doc)) {
+            return doc;
+        }
+        return doc.replace(/^(data|stringData):\n(?:[ \t]+.*\n?)*/gm, "$1: \"***REDACTED***\"\n");
+    }).join("\n---\n");
+}
+
+// A release's `values` has no structural marker distinguishing secret-bearing entries from the
+// rest (unlike manifest, where `kind: Secret` is reliable) — omit it wholesale rather than risk
+// showing a password/token that happens to live under an arbitrary chart-specific key.
+function redactHelmRelease(release: HelmRelease): HelmRelease {
+    const redacted = { ...release };
+    if (typeof redacted.manifest === "string") {
+        redacted.manifest = redactSecretManifestBlocks(redacted.manifest);
+    }
+    if (typeof redacted.values !== "undefined") {
+        redacted.values = "*** values omitted (may contain secrets) — run `helm get values <name> -n <namespace>` to view ***";
+    }
+    return redacted;
 }
 
 export async function getHelmRelease(profile: Profile, compositeResourceId: string): Promise<HelmRelease | string> {
@@ -245,8 +275,8 @@ export async function getHelmRelease(profile: Profile, compositeResourceId: stri
         return kubeconfig;
     }
     try {
-        const output = await shell.exec(`helm --kubeconfig='${kubeconfig.path}' get all ${name} -n ${namespace} -o json`, KUBECTL_MAX_BUFFER);
-        return JSON.parse(output);
+        const output = await shell.execFile("helm", ["--kubeconfig", kubeconfig.path, "get", "all", name, "-n", namespace, "-o", "json"], KUBECTL_MAX_BUFFER);
+        return redactHelmRelease(JSON.parse(output));
     } catch (err: any) {
         return err.toString();
     }

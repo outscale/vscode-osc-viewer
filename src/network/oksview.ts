@@ -133,16 +133,40 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
 
     const data: CytoscapeNode[] = [];
 
-    const nodes = await getKubeObjects(client, cluster, 'nodes', false);
+    // These five fetches are all independent (only the JS-side correlation below depends on their
+    // results), so run them concurrently rather than one round-trip at a time.
+    const [nodes, pods, services, endpoints, ingresses] = await Promise.all([
+        getKubeObjects(client, cluster, 'nodes', false),
+        getKubeObjects(client, cluster, 'pods', true),
+        getKubeObjects(client, cluster, 'services', true),
+        getKubeObjects(client, cluster, 'endpoints', true),
+        getKubeObjects(client, cluster, 'ingresses', true),
+    ]);
     if (typeof nodes === 'string') {
         return nodes;
     }
-    const pods = await getKubeObjects(client, cluster, 'pods', true);
     if (typeof pods === 'string') {
         return pods;
     }
+    if (typeof services === 'string') {
+        return services;
+    }
+    if (typeof endpoints === 'string') {
+        return endpoints;
+    }
+    if (typeof ingresses === 'string') {
+        return ingresses;
+    }
 
-    // Zone groups (like the Net view's AZ groups)
+    // Zone groups (like the Net view's AZ groups). Deliberately NOT correlated to a real OSC
+    // Net/Subnet: confirmed by direct investigation (2026-08) that OKS worker-node VM/Subnet/Net
+    // objects are provisioned in an Outscale-managed tenant invisible to the customer's own
+    // account via ReadVms/ReadSubnets/ReadNets — even a direct lookup by the exact IDs found on
+    // the node itself returns nothing. The only source for that data is each node's own instance
+    // metadata service (169.254.169.254), reachable only from a process running on that node —
+    // i.e. it would require creating a pod per node on every refresh, a materially different
+    // (live-cluster-mutating) risk than everything else this view does. Not built without
+    // explicit sign-off; see conversation notes.
     const zones = new Map<string, CytoscapeNode>();
 
     nodes.forEach((node) => {
@@ -156,18 +180,22 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 data: {
                     id: `zone-${zone}`,
                     label: zone,
-                    color: '#c3c5c7',
+                    // Outscale Core UX: Neutral75 (structural grouping container)
+                    color: '#E2E2E2',
                     showDetails: false
                 },
                 group: 'nodes'
             });
         }
+
         data.push({
             data: {
                 id: name,
                 label: name,
                 parent: `zone-${zone}`,
-                color: '#e8edfb',
+                // Outscale Core UX: Azur50 ("compute" domain — matches the design system's own
+                // "Compute: VM, worker node" description exactly)
+                color: '#E5F0FF',
                 shape: 'round-rectangle',
                 showDetails: true,
                 resourceId: kubeObjectCompositeId(cluster as string, 'nodes', '', name),
@@ -217,9 +245,11 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 id: `${namespace}/${name}`,
                 label: name,
                 parent: groupId,
-                // Kubernetes-blue hexagon, smaller than the default 128px: pods are numerous
-                // and this reads as a cluster of small hexagons rather than oversized boxes.
-                color: '#c9d6f7',
+                // Outscale Core UX: Turquoise50 ("workload" domain — matches "Kubernetes
+                // objects/workload" exactly; same family as Service/Ingress, distinguished by
+                // shape). Hexagon, smaller than the default 128px: pods are numerous and this
+                // reads as a cluster of small hexagons rather than oversized boxes.
+                color: '#DEF4F1',
                 shape: 'hexagon',
                 size: '56px',
                 showDetails: true,
@@ -236,7 +266,10 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
             data: {
                 id: 'unscheduled',
                 label: 'Unscheduled',
-                color: '#f2d891',
+                // Outscale Core UX: Warning50 — this is a problem/status flag (unscheduled pods
+                // usually mean a scheduling issue), not a resource-type identity, so it borrows
+                // the status family rather than a categorical one.
+                color: '#FFF7E6',
                 showDetails: false
             },
             group: 'nodes'
@@ -259,19 +292,6 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
     // real, K8s-native path traffic takes to reach a pod; raw NetworkPolicy-based pod-to-pod
     // edges were deliberately left out — without a policy every pod can already reach every pod,
     // and drawing that would just be a dense, meaningless complete graph.
-    const services = await getKubeObjects(client, cluster, 'services', true);
-    if (typeof services === 'string') {
-        return services;
-    }
-    const endpoints = await getKubeObjects(client, cluster, 'endpoints', true);
-    if (typeof endpoints === 'string') {
-        return endpoints;
-    }
-    const ingresses = await getKubeObjects(client, cluster, 'ingresses', true);
-    if (typeof ingresses === 'string') {
-        return ingresses;
-    }
-
     let needsInternetNode = false;
 
     const serviceToPods = new Map<string, Set<string>>();
@@ -303,8 +323,10 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
             data: {
                 id: serviceId,
                 label: name,
-                color: '#d4f0ec',
+                // Outscale Core UX: Turquoise50, same "workload" family as Pod/Ingress
+                color: '#DEF4F1',
                 shape: 'ellipse',
+                size: '80px',
                 showDetails: true,
                 resourceId: kubeObjectCompositeId(cluster as string, 'services', namespace, name),
                 type: 'KubeObject',
@@ -353,8 +375,10 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
             data: {
                 id: ingressId,
                 label: name,
-                color: '#e8dff5',
+                // Outscale Core UX: Turquoise50, same "workload" family as Pod/Service
+                color: '#DEF4F1',
                 shape: 'diamond',
+                size: '80px',
                 showDetails: true,
                 resourceId: kubeObjectCompositeId(cluster as string, 'ingresses', namespace, name),
                 type: 'KubeObject',
@@ -405,7 +429,9 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
             data: {
                 id: 'internet',
                 label: 'Internet',
-                color: '#f5c451',
+                // Outscale Core UX: Neutral50 fill / Neutral500 text — matches the design
+                // system's own "external"/"off-cloud" semantic exactly (not a k8s object).
+                color: '#F2F2F2',
                 shape: 'ellipse',
                 showDetails: false,
             },

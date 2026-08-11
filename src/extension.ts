@@ -105,7 +105,10 @@ export function activate(context: vscode.ExtensionContext) {
             if (!(folder instanceof ResourceNode)) {
                 continue;
             }
-            confirmByTypingId(folder.getResourceName(), vscode.l10n.t(`Type "{0}" to confirm you want to delete this resource`, folder.getResourceName()), async () => {
+            // Awaited: confirmByTypingId shows an input box, and only one can be active at a
+            // time — without awaiting, a multi-select delete would fire every input box at once
+            // and silently drop all but the last one.
+            await confirmByTypingId(folder.getResourceName(), vscode.l10n.t(`Type "{0}" to confirm you want to delete this resource`, folder.getResourceName()), async () => {
                 const res = await folder.deleteResource();
                 if (typeof res === "undefined") {
                     vscode.window.showInformationMessage(vscode.l10n.t(`The resource {0} has been deleted`, folder.getResourceName()));

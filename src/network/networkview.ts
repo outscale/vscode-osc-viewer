@@ -139,7 +139,8 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 data: {
                     id: subnet.subregionName,
                     label: subnet.subregionName,
-                    color: '#c3c5c7',
+                    // Outscale Core UX: Neutral100 (structural grouping container)
+                    color: '#C5C5C5',
                     showDetails: false
                 },
                 group: 'nodes'
@@ -150,7 +151,10 @@ async function retrieveData(): Promise<CytoscapeNode[] | string | undefined> {
                 id: subnet.subnetId,
                 label: subnet.subnetId,
                 parent: subnet.subregionName,
-                color: '#e6f2f8',
+                // Outscale Core UX: Info50. Not Success (subnet's own status border already uses
+                // Success/Warning/Error — a green fill + green healthy-border would read as
+                // redundant/ambiguous), so domain identity uses the non-status hue families.
+                color: '#E6ECFA',
                 showDetails: true,
                 resourceId: subnet.subnetId,
                 type: 'Subnet',
