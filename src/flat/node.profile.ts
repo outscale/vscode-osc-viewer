@@ -24,6 +24,7 @@ import { NatServicesFolderNode, NATSERVICES_FOLDER_NAME } from './folders/simple
 import { NetAccessPointsFolderNode, NETACCESSPOINTS_FOLDER_NAME } from './folders/simple/node.folder.netaccesspoint';
 import { NetPeeringsFolderNode, NETPEERINGS_FOLDER_NAME } from './folders/simple/node.folder.netpeering';
 import { NicsFolderNode, NICS_FOLDER_NAME } from './folders/specific/node.folder.nic';
+import { OksClustersFolderNode, OKSCLUSTERS_FOLDER_NAME } from './folders/simple/node.folder.okscluster';
 import { SubnetsFolderNode, SUBNETS_FOLDER_NAME } from './folders/simple/node.folder.subnet';
 import { VirtualGatewaysFolderNode, VIRTUALGATEWAYS_FOLDER_NAME } from './folders/specific/node.folder.virtualgateway';
 import { VpnConnectionsFolderNode, VPNCONNECTIONS_FOLDER_NAME } from './folders/simple/node.folder.vpnconnection';
@@ -68,6 +69,7 @@ export class ProfileNode implements ExplorerProfileNode {
             [NETACCESSPOINTS_FOLDER_NAME, new NetAccessPointsFolderNode(this.profile)],
             [NETPEERINGS_FOLDER_NAME, new NetPeeringsFolderNode(this.profile)],
             [NICS_FOLDER_NAME, new NicsFolderNode(this.profile)],
+            [OKSCLUSTERS_FOLDER_NAME, new OksClustersFolderNode(this.profile)],
             [PUBLICIP_FOLDER_NAME, new ExternalIPsFolderNode(this.profile)],
             [ROUTETABLES_FOLDER_NAME, new RouteTablesFolderNode(this.profile)],
             [SECURITYGROUPS_FOLDER_NAME, new SecurityGroupsFolderNode(this.profile)],

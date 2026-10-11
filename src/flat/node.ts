@@ -45,6 +45,9 @@ export type ResourceNodeType =
     "NetAccessPoint" |
     "NetPeering" |
     "Nic" |
+    "OksCluster" |
+    "KubeObject" |
+    "HelmRelease" |
     "Subnet" |
     "VirtualGateway" |
     "VpnConnection" |

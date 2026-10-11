@@ -21,7 +21,10 @@ export interface CytoscapeNodeData {
     type?: ResourceNodeType,
     showDetails: boolean,
     resourceId?: string,
-    collapse?: boolean
+    collapse?: boolean,
+    state?: string,
+    shape?: string,
+    size?: string
 }
 
 export interface CytoscapeEdgeData {

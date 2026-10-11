@@ -33,6 +33,8 @@ import { getVpnConnection } from '../cloud/vpnconnections';
 import { getVmGroup } from '../cloud/vmgroup';
 import { getVmTemplate } from '../cloud/vmtemplate';
 import { getDedicatedGroup } from '../cloud/dedicatedgroup';
+import { getOksCluster, OksCluster } from '../cloud/oks';
+import { getKubeObjectByCompositeId, getHelmRelease, KubeObject, HelmRelease } from '../cloud/kube';
 
 
 class ResourceEncoding {
@@ -73,6 +75,9 @@ const resourceMap = new Map([
     ["VmGroup", new ResourceEncoding(getVmGroup, VmGroupToJSON)],
     ["VmTemplate", new ResourceEncoding(getVmTemplate, VmTemplateToJSON)],
     ["DedicatedGroup", new ResourceEncoding(getDedicatedGroup, DedicatedGroupToJSON)],
+    ["OksCluster", new ResourceEncoding(getOksCluster, (resourceData: OksCluster) => resourceData as any)],
+    ["KubeObject", new ResourceEncoding(getKubeObjectByCompositeId, (resourceData: KubeObject) => resourceData as any)],
+    ["HelmRelease", new ResourceEncoding(getHelmRelease, (resourceData: HelmRelease) => resourceData as any)],
 ]);
 
 export class OscVirtualContentProvider implements vscode.TextDocumentContentProvider {

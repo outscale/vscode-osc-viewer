@@ -4,6 +4,7 @@ import * as shelljs from 'shelljs';
 import util = require('util');
 import _exec = require('child_process');
 const innerExec = util.promisify(_exec.exec);
+const innerExecFile = util.promisify(_exec.execFile);
 
 
 export enum Platform {
@@ -23,7 +24,8 @@ export interface Shell {
     isWindows(): boolean;
     isUnix(): boolean;
     platform(): Platform;
-    exec(cmd: string): Promise<string>;
+    exec(cmd: string, maxBuffer?: number): Promise<string>;
+    execFile(command: string, args: string[], maxBuffer?: number): Promise<string>;
     which(bin: string): string | null;
 }
 
@@ -32,6 +34,7 @@ export const shell: Shell = {
     isUnix: isUnix,
     platform: platform,
     exec: exec,
+    execFile: execFile,
     which: which,
 };
 
@@ -65,8 +68,18 @@ export function platformArch(): string | undefined {
 }
 
 
-async function exec(cmd: string): Promise<string> {
-    const { stdout } = await innerExec(cmd);
+async function exec(cmd: string, maxBuffer?: number): Promise<string> {
+    // encoding: 'utf8' pins util.promisify(exec)'s overload to the string-returning one; without
+    // it, passing an options object at all resolves to the string | Buffer overload instead.
+    const { stdout } = await innerExec(cmd, { encoding: 'utf8', ...(typeof maxBuffer === 'number' ? { maxBuffer } : {}) });
+    return stdout;
+}
+
+// Runs a command with its arguments passed as a real argv array (execFile, not exec): no shell
+// is involved, so argument values can never be interpreted as shell syntax regardless of their
+// content. Use this instead of exec() whenever any argument isn't a fixed, hardcoded string.
+async function execFile(command: string, args: string[], maxBuffer?: number): Promise<string> {
+    const { stdout } = await innerExecFile(command, args, { encoding: 'utf8', ...(typeof maxBuffer === 'number' ? { maxBuffer } : {}) });
     return stdout;
 }
 
